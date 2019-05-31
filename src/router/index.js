@@ -62,7 +62,7 @@ router.beforeEach((to, from, next)=> {
       next({path:'/login'})
     }else{
       // 加载动态菜单和路由
-      addDynamicMenuAndRoutes(user.userName, to, from)
+      addDynamicMenuAndRoutes(user.AdminName, to, from)
       next()
     }
   }
@@ -74,7 +74,6 @@ router.beforeEach((to, from, next)=> {
 function addDynamicMenuAndRoutes(userName, to, from) {
   // 处理IFrame嵌套页面
   //handleIFrameUrl(to.path)
-  debugger
   var ad=store.state.data.menuRouteLoaded
   if(store.state.data.menuRouteLoaded) {
     console.log('动态菜单和路由已经存在.')
@@ -83,22 +82,21 @@ function addDynamicMenuAndRoutes(userName, to, from) {
   api.common.findMenuTree({'userName':userName})
   .then(res => {
     // 添加动态路由
-    let dynamicRoutes = addDynamicRoutes(res.data)
+    let dynamicRoutes = addDynamicRoutes(res.ResultData.data)
     // 处理静态组件绑定路由
     //handleStaticComponent(router, dynamicRoutes)
     router.addRoutes(router.options.routes)
     // 保存加载状态
     store.commit('menuRouteLoaded', true)
-    debugger
     // 保存菜单树
-    store.commit('setNavTree', res.data)
-    debugger
-  }).then(res => {
-    api.user.findPermissions({'name':userName}).then(res => {
-      // 保存用户权限标识集合
-      store.commit('setPerms', res.data)
-    })
+    store.commit('setNavTree', res.ResultData.data)
   })
+  // .then(res => {
+  //   api.user.findPermissions({'name':userName}).then(res => {
+  //     // 保存用户权限标识集合
+  //     store.commit('setPerms', res.data)
+  //   })
+  // })
   .catch(function(res) {
   })
 }
@@ -109,20 +107,21 @@ function addDynamicMenuAndRoutes(userName, to, from) {
 * @param {*} routes 递归创建的动态(菜单)路由
 */
 function addDynamicRoutes (menuList = [], routes = []) {
+  debugger
   var temp = []
   for (var i = 0; i < menuList.length; i++) {
-    if (menuList[i].children && menuList[i].children.length >= 1) {
-      temp = temp.concat(menuList[i].children)
-    } else if (menuList[i].url && /\S/.test(menuList[i].url)) {
-       menuList[i].url = menuList[i].url.replace(/^\//, '')
+    if (menuList[i].LowerMenuList && menuList[i].LowerMenuList.length >= 1) {
+      temp = temp.concat(menuList[i].LowerMenuList)
+    } else if (menuList[i].AddressUrl && /\S/.test(menuList[i].AddressUrl)) {
+       menuList[i].AddressUrl = menuList[i].AddressUrl.replace(/^\//, '')
        // 创建路由配置
        var route = {
-         path: menuList[i].url,
+         path: menuList[i].AddressUrl,
          component: null,
-         name: menuList[i].name,
+         name: menuList[i].FullName,
          meta: {
-           icon: menuList[i].icon,
-           index: menuList[i].id
+           icon: menuList[i].IconUrl,
+           index: menuList[i].Layers
          }
        }
       routes.push(route)

@@ -163,7 +163,7 @@ export default {
                   this.$message.error(res.ResultMsgs);
                 } else {
                   Cookies.set("token", res.ResultData.Token); // 放置token到Cookie
-                  sessionStorage.setItem("user", res.ResultData.Data); // 保存用户到本地会话
+                  sessionStorage.setItem("user", JSON.stringify(res.ResultData.Data) ); // 保存用户到本地会话
                   console.log("request:", res);
                   this.$message({
                     message: res.ResultData.Token,
