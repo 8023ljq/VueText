@@ -9,46 +9,27 @@
       text-color="#fff"
       active-text-color="#ffd04b"
     >
-      <div v-for="item in navTree" :key="item.id">
-        <el-submenu v-if="item.LowerMenuList && item.LowerMenuList.length >= 1" :index="'' + item.id">
-          <template slot="title">
-            <i :class="item.icon"></i>
-            <span slot="title">{{item.name}}</span>
-          </template>
-          <MenuTree
-            v-for="item in item.LowerMenuList"
-            :key="item.id"
-          ></MenuTree>
-        </el-submenu>
-        <el-menu-item
-          v-else
-          :index="'' + item.id"
-          @click="handleRoute(item)"
-        >
-          <i :class="item.icon"></i>
-          <span slot="title">{{item.name}}</span>
-        </el-menu-item>
-      </div>
+      <!-- 导航菜单树组件，动态加载菜单 -->
+      <menu-tree v-for="item in navTree" :key="item.id" :menuData="item"></menu-tree>
     </el-menu>
   </el-aside>
 </template>
 
 <script>
 import { mapState } from "vuex";
- import store from '@/store'
+import MenuTree from "./MenuTree"
 
 export default {
-  name: "MenuTree",
-  props: {
-   
+  components:{
+       "menu-tree": MenuTree
   },
-  data() {
-    return {
-       navTree: store.state.menu.navTree,
-    };
+   computed: {
+    ...mapState({
+      navTree: state=>state.menu.navTree
+    })
   },
   methods: {
-     
+    
     handleopen() {
       console.log("handleopen");
     },

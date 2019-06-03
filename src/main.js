@@ -7,11 +7,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import api from './http/index'
 import './assets/icon/iconfont.css'
-import layout from './Views/Layout/Layout'
+import store from './store'
 
 Vue.use(ElementUI)
 Vue.use(api)
-Vue.use(layout)
 
 Vue.config.productionTip = false
 
@@ -19,6 +18,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

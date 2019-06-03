@@ -74,7 +74,7 @@ router.beforeEach((to, from, next)=> {
 function addDynamicMenuAndRoutes(userName, to, from) {
   // 处理IFrame嵌套页面
   //handleIFrameUrl(to.path)
-  var ad=store.state.data.menuRouteLoaded
+  
   if(store.state.data.menuRouteLoaded) {
     console.log('动态菜单和路由已经存在.')
     return
@@ -85,9 +85,13 @@ function addDynamicMenuAndRoutes(userName, to, from) {
     let dynamicRoutes = addDynamicRoutes(res.ResultData.data)
     // 处理静态组件绑定路由
     //handleStaticComponent(router, dynamicRoutes)
+    debugger
+    var asd=router.options.routes;
     router.addRoutes(router.options.routes)
+    router.addRoutes(dynamicRoutes)
     // 保存加载状态
     store.commit('menuRouteLoaded', true)
+    console.log('menuRouteLoaded',store.state.data.menuRouteLoaded)
     // 保存菜单树
     store.commit('setNavTree', res.ResultData.data)
   })
@@ -101,13 +105,21 @@ function addDynamicMenuAndRoutes(userName, to, from) {
   })
 }
 
+
+/**
+ * 处理路由到本地直接指定页面组件的情况
+ * 比如'代码生成'是要求直接绑定到'Generator'页面组件
+ */
+
+
+
+
 /**
 * 添加动态(菜单)路由
 * @param {*} menuList 菜单列表
 * @param {*} routes 递归创建的动态(菜单)路由
 */
 function addDynamicRoutes (menuList = [], routes = []) {
-  debugger
   var temp = []
   for (var i = 0; i < menuList.length; i++) {
     if (menuList[i].LowerMenuList && menuList[i].LowerMenuList.length >= 1) {
@@ -117,11 +129,11 @@ function addDynamicRoutes (menuList = [], routes = []) {
        // 创建路由配置
        var route = {
          path: menuList[i].AddressUrl,
-         component: null,
+         component: "sys",
          name: menuList[i].FullName,
          meta: {
            icon: menuList[i].IconUrl,
-           index: menuList[i].Layers
+           index: menuList[i].Sort
          }
        }
       routes.push(route)
