@@ -169,7 +169,7 @@ export default {
                     message: res.ResultData.Token,
                     type: "success"
                   });
-                  this.$router.push("/index"); // 登录成功，跳转到主页
+                  this.$router.push("/"); // 登录成功，跳转到主页
                 }
               })
               .catch(function(res) {

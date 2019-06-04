@@ -3,9 +3,9 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import Home from '@/views/Home'
 import NotFound from '@/views/404'
-import Layout from '@/Views/Layout/Layout'
 import store from '@/store'
 import api from '@/http/api'
+import { getIFrameUrl, getIFramePath } from '@/utils/iframe'
 
 Vue.use(Router)
 
@@ -17,7 +17,10 @@ const router= new Router({
       component: Home,
       meta: {
         keepAlive: true
-      }
+      },
+      children:[
+
+      ]
     },
     {
       path: '/login',
@@ -34,11 +37,6 @@ const router= new Router({
       meta: {
         keepAlive: true
       }
-    },
-    {
-      path: '/layout',
-      name: 'layout',
-      component: Layout
     }
   ]
 })
@@ -73,9 +71,10 @@ router.beforeEach((to, from, next)=> {
 */
 function addDynamicMenuAndRoutes(userName, to, from) {
   // 处理IFrame嵌套页面
-  //handleIFrameUrl(to.path)
+  handleIFrameUrl(to.path)
   
   if(store.state.data.menuRouteLoaded) {
+    console.log(router)
     console.log('动态菜单和路由已经存在.')
     return
   }
@@ -83,25 +82,19 @@ function addDynamicMenuAndRoutes(userName, to, from) {
   .then(res => {
     // 添加动态路由
     let dynamicRoutes = addDynamicRoutes(res.ResultData.data)
-    // 处理静态组件绑定路由
+    // 处理静态组件绑定路由 
     //handleStaticComponent(router, dynamicRoutes)
     debugger
-    var asd=router.options.routes;
+    var a=router.options.routes
     router.addRoutes(router.options.routes)
     router.addRoutes(dynamicRoutes)
+   
     // 保存加载状态
+    debugger
     store.commit('menuRouteLoaded', true)
-    console.log('menuRouteLoaded',store.state.data.menuRouteLoaded)
     // 保存菜单树
     store.commit('setNavTree', res.ResultData.data)
-  })
-  // .then(res => {
-  //   api.user.findPermissions({'name':userName}).then(res => {
-  //     // 保存用户权限标识集合
-  //     store.commit('setPerms', res.data)
-  //   })
-  // })
-  .catch(function(res) {
+  }).catch(function(res) {
   })
 }
 
@@ -110,9 +103,33 @@ function addDynamicMenuAndRoutes(userName, to, from) {
  * 处理路由到本地直接指定页面组件的情况
  * 比如'代码生成'是要求直接绑定到'Generator'页面组件
  */
+function handleStaticComponent(router, dynamicRoutes) {
+  debugger
+  for(let j=0;j<dynamicRoutes.length; j++) {
+    if(dynamicRoutes[j].name == '代码生成') {
+      dynamicRoutes[j].component = Generator
+      break
+    }
+  }
+  router.options.routes[0].children = router.options.routes[0].children.concat(dynamicRoutes)
+}
 
-
-
+/**
+ * 处理IFrame嵌套页面
+ */
+function handleIFrameUrl(path) {
+  // 嵌套页面，保存iframeUrl到store，供IFrame组件读取展示
+  let url = path
+  let length = store.state.iframe.iframeUrls.length
+  for(let i=0; i<length; i++) {
+    let iframe = store.state.iframe.iframeUrls[i]
+    if(path != null && path.endsWith(iframe.path)) {
+      url = iframe.url
+      store.commit('setIFrameUrl', url)
+      break
+    }
+  }
+}
 
 /**
 * 添加动态(菜单)路由
@@ -120,6 +137,7 @@ function addDynamicMenuAndRoutes(userName, to, from) {
 * @param {*} routes 递归创建的动态(菜单)路由
 */
 function addDynamicRoutes (menuList = [], routes = []) {
+  debugger
   var temp = []
   for (var i = 0; i < menuList.length; i++) {
     if (menuList[i].LowerMenuList && menuList[i].LowerMenuList.length >= 1) {
@@ -129,7 +147,7 @@ function addDynamicRoutes (menuList = [], routes = []) {
        // 创建路由配置
        var route = {
          path: menuList[i].AddressUrl,
-         component: "sys",
+         component: null,
          name: menuList[i].FullName,
          meta: {
            icon: menuList[i].IconUrl,

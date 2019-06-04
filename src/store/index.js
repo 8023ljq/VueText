@@ -5,11 +5,13 @@ Vue.use(vuex);
 
 import data from './modules/data'
 import menu from './modules/menu'
+import iframe from './modules/iframe'
 
 const store = new vuex.Store({
     modules: {
         data: data,
-        menu: menu
+        menu: menu,
+        iframe: iframe
     }
 })
 

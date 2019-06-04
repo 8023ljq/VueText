@@ -25,9 +25,9 @@
 </template>
 
 <script>
- import HeadBar from './Views/Layout/bar/HeadBar'
-  import MenuBars from './Views/Layout/bar/MenuBars'
-  import BottomBar from './Views/Layout/bar/BottomBar'
+ import HeadBar from './views/Layout/bar/HeadBar'
+  import MenuBars from './views/Layout/bar/MenuBars'
+  import BottomBar from './views/Layout/bar/BottomBar'
 
 export default {
   name: 'App',
