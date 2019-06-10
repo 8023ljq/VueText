@@ -10,15 +10,8 @@
         <div class="loginCon">
           <!-- <p class="title">vue-xuadmin权限管理后台模板</p>
           <p class="title">前台: vue + element-ui</p> -->
-          <el-card
-            shadow="always"
-            class="login-module"
-            v-if="!Scancode"
-          >
-            <div
-              slot="header"
-              class="clearfix formTitlt"
-            >
+          <el-card shadow="always" class="login-module" v-if="!Scancode">
+            <div slot="header" class="clearfix formTitlt">
               <span>密码登录</span>
               <span class="titIconbox">
                 <!-- 扫码登录 -->
@@ -26,43 +19,15 @@
               <i class="iconfont xu-saomadenglu01 el-icon--right fa-lg pointer" @click="Scancode = !Scancode"></i> -->
               </span>
             </div>
-            <el-form
-              :model="loginForm"
-              :rules="fieldRules"
-              ref="loginForm"
-              label-position="left"
-              label-width="0px"
-              class="demo-ruleForm"
-            >
+            <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" label-position="left" label-width="0px" class="demo-ruleForm">
               <el-form-item prop="UserName">
-                <el-input
-                  type="text"
-                  prefix-icon="el-icon-user"
-                  v-model="loginForm.UserName"
-                  auto-complete="off"
-                  placeholder="6到16位数字或字母"
-                  minlength="6"
-                  maxlength="16"
-                ></el-input>
+                <el-input type="text" prefix-icon="el-icon-user" v-model="loginForm.UserName" auto-complete="off" placeholder="6到16位数字或字母" minlength="6" maxlength="16"></el-input>
               </el-form-item>
               <el-form-item prop="PassWord">
-                <el-input
-                  type="password"
-                  prefix-icon="icon-mima"
-                  v-model="loginForm.PassWord"
-                  auto-complete="off"
-                  placeholder="8到16位数字,字母组合"
-                  minlength="8"
-                  maxlength="16"
-                ></el-input>
+                <el-input type="password" prefix-icon="icon-mima" v-model="loginForm.PassWord" auto-complete="off" placeholder="8到16位数字,字母组合" minlength="8" maxlength="16"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button
-                  class="subBtn"
-                  type="primary"
-                  @click.native.prevent="login('loginForm')"
-                  :loading="logining"
-                >登录</el-button>
+                <el-button class="subBtn" type="primary" @click.native.prevent="login('loginForm')" :loading="logining">登录</el-button>
               </el-form-item>
               <!-- <p class="smalltxt">
                 <router-link class="a" to="#">忘记密码</router-link>
@@ -72,15 +37,8 @@
             </el-form>
           </el-card>
 
-          <el-card
-            shadow="always"
-            class="login-module"
-            v-else
-          >
-            <div
-              slot="header"
-              class="clearfix formTitlt"
-            >
+          <el-card shadow="always" class="login-module" v-else>
+            <div slot="header" class="clearfix formTitlt">
               <span>扫码登录</span>
               <span class="titIconbox">
                 <!-- <i class="iconfont xu-mimadenglu1 fa-lg iconcolor"></i>
@@ -96,10 +54,7 @@
                 <p>打开 微信 扫一扫登录</p>
               </div>
               <p class="smalltxt">
-                <router-link
-                  class="a"
-                  to="#"
-                >免费注册</router-link>
+                <router-link class="a" to="#">免费注册</router-link>
               </p>
             </div>
           </el-card>
@@ -163,7 +118,7 @@ export default {
                   this.$message.error(res.ResultMsgs);
                 } else {
                   Cookies.set("token", res.ResultData.Token); // 放置token到Cookie
-                  sessionStorage.setItem("user", JSON.stringify(res.ResultData.Data) ); // 保存用户到本地会话
+                  sessionStorage.setItem("user", JSON.stringify(res.ResultData.Data)); // 保存用户到本地会话
                   console.log("request:", res);
                   this.$message({
                     message: res.ResultData.Token,
@@ -172,7 +127,7 @@ export default {
                   this.$router.push("/"); // 登录成功，跳转到主页
                 }
               })
-              .catch(function(res) {
+              .catch(function (res) {
                 vm.$message.error(res);
               });
           }

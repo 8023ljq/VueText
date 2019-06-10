@@ -5,7 +5,7 @@
  */
 
  // 后台管理系统服务器地址
- export const ApiUrl = 'http://localhost:51543/v1/api'
+ export const ApiUrl = 'http://47.75.241.154:8012/v1/api'
  // export const baseUrl = 'http://localhost:8001'
   // 系统数据备份还原服务器地址
  export const ImgUrl = 'http://139.196.87.48:8002'

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/views/Login'
 import Home from '@/views/Home'
 import NotFound from '@/views/404'
+import Intro from '@/views/Intro/Intro'
 import store from '@/store'
 import api from '@/http/api'
 import { getIFrameUrl, getIFramePath } from '@/utils/iframe'
@@ -12,15 +13,31 @@ Vue.use(Router)
 const router= new Router({
   routes: [
     {
+      path: '/',
+      name: '首页',
+      component: Home,
+      children: [
+        { 
+          path: '', 
+          name: '系统介绍', 
+          component: Intro,
+          meta: {
+            icon: 'fa fa-home fa-lg',
+            index: 0
+          }
+        }
+      ]
+    },
+    {
       path: '/index',
       name: 'Home',
       component: Home,
       meta: {
         keepAlive: true
       },
-      children:[
+      // children:[
 
-      ]
+      // ]
     },
     {
       path: '/login',
@@ -71,7 +88,7 @@ router.beforeEach((to, from, next)=> {
 */
 function addDynamicMenuAndRoutes(userName, to, from) {
   // 处理IFrame嵌套页面
-  handleIFrameUrl(to.path)
+  //handleIFrameUrl(to.path)
   
   if(store.state.data.menuRouteLoaded) {
     console.log(router)
@@ -83,11 +100,11 @@ function addDynamicMenuAndRoutes(userName, to, from) {
     // 添加动态路由
     let dynamicRoutes = addDynamicRoutes(res.ResultData.data)
     // 处理静态组件绑定路由 
-    //handleStaticComponent(router, dynamicRoutes)
+    handleStaticComponent(router, dynamicRoutes)
     debugger
     var a=router.options.routes
     router.addRoutes(router.options.routes)
-    router.addRoutes(dynamicRoutes)
+    //router.addRoutes(dynamicRoutes)
    
     // 保存加载状态
     debugger
