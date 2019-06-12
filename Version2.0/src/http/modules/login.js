@@ -2,7 +2,6 @@ import axios from '../axios'
 
 // 登录
 export const login = data => {
-  debugger
   return axios({
     url: 'login/loginact',
     method: 'post',
@@ -13,7 +12,7 @@ export const login = data => {
 // 退出
 export const logout = () => {
   return axios({
-    url: '/logout',
+    url: 'login/logout',
     method: 'get'
   })
 }

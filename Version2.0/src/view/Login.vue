@@ -5,7 +5,7 @@
       </span>
       <h2 class="title" style="padding-left:22px;">系统登录</h2>
       <el-form-item prop="UserName">
-        <el-input type="text" prefix-icon="el-icon-user" v-model="loginForm.UserName" auto-complete="off" placeholder="6到16位数字或字母" minlength="6" maxlength="16"></el-input>
+        <el-input type="text" prefix-icon="icon-user" v-model="loginForm.UserName" auto-complete="off" placeholder="6到16位数字或字母" minlength="6" maxlength="16"></el-input>
       </el-form-item>
       <el-form-item prop="PassWord">
         <el-input type="password" prefix-icon="icon-mima" v-model="loginForm.PassWord" auto-complete="off" placeholder="8到16位数字,字母组合" minlength="8" maxlength="16"></el-input>
@@ -51,17 +51,14 @@ export default {
         this.$message.error({ message: '请将账号密码输入完整', type: 'error' })
       }
       else {
-        debugger
-        var a=this.$api
-        var b=this.$api.login
-
         this.$api.login.login(userInfo).then((res) => {
           if (res.ResultCode !== 200) {
             this.$message({ message: res.ResultMsgs, type: 'error' })
           }
           else {
+            this.$message({ message: res.ResultMsgs, type: 'success' })
             Cookies.set('token', res.ResultData.Token) // 放置token到Cookie
-            sessionStorage.setItem('user', res.ResultData.Data) // 保存用户到本地会话
+            sessionStorage.setItem('user', res.ResultData.Data.AdminName) // 保存用户到本地会话
             this.$router.push('/')// 登录成功，跳转到主页
           }
         })

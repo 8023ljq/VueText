@@ -3,20 +3,28 @@
     :class="$store.state.app.collapse?'position-collapse-left':'position-left'">
     <!-- 导航收缩 -->
     <span class="hamburg">
-      <el-menu class="el-menu-demo" :background-color="themeColor" text-color="#fff" :active-text-color="themeColor" mode="horizontal">
-        <el-menu-item index="1" @click="onCollapse"><hamburger :isActive="collapse"></hamburger></el-menu-item>
-      </el-menu>
+      <ul role="menubar" class="el-menu-demo el-menu--horizontal el-menu" style="background-color: rgb(20, 136, 154);">
+        <li role="menuitem" tabindex="0" class="el-menu-item" :style="{'background-color':themeColor}" style="color: #fff;background-color: rgb(20, 136, 154);" @click="onCollapse">
+         <i v-if="isfold" class="icon-fold-hori" style="color: #fff;"></i>
+         <i v-else class="icon-fold-erect" style="color: #fff;"></i>
+        </li>
+      </ul>
+      <!-- <el-menu class="el-menu-demo" :background-color="themeColor" text-color="#fff" :active-text-color="themeColor" mode="horizontal">
+        <el-menu-item class="icon-fold-hori" v-if="isfold" index="1" @click="onCollapse">
+        </el-menu-item>
+         <el-menu-item class="icon-fold-hori" v-else index="1" @click="onCollapse">
+        </el-menu-item>
+      </el-menu> -->
     </span>
     <!-- 导航菜单 -->
-    <!-- <span class="navbar">
+    <span class="navbar">
       <el-menu :default-active="activeIndex" class="el-menu-demo" 
           :background-color="themeColor" text-color="#fff" active-text-color="#ffd04b" mode="horizontal" @select="selectNavBar()">
-        <el-menu-item index="1" @click="$router.push('/')"><i class="fa fa-home fa-lg"></i>  </el-menu-item>
-        <el-menu-item index="2" @click="openWindow('https://gitee.com/liuge1988/kitty')">{{$t("common.projectRepo")}}</el-menu-item>
-        <el-menu-item index="3" @click="openWindow('https://gitee.com/liuge1988/kitty/wikis/Home')">{{$t("common.doc")}}</el-menu-item>
-        <el-menu-item index="4" @click="openWindow('https://www.cnblogs.com/xifengxiaoma/')">{{$t("common.blog")}}</el-menu-item>
+        <el-menu-item index="1" @click="$router.push('/')">
+          <i class="icon-Home"></i>
+        </el-menu-item>
       </el-menu>
-    </span> -->
+    </span>
     <!-- 工具栏 -->
     <span class="toolbar">
       <el-menu class="el-menu-demo" :background-color="themeColor" :text-color="themeColor" :active-text-color="themeColor" mode="horizontal">
@@ -25,13 +33,13 @@
           <theme-picker class="theme-picker" :default="themeColor" @onThemeChange="onThemeChange"></theme-picker>
         </el-menu-item> -->
         <!-- 语言切换 -->
-        <!-- <el-menu-item index="2" v-popover:popover-lang>
-          <li style="color:#fff;" class="fa fa-language fa-lg"></li>
+        <el-menu-item index="2" v-popover:popover-lang>
+          <li style="color:#fff;" class=""></li>
           <el-popover ref="popover-lang" placement="bottom-start" trigger="click" v-model="langVisible">
             <div class="lang-item" @click="changeLanguage('zh_cn')">简体中文</div>
             <div class="lang-item" @click="changeLanguage('en_us')">English</div>
           </el-popover>
-        </el-menu-item> -->
+        </el-menu-item>
         <!-- 我的私信 -->
         <!-- <el-menu-item index="3" v-popover:popover-message>
           <el-badge :value="5" :max="99" class="badge" type="success">
@@ -64,18 +72,12 @@
 
 <script>
 import { mapState } from 'vuex'
-// import mock from "@/mock/index"
+import PersonalPanel from "../core/PersonalPanel"
 
 export default {
-//   components:{
-//         Hamburger,
-//         ThemePicker,
-//         LangSelector,
-//         Action,
-//         NoticePanel,
-//         MessagePanel,
-//         PersonalPanel
-//   },
+  components:{
+    PersonalPanel
+  },
   data() {
     return {
       user: {
@@ -85,7 +87,8 @@ export default {
         registeInfo: "注册时间：2018-12-20 "
       },
       activeIndex: '1',
-      langVisible: false
+      langVisible: false,
+      isfold: true
     }
   },
   methods: {
@@ -97,6 +100,7 @@ export default {
     },
     // 折叠导航栏
     onCollapse: function() {
+      this.isfold = !this.isfold;
       this.$store.commit('onCollapse')
     },
     // 切换主题
@@ -113,10 +117,9 @@ export default {
   mounted() {
     this.sysName = "Kitty Platform"
     var user = sessionStorage.getItem("user")
-    debugger
     if (user) {
-      this.user.name = user.AdminName
-    //   this.user.avatar = require("@/assets/user.png")
+      this.user.name = user
+      this.user.avatar = require("@/assets/logo.png")
     }
   },
   computed:{

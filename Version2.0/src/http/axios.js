@@ -26,7 +26,7 @@ export default function $axios (options) {
         // console.log('准备发送请求...')
         // 2. 带上token
         if (token) {
-          config.headers.accessToken = token
+          config.headers.token = token
         } else {
           // 重定向到登录页面
           router.push('/login')
@@ -45,7 +45,6 @@ export default function $axios (options) {
       },
 
       error => {
-        debugger
         // 请求错误时
         console.log('request:', error)
         // 1. 判断请求超时
@@ -70,7 +69,6 @@ export default function $axios (options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
-        debugger
         let data
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         if (response.data === undefined) {
@@ -80,9 +78,9 @@ export default function $axios (options) {
         }
 
         // 根据返回的code值来做不同的处理
-        switch (data.rc) {
-          case 1:
-            console.log(data.desc)
+        switch (data.ResultCode) {
+          case 500:
+            console.log(data.ResultMsgs)
             break
           case 0:
             store.commit('changeState')
@@ -100,6 +98,7 @@ export default function $axios (options) {
       err => {
         debugger
         if (err && err.response) {
+          debugger
           switch (err.response.status) {
             case 400:
               err.message = '请求错误'
@@ -144,6 +143,7 @@ export default function $axios (options) {
 
     // 请求处理
     instance(options).then(res => {
+      debugger
       resolve(res)
       return false
     }).catch(error => {
