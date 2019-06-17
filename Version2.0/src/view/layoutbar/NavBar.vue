@@ -30,7 +30,6 @@ export default {
       themeColor: state=>state.app.themeColor,
       collapse: state=>state.app.collapse,
       navTree: state=>state.menu.navTree,
-     
     }),
     mainTabs: {
       get () { return this.$store.state.tab.mainTabs },
@@ -123,5 +122,8 @@ export default {
   .menu-bar-collapse-width {
     width: 65px;
   }
+ .el-submenu .el-menu-item :hover{
+  background-color:red !important;
+}
 }
 </style>

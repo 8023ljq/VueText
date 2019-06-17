@@ -1,12 +1,19 @@
 <template>
-  <el-submenu v-if="menu.children && menu.children.length >= 1" :index="'' + menu.Sort" >
+  <el-submenu v-if="menu.children && menu.children.length >= 1" :index="'' + menu.Sort" 
+    background-color="#243344">
     <template slot="title">
       <i :class="menu.IconUrl" ></i>
       <span slot="title" class="title">{{menu.FullName}}</span>
     </template>
-    <MenuTree v-for="item in menu.children" :key="item.Sort" :menu="item"></MenuTree>
+    <MenuTree v-for="item in menu.children" :key="item.OnlOne" :menu="item"></MenuTree>
   </el-submenu>
-  <el-menu-item v-else :index="'' + menu.Sort" @click="handleRoute(menu)">
+  <el-menu-item v-else-if="menu.ParentId==='0'" :index="'' + menu.OnlOne" @click="handleRoute(menu)"
+  class="father-menu">
+    <i :class="menu.IconUrl"></i>
+    <span slot="title" class="title">{{menu.FullName}}</span>
+  </el-menu-item>
+  <el-menu-item v-else :index="'' + menu.OnlOne" @click="handleRoute(menu)" 
+  class="under-menu">
     <i :class="menu.IconUrl"></i>
     <span slot="title" class="title">{{menu.FullName}}</span>
   </el-menu-item>
@@ -24,6 +31,7 @@ export default {
   },
   methods: {
     handleRoute (menu) {
+      debugger
     // 如果是嵌套页面，转换成iframe的path
       let path = getIFramePath(menu.AddressUrl)
       if(!path) {
@@ -38,6 +46,33 @@ export default {
 
 <style scoped lang="scss">
 .title{
+  color: #fff !important;
   margin: 10px !important;
+}
+
+.el-submenu__title i{
+   color: #fff !important;
+}
+.el-menu-item i{
+   color: #fff !important;
+}
+// .el-menu{
+//   background-color:#243344 !important;
+// }
+// .el-submenu ul li{
+//   background-color:#243344 !important;
+// }
+.el-submenu :hover{
+  background-color:#121f2e !important;
+}
+.el-menu-item :hover{
+   background-color:#121f2e !important;
+}
+.is-active{
+  color: #fff !important;
+  background-color:#121f2e !important;
+}
+.under-menu{
+   background-color:#243344 !important;
 }
 </style>
