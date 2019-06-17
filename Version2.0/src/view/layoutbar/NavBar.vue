@@ -122,8 +122,6 @@ export default {
   .menu-bar-collapse-width {
     width: 65px;
   }
- .el-submenu .el-menu-item :hover{
-  background-color:red !important;
-}
+
 }
 </style>
