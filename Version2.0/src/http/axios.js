@@ -19,7 +19,6 @@ export default function $axios (options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
-        debugger
         let token = Cookies.get('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
@@ -96,9 +95,7 @@ export default function $axios (options) {
         return data
       },
       err => {
-        debugger
         if (err && err.response) {
-          debugger
           switch (err.response.status) {
             case 400:
               err.message = '请求错误'
@@ -143,7 +140,6 @@ export default function $axios (options) {
 
     // 请求处理
     instance(options).then(res => {
-      debugger
       resolve(res)
       return false
     }).catch(error => {

@@ -7,14 +7,10 @@
     </template>
     <MenuTree v-for="item in menu.children" :key="item.OnlOne" :menu="item"></MenuTree>
   </el-submenu>
-  <el-menu-item v-else-if="menu.ParentId==='0'" :index="'' + menu.OnlOne" @click="handleRoute(menu)"
-  class="father-menu">
-    <i :class="menu.IconUrl"></i>
-    <span slot="title" class="title">{{menu.FullName}}</span>
-  </el-menu-item>
   <el-menu-item v-else :index="'' + menu.OnlOne" @click="handleRoute(menu)" 
   class="under-menu">
-    <i :class="menu.IconUrl"></i>
+    <!-- <i :class="menu.IconUrl"></i> -->
+    <i class="el-icon-s-operation"></i>
     <span slot="title" class="title">{{menu.FullName}}</span>
   </el-menu-item>
 </template>
@@ -56,12 +52,6 @@ export default {
 .el-menu-item i{
    color: #fff !important;
 }
-// .el-menu{
-//   background-color:#243344 !important;
-// }
-// .el-submenu ul li{
-//   background-color:#243344 !important;
-// }
 .el-submenu :hover{
   background-color:#121f2e !important;
 }

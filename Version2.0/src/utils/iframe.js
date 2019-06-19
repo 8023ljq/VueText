@@ -9,7 +9,6 @@ import { ApiUrl } from '@/utils/global'
  * @param {*} url
  */
 export function getIFramePath (url) {
-  debugger
   let iframeUrl = ''
   if(/^iframe:.*/.test(url)) {
     iframeUrl = url.replace('iframe:', '')

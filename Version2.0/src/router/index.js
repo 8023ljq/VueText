@@ -65,7 +65,6 @@ router.beforeEach((to, from, next) => {
 function addDynamicMenuAndRoutes(userName, to, from) {
   // 处理IFrame嵌套页面
   handleIFrameUrl(to.path)
-  debugger
   var a=store
   if(a.state.app.menuRouteLoaded) {
     console.log('动态菜单和路由已经存在.')
@@ -92,7 +91,6 @@ function addDynamicMenuAndRoutes(userName, to, from) {
  * 比如'代码生成'是要求直接绑定到'Generator'页面组件
  */
 function handleStaticComponent(router, dynamicRoutes) {
-  debugger
   for(let j=0;j<dynamicRoutes.length; j++) {
     if(dynamicRoutes[j].name == '代码生成') {
       dynamicRoutes[j].component = Generator
@@ -127,7 +125,6 @@ function handleIFrameUrl(path) {
 */
 function addDynamicRoutes (menuList = [], routes = []) {
   var temp = []
-  debugger
   for (var i = 0; i < menuList.length; i++) {
     if (menuList[i].children && menuList[i].children.length >= 1) {
       temp = temp.concat(menuList[i].children)
@@ -154,7 +151,7 @@ function addDynamicRoutes (menuList = [], routes = []) {
          store.commit('addIFrameUrl', iFrameUrl)
        } else {
         try {
-          debugger
+          
           // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
           // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
           let array = menuList[i].AddressUrl.split('/')
@@ -173,9 +170,9 @@ function addDynamicRoutes (menuList = [], routes = []) {
   if (temp.length >= 1) {
     addDynamicRoutes(temp, routes)
   } else {
-    console.log('动态路由加载...')
-    console.log(routes)
-    console.log('动态路由加载完成.')
+    // console.log('动态路由加载...')
+    // console.log(routes)
+    // console.log('动态路由加载完成.')
   }
   return routes
  }
