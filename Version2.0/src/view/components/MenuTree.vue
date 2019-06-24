@@ -1,5 +1,5 @@
 <template>
-  <el-submenu v-if="menu.children && menu.children.length >= 1" :index="'' + menu.Sort" 
+  <el-submenu v-if="menu.children && menu.children.length >= 1" :index="'' + menu.OnlOne" 
     background-color="#243344">
     <template slot="title">
       <i :class="menu.IconUrl" ></i>
@@ -10,7 +10,8 @@
   <el-menu-item v-else :index="'' + menu.OnlOne" @click="handleRoute(menu)" 
   class="under-menu">
     <!-- <i :class="menu.IconUrl"></i> -->
-    <i class="el-icon-s-operation"></i>
+    <i v-if="menu.ParentId==='0'" :class="menu.IconUrl"></i>
+    <i v-else class="el-icon-s-operation"></i>
     <span slot="title" class="title">{{menu.FullName}}</span>
   </el-menu-item>
 </template>
@@ -58,11 +59,14 @@ export default {
 .el-menu-item :hover{
    background-color:#121f2e !important;
 }
-.is-active{
-  color: #fff !important;
-  background-color:#121f2e !important;
-}
+// .is-active{
+//   color: #fff !important;
+//   background-color:#121f2e !important;
+// }
 .under-menu{
    background-color:#243344 !important;
+}
+.is-active{
+  color: rgb(64, 158, 255) !important;
 }
 </style>

@@ -1,7 +1,9 @@
 import axios from 'axios'
 import config from './config'
 import router from '@/router'
+import store from '@/store'
 import Cookies from 'js-cookie'
+import { MessageBox } from 'element-ui'
 
 // 使用vuex做全局loading时使用
 // import store from '@/store'
@@ -44,6 +46,7 @@ export default function $axios (options) {
       },
 
       error => {
+        debugger
         // 请求错误时
         console.log('request:', error)
         // 1. 判断请求超时
@@ -68,18 +71,27 @@ export default function $axios (options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
-        let data
+        debugger
+        let data=JSON.parse(response.request.responseText)
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
-        if (response.data === undefined) {
-          data = JSON.parse(response.request.responseText)
-        } else {
-          data = response.data
-        }
+        // if (response.data === undefined) {
+        //   data = JSON.parse(response.request.responseText)
+        // } else {
+        //   data = response.data
+        // }
 
         // 根据返回的code值来做不同的处理
         switch (data.ResultCode) {
           case 500:
-            console.log(data.ResultMsgs)
+            MessageBox.alert('当前账号已掉线或在另一端登录', '登录超时', {
+              type: 'warning',
+              confirmButtonText: '跳转至登录页面',
+              callback: action => {
+                sessionStorage.removeItem("user")
+                store.state.app.menuRouteLoaded=false
+                router.push({path: '/login'})
+              }
+            })
             break
           case 0:
             store.commit('changeState')
@@ -95,6 +107,7 @@ export default function $axios (options) {
         return data
       },
       err => {
+        debugger
         if (err && err.response) {
           switch (err.response.status) {
             case 400:
@@ -114,6 +127,15 @@ export default function $axios (options) {
               break
             case 500:
               err.message = '服务器内部错误'
+              MessageBox.alert('请先登录', '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    router.replace({
+                        name: 'login',
+                        query: {redirect: router.currentRoute.fullPath} //登录后再跳回此页面时要做的配置
+                    })
+                }
+              })
               break
             case 501:
               err.message = '服务未实现'
@@ -133,7 +155,6 @@ export default function $axios (options) {
             default:
           }
         }
-        console.error(err)
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )

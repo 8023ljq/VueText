@@ -9,10 +9,19 @@ export const findNavTree = (params) => {
   })
 }
 
-// 查找导航菜单树
-export const findMenuTree = () => {
+//查询单个导航菜单
+export const findNavModel = (params) => {
   return axios({
-    url: 'common/getmenulist',
-    method: 'get'
+    url: 'common/getmenumodel?Id='+ params,
+    method: 'get',
+    params
   })
 }
+
+// 查找导航菜单树
+// export const findMenuTree = () => {
+//   return axios({
+//     url: 'common/getmenulist',
+//     method: 'get'
+//   })
+// }

@@ -9,7 +9,6 @@
         </div>  
         <div class="registe-info">
           <span class="registe-info">
-            <li class="fa fa-clock-o"></li>
             {{ user.registeInfo }}
           </span>
         </div>  

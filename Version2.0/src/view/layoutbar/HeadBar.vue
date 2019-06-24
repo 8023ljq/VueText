@@ -33,38 +33,40 @@
           <theme-picker class="theme-picker" :default="themeColor" @onThemeChange="onThemeChange"></theme-picker>
         </el-menu-item> -->
         <!-- 语言切换 -->
+        <!-- <el-tooltip class="item" effect="dark" content="切换语言" placement="bottom">
         <el-menu-item index="2" v-popover:popover-lang>
-          <li style="color:#fff;" class=""></li>
+          <li style="color:#fff;" class="icon-Language"></li>
           <el-popover ref="popover-lang" placement="bottom-start" trigger="click" v-model="langVisible">
-            <div class="lang-item" @click="changeLanguage('zh_cn')">简体中文</div>
-            <div class="lang-item" @click="changeLanguage('en_us')">English</div>
+            <div class="lang-item" @click="changeLanguage('zh_cn')">{{$t("common.Chinese")}}</div>
+            <div class="lang-item" @click="changeLanguage('en_us')">{{$t("common.English")}}</div>
           </el-popover>
         </el-menu-item>
+        </el-tooltip> -->
         <!-- 我的私信 -->
         <!-- <el-menu-item index="3" v-popover:popover-message>
           <el-badge :value="5" :max="99" class="badge" type="success">
-            <li style="color:#fff;" class="fa fa-envelope-o fa-lg"></li>
+            <li style="color:#fff; font-size: 25px;" class="icon-xiaoxi"></li>
           </el-badge>
           <el-popover ref="popover-message" placement="bottom-end" trigger="click">
-            <message-panel></message-panel>
+            
           </el-popover>
         </el-menu-item> -->
         <!-- 系统通知 -->
         <!-- <el-menu-item index="4" v-popover:popover-notice>
           <el-badge :value="4" :max="99" class="badge" type="success">
-            <li style="color:#fff;" class="fa fa-bell-o fa-lg"></li>
+            <li style="color:#fff; font-size: 25px;" class="icon-tongzhi"></li>
           </el-badge>
           <el-popover ref="popover-notice" placement="bottom-end" trigger="click">
-            <notice-panel></notice-panel>
+            
           </el-popover>
         </el-menu-item> -->
         <!-- 用户信息 -->
-        <el-menu-item index="5" v-popover:popover-personal>
+        <!-- <el-menu-item index="5" v-popover:popover-personal>
           <span class="user-info"><img :src="user.avatar" />{{user.name}}</span>
           <el-popover ref="popover-personal" placement="bottom-end" trigger="click" :visible-arrow="false">
             <personal-panel :user="user"></personal-panel>
           </el-popover>
-        </el-menu-item>
+        </el-menu-item> -->
       </el-menu>
     </span>
   </div>
@@ -81,14 +83,14 @@ export default {
   data() {
     return {
       user: {
-        name: "Louis",
+        name: "Login.....",
         avatar: "",
         role: "超级管理员",
         registeInfo: "注册时间：2018-12-20 "
       },
       activeIndex: '1',
       langVisible: false,
-      isfold: true
+      isfold: true,
     }
   },
   methods: {
@@ -96,7 +98,7 @@ export default {
       window.open(url)
     },
     selectNavBar(key, keyPath) {
-      console.log(key, keyPath)
+      //console.log(key, keyPath)
     },
     // 折叠导航栏
     onCollapse: function() {
@@ -158,7 +160,8 @@ export default {
 }
 .lang-item:hover {
   font-size: 18px;
-  background: #b0d6ce4d;
+  // background:rgb(138, 136, 136);
+  color: rgb(23, 136, 51);
 }
 .user-info {
   font-size: 20px;
@@ -175,10 +178,15 @@ export default {
 .badge {
   line-height: 18px;
 }
+
 .position-left {
   left: 200px;
 }
 .position-collapse-left {
   left: 65px;
+}
+
+.el-menu :hover{
+  background-color:#243344 !important;
 }
 </style>

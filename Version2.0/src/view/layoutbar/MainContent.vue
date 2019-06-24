@@ -14,8 +14,10 @@
             <el-dropdown-item @click.native="tabsRefreshCurrentHandle">刷新当前标签</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-tab-pane v-for="(item, index) in mainTabs"
-          :key="item.name" :label="item.title" :name="item.name">
+        <el-tab-pane v-for="item in mainTabs"
+          :key="item.name" 
+          :label="item.title" 
+          :name="item.name">
           <span slot="label"><i :class="item.icon"></i> {{item.title}} </span>
         </el-tab-pane>
       </el-tabs>
@@ -50,6 +52,7 @@ export default {
   methods: {
     // tabs, 选中tab
     selectedTabHandle (tab) {
+      debugger
       tab = this.mainTabs.filter(item => item.name === tab.name)
       if (tab.length >= 1) {
         this.$router.push({ name: tab[0].name })
@@ -57,6 +60,7 @@ export default {
     },
     // tabs, 删除tab
     removeTabHandle (tabName) {
+      debugger
       this.mainTabs = this.mainTabs.filter(item => item.name !== tabName)
       if (this.mainTabs.length >= 1) {
         // 当前选中tab被删除

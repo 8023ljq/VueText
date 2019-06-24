@@ -65,8 +65,7 @@ router.beforeEach((to, from, next) => {
 function addDynamicMenuAndRoutes(userName, to, from) {
   // 处理IFrame嵌套页面
   handleIFrameUrl(to.path)
-  var a=store
-  if(a.state.app.menuRouteLoaded) {
+  if(store.state.app.menuRouteLoaded) {
     console.log('动态菜单和路由已经存在.')
     return
   }
@@ -98,7 +97,7 @@ function handleStaticComponent(router, dynamicRoutes) {
     }
   }
   router.options.routes[0].children = router.options.routes[0].children.concat(dynamicRoutes)
-  console.log(router)
+  //console.log(router)
 }
 
 /**

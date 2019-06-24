@@ -12,7 +12,9 @@
         "restore": "Restore",  
         "backupRestore": "Backup Restore",  
         "versionName": "Version",  
-        "exit": "Exit"
+        "exit": "Exit",
+        "Chinese": "Chinese",
+        "English": "English"
     },
     "action": {
         "operation": "Operation",
