@@ -71,7 +71,6 @@ export default function $axios (options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
-        debugger
         let data=JSON.parse(response.request.responseText)
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         // if (response.data === undefined) {
@@ -107,7 +106,6 @@ export default function $axios (options) {
         return data
       },
       err => {
-        debugger
         if (err && err.response) {
           switch (err.response.status) {
             case 400:
@@ -121,6 +119,18 @@ export default function $axios (options) {
               break
             case 404:
               err.message = `请求地址出错: ${err.response.config.url}`
+              break
+            case 405:
+              err.message = `请求的资源不支持 http 方法“GET”。`
+              MessageBox.alert(err.message, '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    router.replace({
+                        name: 'login',
+                        query: {redirect: router.currentRoute.fullPath} //登录后再跳回此页面时要做的配置
+                    })
+                }
+              })
               break
             case 408:
               err.message = '请求超时'

@@ -6,7 +6,7 @@
         <el-col :span="4"><el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button></el-col>
       </el-row>
     </div>
-    <div>
+  <div>
       <!-- :default-expand-all="true" 是否打开所有下级 -->
       <el-table
         :data="tableData"
@@ -165,7 +165,6 @@ export default {
   methods: {
     // 获取菜单树形结构数据
     convert: function() {
-      debugger
       this.$api.common.findNavTree().then(res => {
         this.tableData = res.ResultData.data;
         var arry= addSelectMenu(this.tableData)
@@ -182,8 +181,6 @@ export default {
     // 获取单条菜单数据
     editdata: function(Id,Type) {
       console.log(this.options)
-      debugger
-     
       if(Type==0){
        this.titlename="编辑菜单"
        
