@@ -10,28 +10,38 @@
     </el-col>
    </el-row>
   </div>
-  <div class="el-table">
+  <div>
     <el-table 
     :data="tableData" 
     style="width: 100%"
     border>
-     <el-table-column prop="Name" label="用户名"></el-table-column>
-     <el-table-column prop="LoginTimes" label="登录次数"></el-table-column>
-     <el-table-column  label="添加时间">
+     <el-table-column type="index" prop="" label="序列" width="60" align="center"></el-table-column>
+     <el-table-column prop="Name" label="用户名" align="center"></el-table-column>
+     <el-table-column prop="Nickname" label="用户昵称" align="center"></el-table-column>
+     <el-table-column prop="Phone" label="联系电话" align="center"></el-table-column>
+     <el-table-column prop="Email" label="邮箱地址" align="center"></el-table-column>
+     <el-table-column prop="LoginTimes" label="登录次数" min-width="40" align="center"></el-table-column>
+     <el-table-column prop="AddTime" label="添加时间" min-width="90" align="center">
        <template slot-scope="scope">
          <i class="el-icon-time"></i>
          <span style="margin-left: 10px">{{ scope.row.AddTime }}</span>
        </template>
      </el-table-column>
-     <el-table-column prop="LastLoginTime" label="最后登录时间">
+     <el-table-column prop="LastLoginTime" label="最后登录时间" min-width="90" align="center">
        <template slot-scope="scope"> 
          <i class="el-icon-time"></i>
          <span style="margin-left: 10px">{{ scope.row.LastLoginTime }}</span>
        </template>
      </el-table-column>
+     <el-table-column prop="LastLoginIP" label="最后一次登录IP" min-width="90" align="center"> 
+     </el-table-column>
+      <el-table-column prop="LastLoginTime" label="操作" align="center">
+        <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id,0)">编辑</el-button>
+     </el-table-column>
     </el-table>
     <el-pagination
-      layout="total, prev, pager, next, jumper"
+      class="page-div"
+      layout="total, sizes , prev, pager, next, jumper"
       background
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -51,6 +61,10 @@
   line-height: 65px;
   /* background-color: red; */
 }
+.page-div{
+  margin-top: 10px;
+  float:left;
+}
 </style>
 
 <script>
@@ -58,7 +72,10 @@ export default {
   data(){
     return{
       tableData:[{}],//菜单表格数据
-      pageModel:{},
+      pageModel:{
+        pageSize: 10,
+        curPage: 1,
+      },
     }
   },
   created(){
@@ -66,17 +83,21 @@ export default {
   },
   methods:{
     GetManagerList:function(){
-      debugger
-      this.$api.manager.getmanagerList().then(res => {
-        this.tableData = res.ResultData.data;
-        this.pageModel= res.ResultData.pageModel;
+      this.$api.manager.getmanagerList(this.pageModel).then(res => {
+        if(res.ResultCode == 200)
+        {
+           this.tableData = res.ResultData.data;
+           this.pageModel= res.ResultData.pageModel;
+        }
       })
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    handleSizeChange(val) {//改变每页数量触发方法
+      this.pageModel.pageSize=val,
+      this.GetManagerList();
     },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    handleCurrentChange(val) {//点击上/下一页触发方法
+      this.pageModel.curPage=val,
+      this.GetManagerList();
     }
   }
 }

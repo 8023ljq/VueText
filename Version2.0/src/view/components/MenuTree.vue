@@ -65,7 +65,9 @@ export default {
 .under-menu{
    background-color:#243344 !important;
 }
-.is-active{
-  color: rgb(64, 158, 255) !important;
+.el-menu--inline .is-active{
+  //color: rgb(64, 158, 255) !important;
+  border-left: 2px solid #409EFF;
+  border-left-color: rgb(255, 208, 75) !important;
 }
 </style>

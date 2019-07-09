@@ -61,12 +61,12 @@
           </el-popover>
         </el-menu-item> -->
         <!-- 用户信息 -->
-        <!-- <el-menu-item index="5" v-popover:popover-personal>
+        <el-menu-item index="5" v-popover:popover-personal>
           <span class="user-info"><img :src="user.avatar" />{{user.name}}</span>
           <el-popover ref="popover-personal" placement="bottom-end" trigger="click" :visible-arrow="false">
             <personal-panel :user="user"></personal-panel>
           </el-popover>
-        </el-menu-item> -->
+        </el-menu-item>
       </el-menu>
     </span>
   </div>
