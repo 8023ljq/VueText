@@ -69,5 +69,6 @@ export default {
   //color: rgb(64, 158, 255) !important;
   border-left: 2px solid #409EFF;
   border-left-color: rgb(255, 208, 75) !important;
+  background-color:#121f2e !important;
 }
 </style>
