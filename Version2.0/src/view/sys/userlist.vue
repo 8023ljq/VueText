@@ -17,6 +17,7 @@
     border>
      <el-table-column type="index" prop="" label="序列" width="60" align="center"></el-table-column>
      <el-table-column prop="Name" label="用户名" align="center"></el-table-column>
+     <el-table-column prop="RoleName" label="所属角色" align="center"></el-table-column>
      <el-table-column prop="Nickname" label="用户昵称" align="center"></el-table-column>
      <el-table-column prop="Phone" label="联系电话" align="center"></el-table-column>
      <el-table-column prop="Email" label="邮箱地址" align="center"></el-table-column>
@@ -36,7 +37,9 @@
      <el-table-column prop="LastLoginIP" label="最后一次登录IP" min-width="90" align="center"> 
      </el-table-column>
       <el-table-column prop="LastLoginTime" label="操作" align="center">
-        <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id,0)">编辑</el-button>
+      <template slot-scope="scope">
+        <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id)">编辑</el-button>
+      </template>
      </el-table-column>
     </el-table>
     <el-pagination
@@ -51,6 +54,39 @@
     </el-pagination>
      <!-- :page-sizes="[100, 200, 300, 400]" -->
   </div>
+  <!-- 编辑弹出框 -->
+  <el-dialog title="修改用户信息" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false" >
+    <el-form ref="form" :model="dialogform" label-width="80px">
+      <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="菜单名称" required>
+                 <el-input v-model="dialogform.FullName"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="菜单名称" required>
+                 <el-input v-model="dialogform.FullName"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-upload
+  action="https://jsonplaceholder.typicode.com/posts/"
+  list-type="picture-card"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove">
+  <i class="el-icon-plus"></i>
+</el-upload>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="菜单名称" required>
+                 <el-input v-model="dialogform.FullName"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+     </el-form>
+  </el-dialog>
 </div>
 </template>
 
@@ -65,6 +101,17 @@
   margin-top: 10px;
   float:left;
 }
+.input {
+  width: 10%;
+  float: left;
+  margin: 0px 10px;
+}
+.el-dialog__title {
+  float: left;
+}
+.el-select{
+  display: block;
+}
 </style>
 
 <script>
@@ -75,6 +122,17 @@ export default {
       pageModel:{
         pageSize: 10,
         curPage: 1,
+      },
+      dialogFormVisible: false,//是否显示
+      dialogform: {//表单数据
+        Id:"",
+        ParentId:"",
+        FullName: "",
+        AddressUrl:"",
+        IconUrl:"",
+        IsShow:true,
+        Sort:0,
+        Remarks:"",
       },
     }
   },
@@ -98,6 +156,9 @@ export default {
     handleCurrentChange(val) {//点击上/下一页触发方法
       this.pageModel.curPage=val,
       this.GetManagerList();
+    },
+    editdata:function(Id){
+      this.dialogFormVisible=true
     }
   }
 }

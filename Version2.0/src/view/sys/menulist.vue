@@ -11,7 +11,7 @@
       <el-table
         :data="tableData"
         style="width: 100%"
-        row-key="OnlOne"
+        row-key="Sort"
         :stripe="true"
         border
         lazy
@@ -19,8 +19,8 @@
         <el-table-column prop="FullName" label="菜单名称" style="width: 26%"></el-table-column>
         <el-table-column prop="AddressUrl" label="菜单路由" style="width: 26%">
           <template slot-scope="scope">
-            <span v-if="scope.row.AddressUrl">{{ scope.row.AddressUrl }}</span>
-            <el-tag type="primary" v-else disable-transitions>一级菜单</el-tag>
+            <el-tag type="primary" v-if="scope.row.ParentId=='0'" disable-transitions>一级菜单</el-tag>
+            <span v-else>{{ scope.row.AddressUrl }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="AddTime" label="添加时间" style="width: 26%">

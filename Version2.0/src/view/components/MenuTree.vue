@@ -1,13 +1,13 @@
 <template>
-  <el-submenu v-if="menu.children && menu.children.length >= 1" :index="'' + menu.OnlOne" 
+  <el-submenu v-if="menu.children && menu.children.length >= 1" :index="'' + menu.Sort" 
     background-color="#243344">
     <template slot="title">
       <i :class="menu.IconUrl" ></i>
       <span slot="title" class="title">{{menu.FullName}}</span>
     </template>
-    <MenuTree v-for="item in menu.children" :key="item.OnlOne" :menu="item"></MenuTree>
+    <MenuTree v-for="item in menu.children" :key="item.Sort" :menu="item"></MenuTree>
   </el-submenu>
-  <el-menu-item v-else :index="'' + menu.OnlOne" @click="handleRoute(menu)" 
+  <el-menu-item v-else :index="'' + menu.Sort" @click="handleRoute(menu)" 
   class="under-menu">
     <!-- <i :class="menu.IconUrl"></i> -->
     <i v-if="menu.ParentId==='0'" :class="menu.IconUrl"></i>
