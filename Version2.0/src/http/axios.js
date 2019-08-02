@@ -136,14 +136,11 @@ export default function $axios (options) {
               err.message = '请求超时'
               break
             case 500:
-              err.message = '服务器内部错误'
-              MessageBox.alert('请先登录', '提示', {
+              err.message = '服务器开了个小差,一会就回来......'
+              MessageBox.alert(err.message, '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
-                    router.replace({
-                        name: 'login',
-                        query: {redirect: router.currentRoute.fullPath} //登录后再跳回此页面时要做的配置
-                    })
+                   
                 }
               })
               break

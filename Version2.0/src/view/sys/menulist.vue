@@ -179,9 +179,9 @@ export default {
     console.log(this.options)
     },
     // 获取单条菜单数据
-    editdata: function(Id,Type) {
+    editdata: function(menuId,type) {
       console.log(this.options)
-      if(Type==0){
+      if(type==0){
        this.titlename="编辑菜单"
        
        this.$api.common.findNavModel(Id).then(res => {
@@ -192,7 +192,7 @@ export default {
             this.dialogform=res.ResultData.data
           }
        })
-       if(Id!=this.dialogform.Id){
+       if(menuId!=this.dialogform.Id){
          this.Isdisabled=false
        }
        else 
@@ -205,7 +205,7 @@ export default {
        for(var key in this.dialogform){
           delete this.dialogform[key]
        }
-       this.dialogform.ParentId=Id
+       this.dialogform.ParentId=menuId
       }
       this.dialogFormVisible=true
     }

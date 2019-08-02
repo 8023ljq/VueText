@@ -7,3 +7,11 @@ export const getmanagerList=data=>{
         data
     })
 }
+
+export const getmanagermodel= (params)=>{
+    return axios({
+        url: 'manager/getmanagermodel?mangaerId='+ params,
+        method: 'get',
+        params
+    })
+}
