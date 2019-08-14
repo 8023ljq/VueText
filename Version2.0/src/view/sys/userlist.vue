@@ -7,14 +7,14 @@
     </el-col>
     <el-col :span="4">   
       <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline">添加</el-button>
+      <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="dialogFormVisible=true">添加</el-button>
     </el-col>
    </el-row>
   </div>
   <div>
     <el-table 
     :data="tableData" 
-    style="width: 100%"
+    style="width: 100%;height: 80%"
     border>
      <el-table-column type="index" prop="" label="序列" width="60" align="center"></el-table-column>
      <el-table-column prop="Name" label="账号名称" align="center"></el-table-column>
@@ -113,33 +113,30 @@
       <el-row :gutter="20">
           <el-col :span="11">
             <el-form-item label="用户头像" required>
-<el-upload
-  class="avatar-uploader"
-  :action="UploadFileUrl"
-  :show-file-list="false"
-  :on-success="handleAvatarSuccess"
-  :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-</el-upload>
+             <el-upload
+               class="avatar-uploader"
+               :action="UploadFileUrl"
+               :show-file-list="false"
+               :on-success="handleAvatarSuccess"
+               :before-upload="beforeAvatarUpload">
+               <img v-if="dialogform.Avatar" :src="this.ImgUrl+dialogform.Avatar" class="avatar">
+               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+             </el-upload>
             </el-form-item>
           </el-col>
       </el-row>
        <el-row :gutter="20">
           <el-col :span="22">
             <el-form-item label="备 注" required>
-                <el-input type="textarea" v-model="dialogform.Remarks"></el-input>
+                <el-input type="textarea" :rows="5" v-model="dialogform.Remarks"></el-input>
             </el-form-item>
           </el-col>
       </el-row>
      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false" size="medium">提 交</el-button>
+        <el-button type="primary" @click="updateManagerModel(dialogform.Id)" size="medium">提 交</el-button>
       </div>
-  </el-dialog>
-  <el-dialog :visible.sync="dialogVisible">
-  <img width="100%" :src="dialogImageUrl" alt="">
   </el-dialog>
 </div>
 </template>
@@ -199,6 +196,7 @@
 
 <script>
 import { UploadFileUrl } from '@/utils/global'
+import { ImgUrl } from '@/utils/global'
 
 export default {
   data(){
@@ -219,11 +217,12 @@ export default {
         Email:"",
         Remarks:"",
         IsLocking:false,
+        Avatar:"",
       },
       options:[{}],//树形数据
       value:"",//下拉框默认值
-      imageUrl:"",
       UploadFileUrl:UploadFileUrl,
+      ImgUrl:ImgUrl
     }
   },
   created(){
@@ -249,13 +248,25 @@ export default {
       })
     },
     getManagerModel:function(mangaerId){
-      debugger
       this.dialogFormVisible=true
       this.$api.manager.getmanagermodel(mangaerId).then(res=>{
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
            this.dialogform = res.ResultData.data;
            this.value=this.dialogform.RoleId;
+        }
+      })
+    },
+    updateManagerModel:function(){//修改用户实体
+      this.$api.manager.updatemanagermodel(this.dialogform).then(res=>{
+        if(res.ResultCode == 200)
+        {
+          this.$message({ message: res.ResultMsgs, type: 'success' })
+          this.dialogFormVisible=false;
+          this.getManagerList();//获取管理员列表
+        }
+        else{
+          this.$message({ message: res.ResultMsgs, type: 'error' })
         }
       })
     },
@@ -268,7 +279,15 @@ export default {
       this.getManagerList();
     },
       handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+        if(res.ResultCode == 1&&res.ResultData!=null)
+        {
+          this.dialogform.Avatar = res.ResultData;
+          this.$message.success(res.ResultData);
+        }
+        else
+        {
+          this.$message.error(res.ResultData);
+        }
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

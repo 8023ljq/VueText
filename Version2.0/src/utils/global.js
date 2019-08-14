@@ -8,10 +8,12 @@
 export const ApiUrl = 'http://localhost:51543/api'
 // export const baseUrl = 'http://localhost:8001'
 // 系统数据备份还原服务器地址
-export const ImgUrl = 'http://139.196.87.48:8002'
+export const ImgUrl = 'http://localhost:8090'
 //图片上传接口地址
 export const UploadFileUrl = 'http://localhost:51543/api/uploadfile/newuploadfile'
+
 export default {
   ApiUrl,
-  ImgUrl
+  ImgUrl,
+  UploadFileUrl
 }

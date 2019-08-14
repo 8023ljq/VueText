@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div id="main-Breadcrumb" class="main-Breadcrumb">
+    <el-breadcrumb>
+       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+       <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+       <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+       <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+    </el-breadcrumb>
+  </div>
     <div class="Inquire">
       <el-row>
         <el-col :span="4"><el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search"></el-input></el-col>

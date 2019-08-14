@@ -58,7 +58,7 @@ export default {
           else {
             this.$message({ message: res.ResultMsgs, type: 'success' })
             Cookies.set('token', res.ResultData.Token) // 放置token到Cookie
-            sessionStorage.setItem('user', res.ResultData.Data.AdminName) // 保存用户到本地会话
+            sessionStorage.setItem('user', JSON.stringify(res.ResultData.Data)) // 保存用户到本地会话
             this.$router.push('/')// 登录成功，跳转到主页
           }
         })

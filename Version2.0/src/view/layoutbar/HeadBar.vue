@@ -75,6 +75,7 @@
 <script>
 import { mapState } from 'vuex'
 import PersonalPanel from "../core/PersonalPanel"
+import { ImgUrl } from '@/utils/global'
 
 export default {
   components:{
@@ -84,9 +85,9 @@ export default {
     return {
       user: {
         name: "Login.....",
-        avatar: "",
+        avatar: "@/assets/logo.png",
         role: "超级管理员",
-        registeInfo: "注册时间：2018-12-20 "
+        registeTime: "2018-12-25"
       },
       activeIndex: '1',
       langVisible: false,
@@ -117,11 +118,13 @@ export default {
     }
   },
   mounted() {
-    this.sysName = "Kitty Platform"
-    var user = sessionStorage.getItem("user")
+    debugger
+    var user = JSON.parse(sessionStorage.getItem("user"))
     if (user) {
-      this.user.name = user
-      this.user.avatar = require("@/assets/logo.png")
+      this.user.name = user.AdminName
+      this.user.avatar =ImgUrl+ user.Avatar
+      this.user.role = user.RoleName
+      this.user.registeTime = user.RegisteTime
     }
   },
   computed:{

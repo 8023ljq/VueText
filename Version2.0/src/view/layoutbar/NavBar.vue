@@ -6,6 +6,7 @@
         <img v-if="collapse" src="@/assets/logo.png"/> <div>{{collapse?'':appName}}</div>
     </div>
     <!-- 导航菜单 -->
+  
     <el-menu ref="navmenu" default-active="1" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
       :collapse="collapse" :collapse-transition="false" :unique-opened="true  "
       @open="handleopen" @close="handleclose" @select="handleselect"

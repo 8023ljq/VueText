@@ -15,3 +15,11 @@ export const getmanagermodel= (params)=>{
         params
     })
 }
+
+export const updatemanagermodel= (data)=>{
+    return axios({
+        url: 'manager/updatemanagerinfo',
+        method: 'post',
+        data
+    })
+}

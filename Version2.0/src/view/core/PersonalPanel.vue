@@ -2,14 +2,14 @@
   <div class="personal-panel">
     <div class="personal-desc" :style="{'background':this.$store.state.app.themeColor}">
         <div class="avatar-container">
-          <img class="avatar" :src="require('@/assets/logo.png')" />
+          <img class="avatar" :src="user.avatar" />
         </div>  
         <div class="name-role">
           <span class="sender">{{ user.name }} - {{ user.role }}</span>  
         </div>  
         <div class="registe-info">
           <span class="registe-info">
-            {{ user.registeInfo }}
+            注册时间：{{ user.registeTime }}
           </span>
         </div>  
     </div>
@@ -61,11 +61,11 @@ export default {
   props: {
     user: {
       type: Object,
-      default: {
+      user: {
         name: "admin",
         avatar: "@/assets/user.png",
         role: "超级管理员",
-        //registeInfo: "注册时间：2018-12-25 "
+        registeTime: "2018-12-25"
       }
     }
   },
@@ -119,6 +119,13 @@ export default {
     }
   },
   mounted() {
+    var user = JSON.parse(sessionStorage.getItem("user"))
+    if (user) {
+      this.user.name = user.AdminName
+      this.user.avatar =ImgUrl+ user.Avatar
+      this.user.role = user.RoleName
+      this.user.registeTime = user.RegisteTime
+    }
   }
 }
 </script>

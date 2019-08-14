@@ -1,12 +1,21 @@
 <template>
-  <div class="container">
-      <!-- 导航菜单栏 -->
+  <!-- <div class="container"> -->
+<el-container>
+  <el-aside width="200px"><!-- 导航菜单栏 -->
       <nav-bar></nav-bar>
-      <!-- 头部区域 -->
+  </el-aside>
+  <el-container>
+    <el-header>
+       <!-- 头部区域 -->
       <head-bar></head-bar>
-      <!-- 主内容区域 -->
+    </el-header>
+    <el-main>
+       <!-- 主内容区域 -->
       <main-content></main-content>
-  </div>
+    </el-main>
+  </el-container>
+</el-container>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -14,12 +23,14 @@
 import HeadBar from "./layoutbar/HeadBar"
 import NavBar from "./layoutbar/NavBar"
 import MainContent from "./layoutbar/MainContent"
+import Breadcrumb from "./layoutbar/Breadcrumb"
 
 export default {
   components:{
       HeadBar,
       NavBar,
-      MainContent
+      MainContent,
+      Breadcrumb
   }
 }
 </script>
@@ -31,6 +42,6 @@ export default {
     left: 0px;
     right: 0px;
     bottom: 0px;
-    // background: rgba(224, 234, 235, 0.1);
+    background: rgba(224, 234, 235, 0.1);
   }
 </style>
