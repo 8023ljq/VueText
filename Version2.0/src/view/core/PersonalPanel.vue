@@ -2,7 +2,7 @@
   <div class="personal-panel">
     <div class="personal-desc" :style="{'background':this.$store.state.app.themeColor}">
         <div class="avatar-container">
-          <img class="avatar" :src="user.avatar" />
+           <img class="avatar" :src="user.avatar" />
         </div>  
         <div class="name-role">
           <span class="sender">{{ user.name }} - {{ user.role }}</span>  
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { ImgUrl } from '@/utils/global'
 
 export default {
   name: 'PersonalPanel',
@@ -208,5 +209,8 @@ export default {
   cursor: pointer;
   color: rgb(19, 138, 156);
   background: #b1a6a61e;
+}
+.avatar{
+  display: inline !important;
 }
 </style>

@@ -3,7 +3,7 @@
     <!-- 标签页 -->
     <div class="tab-container">
       <el-tabs class="tabs" :class="$store.state.app.collapse?'position-collapse-left':'position-left'"
-        v-model="mainTabsActiveName" :closable="true" type="card"
+        v-model="mainTabsActiveName"  type="card"
         @tab-click="selectedTabHandle" @tab-remove="removeTabHandle">
         <el-dropdown id="tabs-tools" :show-timeout="0" trigger="hover">
           <div style="font-size:20px;width:50px;"><i class="el-icon-arrow-down"></i></div>
@@ -14,11 +14,12 @@
             <el-dropdown-item @click.native="tabsRefreshCurrentHandle">刷新当前标签</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-tab-pane id="tabs-pane" v-for="item in mainTabs"
+        <el-tab-pane id="tabs-pane" v-for="(item,index) in mainTabs"
           :key="item.name" 
           :label="item.title" 
-          :name="item.name">
-          <span slot="label"><i :class="item.icon"></i> {{item.title}} </span>
+          :name="item.name"
+          :closable="index>0">
+          <span slot="label"><i :class="item.icon"></i> {{item.title}}</span>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -117,6 +118,11 @@ export default {
 }
 .el-dropdown-selfdefine :hover{
   cursor:pointer
+}
+.el-tabs__header{
+  height: 30px;
+  line-height: 30px;
+  margin: 0px;
 }
 </style>
 

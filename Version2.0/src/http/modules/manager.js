@@ -23,3 +23,19 @@ export const updatemanagermodel= (data)=>{
         data
     })
 }
+
+export const addmanagermodel=(data)=>{
+    return axios({
+        url:'manager/addmanagerinfo',
+        method:'post',
+        data
+    })
+}
+
+export const disorenamanager=(data)=>{
+    return axios({
+        url:'manager/disorenamanager?mangaerId='+ data,
+        method:'get',
+        data
+    })
+}

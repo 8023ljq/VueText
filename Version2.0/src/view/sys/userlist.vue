@@ -1,13 +1,13 @@
 <template>
 <div id="content">
   <div class="Inquire">
-   <el-row>
+   <el-row :gutter="20">
     <el-col :span="4">   
       <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search"></el-input>
     </el-col>
     <el-col :span="4">   
       <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="dialogFormVisible=true">添加</el-button>
+      <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog()">添加</el-button>
     </el-col>
    </el-row>
   </div>
@@ -16,8 +16,8 @@
     :data="tableData" 
     style="width: 100%;height: 80%"
     border>
-     <el-table-column type="index" prop="" label="序列" width="60" align="center"></el-table-column>
-     <el-table-column prop="Name" label="账号名称" align="center"></el-table-column>
+     <el-table-column type="index" fixed prop="" label="序列" width="60" align="center"></el-table-column>
+     <el-table-column prop="Name" fixed label="账号名称" align="center"></el-table-column>
      <el-table-column prop="RoleName" label="所属角色" align="center"></el-table-column>
      <el-table-column prop="Nickname" label="用户昵称" align="center"></el-table-column>
      <el-table-column prop="Phone" label="联系电话" align="center"></el-table-column>
@@ -37,9 +37,11 @@
      </el-table-column>
      <el-table-column prop="LastLoginIP" label="最后一次登录IP" min-width="90" align="center"> 
      </el-table-column>
-      <el-table-column prop="LastLoginTime" label="操作" align="center">
+      <el-table-column fixed="right" label="操作" width="200" align="center">
       <template slot-scope="scope">
         <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerModel(scope.row.Id)">编辑</el-button>
+        <el-button type="success" size="mini" v-if="scope.row.IsLocking" icon="el-icon-circle-check" @click="disOrEnaManager(scope.row.Id)">启用</el-button>
+        <el-button type="danger" size="mini" v-else icon="el-icon-circle-close" @click="disOrEnaManager(scope.row.Id)">停用</el-button>
       </template>
      </el-table-column>
     </el-table>
@@ -56,19 +58,12 @@
      <!-- :page-sizes="[100, 200, 300, 400]" -->
   </div>
   <!-- 编辑弹出框 -->
-  <el-dialog title="修改管理员信息" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false"> 
+  <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false"> 
     <el-form class="dialog-form" ref="form" :model="dialogform" label-width="80px">
       <el-row :gutter="20">
-          <el-col :span="11">
-            <el-form-item label="所属角色" required>
-              <el-select v-model="value" placeholder="请选择">
-                <el-option v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled">
-                </el-option>
-              </el-select>
+         <el-col :span="11">
+            <el-form-item label="用户昵称" required>
+                 <el-input v-model="dialogform.Nickname"></el-input>
             </el-form-item>
           </el-col>
            <el-col :span="11">
@@ -84,6 +79,19 @@
               </el-tooltip>
             </el-form-item>
           </el-col>
+           <!-- <el-col :span="4">
+            <el-form-item label="用户头像" required>
+             <el-upload
+               class="avatar-uploader"
+               :action="UploadFileUrl"
+               :show-file-list="false"
+               :on-success="handleAvatarSuccess"
+               :before-upload="beforeAvatarUpload">
+               <img v-if="dialogform.Avatar" :src="this.ImgUrl+dialogform.Avatar" class="avatar">
+               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+             </el-upload>
+            </el-form-item>
+          </el-col> -->
       </el-row>
       <el-row :gutter="20">
          <el-col :span="11">
@@ -91,12 +99,18 @@
                  <el-input v-model="dialogform.Name"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="11">
-            <el-form-item label="用户昵称" required>
-                 <el-input v-model="dialogform.Nickname"></el-input>
+         <el-col :span="11">
+            <el-form-item label="所属角色" required>
+              <el-select v-model="dialogform.RoleId" placeholder="请选择">
+                <el-option v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
-           
       </el-row>
        <el-row :gutter="20">
          <el-col :span="11">
@@ -111,21 +125,6 @@
           </el-col>
       </el-row>
       <el-row :gutter="20">
-          <el-col :span="11">
-            <el-form-item label="用户头像" required>
-             <el-upload
-               class="avatar-uploader"
-               :action="UploadFileUrl"
-               :show-file-list="false"
-               :on-success="handleAvatarSuccess"
-               :before-upload="beforeAvatarUpload">
-               <img v-if="dialogform.Avatar" :src="this.ImgUrl+dialogform.Avatar" class="avatar">
-               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-             </el-upload>
-            </el-form-item>
-          </el-col>
-      </el-row>
-       <el-row :gutter="20">
           <el-col :span="22">
             <el-form-item label="备 注" required>
                 <el-input type="textarea" :rows="5" v-model="dialogform.Remarks"></el-input>
@@ -135,21 +134,22 @@
      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
-        <el-button type="primary" @click="updateManagerModel(dialogform.Id)" size="medium">提 交</el-button>
+        <el-button type="primary" v-if="addorupdate" @click="addManagerModel()" size="medium">确 定</el-button>
+        <el-button type="primary" v-else @click="updateManagerModel(dialogform.Id)" size="medium">提 交</el-button>
       </div>
   </el-dialog>
 </div>
 </template>
 
 <style>
-#content{
+/* #content{
   margin: 10px 20px;
-}
+} */
 .Inquire {
   width: 100%;
   height: 65px;
   line-height: 65px;
-  /* background-color: red; */
+  background-color: #2968a30c;
 }
 .page-div{
   margin-top: 10px;
@@ -192,6 +192,11 @@
     height: 110px;
     display: block;
   }
+  .el-tooltip{
+    float: left;
+    line-height: 40px;
+    height: 40px;
+  }
 </style>
 
 <script>
@@ -217,12 +222,13 @@ export default {
         Email:"",
         Remarks:"",
         IsLocking:false,
-        Avatar:"",
       },
       options:[{}],//树形数据
       value:"",//下拉框默认值
       UploadFileUrl:UploadFileUrl,
-      ImgUrl:ImgUrl
+      ImgUrl:ImgUrl,
+      dialogTitle:"",
+      addorupdate:true
     }
   },
   created(){
@@ -247,8 +253,10 @@ export default {
         }
       })
     },
-    getManagerModel:function(mangaerId){
+    getManagerModel:function(mangaerId){//获取当前管理员信息
+      this.dialogTitle="修改管理员"
       this.dialogFormVisible=true
+      this.addorupdate=false
       this.$api.manager.getmanagermodel(mangaerId).then(res=>{
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
@@ -270,6 +278,38 @@ export default {
         }
       })
     },
+    addDialog:function(){//添加管理员弹窗
+      this.dialogFormVisible=true
+      this.dialogTitle="添加管理员"
+      this.dialogform={}
+      this.addorupdate=true
+    },
+    addManagerModel:function(){//添加管理员方法
+      this.$api.manager.addmanagermodel(this.dialogform).then(res=>{
+        if(res.ResultCode == 200)
+        {
+          this.$message({ message: res.ResultMsgs, type: 'success' })
+          this.dialogFormVisible=false;
+          this.getManagerList();//获取管理员列表
+        }
+        else{
+          this.$message({ message: res.ResultMsgs, type: 'error' })
+        }
+      })
+    },
+    disOrEnaManager:function(mangaerId){//停用或者启用管理员
+      this.$api.manager.disorenamanager(mangaerId).then(res=>{
+        if(res.ResultCode == 200)
+        {
+          this.$message({ message: res.ResultMsgs, type: 'success' })
+          this.dialogFormVisible=false;
+          this.getManagerList();//获取管理员列表
+        }
+        else{
+          this.$message({ message: res.ResultMsgs, type: 'error' })
+        }
+      })
+    },
     handleSizeChange(val) {//改变每页数量触发方法
       this.pageModel.pageSize=val,
       this.getManagerList();
@@ -278,29 +318,29 @@ export default {
       this.pageModel.curPage=val,
       this.getManagerList();
     },
-      handleAvatarSuccess(res, file) {
-        if(res.ResultCode == 1&&res.ResultData!=null)
-        {
-          this.dialogform.Avatar = res.ResultData;
-          this.$message.success(res.ResultData);
-        }
-        else
-        {
-          this.$message.error(res.ResultData);
-        }
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+    handleAvatarSuccess(res, file) {
+      if(res.ResultCode == 1&&res.ResultData!=null)
+      {
+        this.dialogform.Avatar = res.ResultData;
+        this.$message.success(res.ResultData);
       }
+      else
+      {
+        this.$message.error(res.ResultData);
+      }
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
+    }
   }
 }
 </script>

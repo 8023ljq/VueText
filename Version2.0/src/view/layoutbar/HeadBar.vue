@@ -181,15 +181,14 @@ export default {
 .badge {
   line-height: 18px;
 }
-
 .position-left {
   left: 200px;
 }
 .position-collapse-left {
   left: 65px;
 }
-
 .el-menu :hover{
   background-color:#243344 !important;
 }
+
 </style>
