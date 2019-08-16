@@ -60,40 +60,7 @@
   <!-- 编辑弹出框 -->
   <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false"> 
     <el-form class="dialog-form" ref="form" :model="dialogform" label-width="80px">
-      <el-row :gutter="20">
-         <el-col :span="11">
-            <el-form-item label="用户昵称" required>
-                 <el-input v-model="dialogform.Nickname"></el-input>
-            </el-form-item>
-          </el-col>
-           <el-col :span="11">
-            <el-form-item label="是否锁定" required>
-              <el-tooltip :content="'锁定状态: ' + dialogform.IsLocking" placement="top">
-               <el-switch
-                 v-model="dialogform.IsLocking"
-                 active-color="#ff4949"
-                 inactive-color="#13ce66"
-                 active-value="true"
-                 inactive-value="false">
-               </el-switch>
-              </el-tooltip>
-            </el-form-item>
-          </el-col>
-           <!-- <el-col :span="4">
-            <el-form-item label="用户头像" required>
-             <el-upload
-               class="avatar-uploader"
-               :action="UploadFileUrl"
-               :show-file-list="false"
-               :on-success="handleAvatarSuccess"
-               :before-upload="beforeAvatarUpload">
-               <img v-if="dialogform.Avatar" :src="this.ImgUrl+dialogform.Avatar" class="avatar">
-               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-             </el-upload>
-            </el-form-item>
-          </el-col> -->
-      </el-row>
-      <el-row :gutter="20">
+        <el-row :gutter="20">
          <el-col :span="11">
             <el-form-item label="账号名称" required>
                  <el-input v-model="dialogform.Name"></el-input>
@@ -112,12 +79,45 @@
             </el-form-item>
           </el-col>
       </el-row>
-       <el-row :gutter="20">
+      <el-row :gutter="20">
          <el-col :span="11">
+            <el-form-item label="用户昵称" required>
+                 <el-input v-model="dialogform.Nickname"></el-input>
+            </el-form-item>
+          </el-col>
+           <el-col :span="11">
             <el-form-item label="联系电话" required>
                <el-input v-model="dialogform.Phone"></el-input>
             </el-form-item>
           </el-col>
+           <!-- <el-col :span="11">
+            <el-form-item label="是否锁定" required>
+              <el-tooltip :content="'锁定状态: ' + dialogform.IsLocking" placement="top">
+               <el-switch
+                 v-model="dialogform.IsLocking"
+                 active-color="#ff4949"
+                 inactive-color="#13ce66"
+                 active-value="true"
+                 inactive-value="false">
+               </el-switch>
+              </el-tooltip>
+            </el-form-item>
+          </el-col> -->
+           <!-- <el-col :span="4">
+            <el-form-item label="用户头像" required>
+             <el-upload
+               class="avatar-uploader"
+               :action="UploadFileUrl"
+               :show-file-list="false"
+               :on-success="handleAvatarSuccess"
+               :before-upload="beforeAvatarUpload">
+               <img v-if="dialogform.Avatar" :src="this.ImgUrl+dialogform.Avatar" class="avatar">
+               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+             </el-upload>
+            </el-form-item>
+          </el-col> -->
+      </el-row>
+       <el-row :gutter="20">
           <el-col :span="11">
             <el-form-item label="邮箱地址" required>
                <el-input v-model="dialogform.Email"></el-input>
@@ -285,6 +285,7 @@ export default {
       this.addorupdate=true
     },
     addManagerModel:function(){//添加管理员方法
+    debugger
       this.$api.manager.addmanagermodel(this.dialogform).then(res=>{
         if(res.ResultCode == 200)
         {

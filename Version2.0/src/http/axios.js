@@ -81,7 +81,7 @@ export default function $axios (options) {
 
         // 根据返回的code值来做不同的处理
         switch (data.ResultCode) {
-          case 500:
+          case 700:
             MessageBox.alert('当前账号已掉线或在另一端登录', '登录超时', {
               type: 'warning',
               confirmButtonText: '跳转至登录页面',
