@@ -106,6 +106,7 @@ export default function $axios (options) {
         return data
       },
       err => {
+        debugger
         if (err && err.response) {
           switch (err.response.status) {
             case 400:
