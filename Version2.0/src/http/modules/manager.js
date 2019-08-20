@@ -1,5 +1,6 @@
 import axios from '../axios'
 
+// 获取管理员列表
 export const getmanagerList=data=>{
     return axios({
         url: 'manager/getmanagerlist',
@@ -8,6 +9,7 @@ export const getmanagerList=data=>{
     })
 }
 
+// 获取单个管理员信息
 export const getmanagermodel= (params)=>{
     return axios({
         url: 'manager/getmanagermodel?mangaerId='+ params,
@@ -16,6 +18,7 @@ export const getmanagermodel= (params)=>{
     })
 }
 
+// 修改管理员信息
 export const updatemanagermodel= (data)=>{
     return axios({
         url: 'manager/updatemanagerinfo',
@@ -24,6 +27,7 @@ export const updatemanagermodel= (data)=>{
     })
 }
 
+// 添加管理员
 export const addmanagermodel=(data)=>{
     return axios({
         url:'manager/addmanagerinfo',
@@ -32,10 +36,21 @@ export const addmanagermodel=(data)=>{
     })
 }
 
+// 停用启用管理员
 export const disorenamanager=(data)=>{
     return axios({
         url:'manager/disorenamanager?mangaerId='+ data,
         method:'get',
+        data
+    })
+}
+
+
+// 获取管理角色列表
+export const getmanagerroleList=(data)=>{
+    return axios({
+        url: 'managerrole/getmanagerrolelist',
+        method:'post',
         data
     })
 }

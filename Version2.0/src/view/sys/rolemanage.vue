@@ -16,25 +16,17 @@
     style="width: 100%"
     border>
      <el-table-column type="index" prop="" label="序列" width="60" align="center"></el-table-column>
-     <el-table-column prop="Name" label="用户名" align="center"></el-table-column>
-     <el-table-column prop="Nickname" label="用户昵称" align="center"></el-table-column>
-     <el-table-column prop="Phone" label="联系电话" align="center"></el-table-column>
-     <el-table-column prop="Email" label="邮箱地址" align="center"></el-table-column>
-     <el-table-column prop="LoginTimes" label="登录次数" min-width="40" align="center"></el-table-column>
-     <el-table-column prop="AddTime" label="添加时间" min-width="90" align="center">
-       <template slot-scope="scope">
+     <el-table-column prop="Name" label="角色名称" align="center"></el-table-column>
+     <el-table-column prop="Nickname" label="角色类型" align="center"></el-table-column>
+     <el-table-column prop="Phone" label="是否默认" align="center"></el-table-column>
+     <el-table-column prop="Email" label="添加人" align="center"></el-table-column>
+     <el-table-column prop="LoginTimes" label="添加时间" min-width="40" align="center">
+        <template slot-scope="scope">
          <i class="el-icon-time"></i>
          <span style="margin-left: 10px">{{ scope.row.AddTime }}</span>
        </template>
      </el-table-column>
-     <el-table-column prop="LastLoginTime" label="最后登录时间" min-width="90" align="center">
-       <template slot-scope="scope"> 
-         <i class="el-icon-time"></i>
-         <span style="margin-left: 10px">{{ scope.row.LastLoginTime }}</span>
-       </template>
-     </el-table-column>
-     <el-table-column prop="LastLoginIP" label="最后一次登录IP" min-width="90" align="center"> 
-     </el-table-column>
+     <el-table-column prop="AddTime" label="备注" min-width="90" align="center"></el-table-column>
       <el-table-column prop="LastLoginTime" label="操作" align="center">
         <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id,0)">编辑</el-button>
      </el-table-column>
