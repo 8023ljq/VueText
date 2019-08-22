@@ -45,9 +45,16 @@ export const disorenamanager=(data)=>{
     })
 }
 
+//获取角色下拉框
+export const getroleselectlist = () => {
+    return axios({
+      url: 'managerrole/getroleselectlist',
+      method: 'get'
+    })
+  }
 
 // 获取管理角色列表
-export const getmanagerroleList=(data)=>{
+export const getmanagerrolelist=(data)=>{
     return axios({
         url: 'managerrole/getmanagerrolelist',
         method:'post',

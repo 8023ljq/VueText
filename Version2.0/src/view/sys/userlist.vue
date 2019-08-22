@@ -246,7 +246,7 @@ export default {
       })
     },
     getRoleSelectList:function(){
-       this.$api.common.getRoleSelectList().then(res => {
+       this.$api.manager.getroleselectlist().then(res => {
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
            this.options = res.ResultData.data;
