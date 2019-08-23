@@ -11,7 +11,7 @@
       <el-table
         :data="tableData"
         style="width: 100%"
-        row-key="Sort"
+        row-key="Id"
         :stripe="true"
         border
         lazy
