@@ -126,10 +126,7 @@ export default function $axios (options) {
               MessageBox.alert(err.message, '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
-                    router.replace({
-                        name: 'login',
-                        query: {redirect: router.currentRoute.fullPath} //登录后再跳回此页面时要做的配置
-                    })
+                    
                 }
               })
               break

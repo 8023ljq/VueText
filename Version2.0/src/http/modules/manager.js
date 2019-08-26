@@ -61,3 +61,12 @@ export const getmanagerrolelist=(data)=>{
         data
     })
 }
+
+// 获取管理员组列表
+export const getmanagergrouplist=(data)=>{
+    return axios({
+        url: 'managergroup/getmanagergrouplist',
+        method:'post',
+        data
+    })
+}

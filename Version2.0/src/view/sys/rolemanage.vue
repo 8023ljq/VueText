@@ -3,10 +3,11 @@
   <div class="Inquire">
    <el-row>
     <el-col :span="4">   
-      <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search"></el-input>
+      <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search" v-model="pageModel.Keyword"></el-input>
     </el-col>
     <el-col :span="4">   
-      <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button>
+      <el-button size="medium" type="primary" icon="el-icon-search" @click="GetManagerList()">搜索</el-button>
+       <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog()">添加</el-button>
     </el-col>
    </el-row>
   </div>
@@ -17,7 +18,7 @@
     border>
      <el-table-column type="index" prop="" label="序列" width="60" align="center"></el-table-column>
      <el-table-column prop="RoleName" label="角色名称" align="center"></el-table-column>
-     <el-table-column prop="RoleTypeStr" label="角色类型" align="center"></el-table-column>
+     <!-- <el-table-column prop="RoleTypeStr" label="角色类型" align="center"></el-table-column> -->
      <!-- <el-table-column prop="Phone" label="是否默认" align="center"></el-table-column> -->
      <el-table-column prop="AddUserName" label="添加人" align="center"></el-table-column>
      <el-table-column prop="AddTime" label="添加时间" min-width="90" align="center">
@@ -28,8 +29,12 @@
      </el-table-column>
      <el-table-column prop="Remarks" label="备注" min-width="90" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
+       <template slot-scope="scope">
         <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id,0)">编辑</el-button>
-     </el-table-column>
+        <el-button type="success" size="mini" v-if="scope.row.IsDelete" icon="el-icon-circle-check" @click="disOrEnaManager(scope.row.Id)">启用</el-button>
+        <el-button type="danger" size="mini" v-else icon="el-icon-circle-close" @click="disOrEnaManager(scope.row.Id)">停用</el-button>
+       </template> 
+      </el-table-column>
     </el-table>
     <el-pagination
       class="page-div"
@@ -55,7 +60,7 @@
 }
 .page-div{
   margin-top: 10px;
-  float:left;
+  float:right;
 }
 </style>
 
@@ -67,6 +72,7 @@ export default {
       pageModel:{
         pageSize: 10,
         curPage: 1,
+        Keyword:'',
       },
     }
   },
