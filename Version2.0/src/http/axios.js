@@ -120,6 +120,12 @@ export default function $axios (options) {
               break
             case 404:
               err.message = `请求地址出错: ${err.response.config.url}`
+              MessageBox.alert(err.message, '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    
+                }
+              })
               break
             case 405:
               err.message = `请求的资源不支持 http 方法“GET”。`

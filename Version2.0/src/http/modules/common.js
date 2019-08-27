@@ -12,7 +12,7 @@ export const findNavTree = (params) => {
 //查询单个导航菜单
 export const findNavModel = (params) => {
   return axios({
-    url: 'menu/getmenumodel?menuId='+ params,
+    url: 'menu/getmenumodel?guid='+ params,
     method: 'get',
     params
   })

@@ -70,3 +70,12 @@ export const getmanagergrouplist=(data)=>{
         data
     })
 }
+
+// 获取管理员组列表
+export const getgroupselectlist=(data)=>{
+    return axios({
+        url: 'managergroup/getgroupselectlist',
+        method:'get',
+        data
+    })
+}

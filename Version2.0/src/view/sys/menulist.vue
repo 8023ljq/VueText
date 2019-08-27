@@ -47,8 +47,8 @@
         </el-table-column>
         <el-table-column label="操作" style="width: 10%" align="center">
            <template slot-scope="scope">
-              <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id,0)">编辑</el-button>
-             <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="editdata(scope.row.Id,1)">添加子级</el-button>
+              <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.GuId,0)">编辑</el-button>
+             <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="editdata(scope.row.GuId,1)">添加子级</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -185,11 +185,12 @@ export default {
     },
     // 获取单条菜单数据
     editdata: function(menuId,type) {
+      debugger
       console.log(this.options)
       if(type==0){
        this.titlename="编辑菜单"
        
-       this.$api.common.findNavModel(Id).then(res => {
+       this.$api.common.findNavModel(menuId).then(res => {
          if (res.ResultCode !== 200) {
             this.$message({ message: res.ResultMsgs, type: 'error' })
           }
@@ -197,7 +198,7 @@ export default {
             this.dialogform=res.ResultData.data
           }
        })
-       if(menuId!=this.dialogform.Id){
+       if(menuId!=this.dialogform.GuId){
          this.Isdisabled=false
        }
        else 
@@ -224,7 +225,7 @@ export default {
 function addSelectMenu(menuList){
   const result = []
   for(var i=0;i<menuList.length;i++){
-    const id= menuList[i].Id
+    const id= menuList[i].GuId
     const label= menuList[i].FullName
     let children=menuList[i].children
      
