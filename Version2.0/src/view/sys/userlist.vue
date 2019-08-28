@@ -254,7 +254,7 @@ export default {
       })
     },
     getManagerModel:function(mangaerId){//获取当前管理员信息
-      this.dialogTitle="修改管理员"
+      this.dialogTitle="编辑管理员"
       this.dialogFormVisible=true
       this.addorupdate=false
       this.$api.manager.getmanagermodel(mangaerId).then(res=>{

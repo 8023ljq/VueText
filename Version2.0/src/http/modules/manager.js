@@ -79,3 +79,21 @@ export const getgroupselectlist=(data)=>{
         data
     })
 }
+
+// 添加管理员组
+export const addmanagergroup=(data)=>{
+    return axios({
+        url: 'managergroup/addmanagergroup',
+        method:'post',
+        data
+    })
+}
+
+// 获取管理员组信息
+export const getmanagergroup=(data)=>{
+    return axios({
+        url: 'managergroup/getmanagergroup?groupid='+ data,
+        method:'get',
+        data
+    })
+}

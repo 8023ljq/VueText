@@ -31,8 +31,8 @@
      <el-table-column prop="Remarks" label="备注" min-width="90" align="center"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-         <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id,0)">编辑</el-button>
-         <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="addDialog(scope.row.Id,1)">添加子级</el-button>
+         <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerGroup(scope.row.Id)">编辑</el-button>
+         <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="addSonDialog(scope.row.Id)">添加子级</el-button>
         </template>
      </el-table-column>
     </el-table>
@@ -102,13 +102,13 @@ export default {
         pageSize: 10,
         curPage: 1,
         Keyword:"",
-        Type:0
       },
       dialogform:{//表单数据
          Id:"",
          GroupName:"",
          ParentId:"",
-         Remarks:""
+         Remarks:"",
+         AddType:0
       },
       options:[{}],//树形数据
       value:"",//下拉框默认值
@@ -116,6 +116,7 @@ export default {
       dialogTitle:"",
       addorupdate:true,
       selectdisabled:true,
+      Type:0
     }
   },
   created(){
@@ -123,7 +124,7 @@ export default {
     this.getGroupSelectList();//获取用户组下拉列表
   },
   methods:{
-    GetManagerGroupList:function(){
+    GetManagerGroupList:function(){//获取用户组列表
       this.$api.manager.getmanagergrouplist(this.pageModel).then(res => {
         if(res.ResultCode == 200)
         {
@@ -132,8 +133,8 @@ export default {
         }
       })
     },
-    getGroupSelectList:function(){
-       this.$api.manager.getgroupselectlist().then(res => {
+    getGroupSelectList:function(){//获取用户组下拉列表
+      this.$api.manager.getgroupselectlist().then(res => {
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
            this.options = res.ResultData.data;
@@ -154,24 +155,45 @@ export default {
       this.dialogform={}
       this.addorupdate=true
       this.selectdisabled=false
-      this.pageModel.Type=1
+      this.Type=1
     },
-    addDialog:function(){//添加子级
+    addSonDialog:function(ParentId){//添加子级
       this.dialogFormVisible=true
       this.dialogTitle="添加用户组"
-      this.dialogform={}
+      this.dialogform.ParentId=ParentId
       this.addorupdate=true
       this.selectdisabled=false
-      this.pageModel.Type=2
+      this.Type=2
     },
-    editdata:function(){//修改用户组信息
+    getManagerGroup:function(GroupId){//修改用户组信息
       this.dialogFormVisible=true
       this.dialogTitle="编辑用户组"
       this.addorupdate=false
       this.selectdisabled=true
+      this.$api.manager.getmanagergroup(GroupId).then(res=>{
+        debugger
+        if(res.ResultCode == 200)
+        {
+           this.dialogform = res.ResultData.data;
+           if(res.ResultData.data.ParentId=='0'){
+             this.selectdisabled=false
+           }
+           else{
+             this.value=res.ResultData.data.ParentId;
+           }
+        }
+        else{
+          this.$message({ message: res.ResultMsgs, type: res.ResultType })
+        }
+      })
     },
-      addManagerGroup:function(Type){//添加用户组操作
-      this.$message({ message:Type, type: 'error' })
+    addManagerGroup:function(Type){//添加用户组操作
+    debugger
+       this.dialogform.AddType = Type
+       this.$api.manager.addmanagergroup(this.dialogform).then(res => {
+        this.$message({ message: res.ResultMsgs, type: res.ResultType })
+        this.getGroupSelectList()
+      })
     },
   }
 }
