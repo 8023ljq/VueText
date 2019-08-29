@@ -35,17 +35,17 @@ export default {
       }
     }
   },
-  // mounted() {
-  //   this.resetSrc(this.$store.state.iframe.iframeUrl);
-  // },
-  // watch: {
-  //   $route: {
-  //     handler: function(val, oldVal) {
-  //       // 如果是跳转到嵌套页面，切换iframe的url
-  //       this.resetSrc(this.$store.state.iframe.iframeUrl);
-  //     }
-  //   }
-  // }
+  mounted() {
+    this.resetSrc(this.$store.state.iframe.iframeUrl);
+  },
+  watch: {
+    $route: {
+      handler: function(val, oldVal) {
+        // 如果是跳转到嵌套页面，切换iframe的url
+        this.resetSrc(this.$store.state.iframe.iframeUrl);
+      }
+    }
+  }
 };
 </script>
 

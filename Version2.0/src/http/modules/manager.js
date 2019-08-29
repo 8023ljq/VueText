@@ -97,3 +97,12 @@ export const getmanagergroup=(data)=>{
         data
     })
 }
+
+// 修改管理员组信息
+export const updatemanagergroup=(data)=>{
+    return axios({
+        url: 'managergroup/updatemanagergroup',
+        method: 'post',
+        data
+    })
+}

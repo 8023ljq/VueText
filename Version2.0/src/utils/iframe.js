@@ -9,6 +9,7 @@ import { ApiUrl } from '@/utils/global'
  * @param {*} url
  */
 export function getIFramePath (url) {
+  debugger
   let iframeUrl = ''
   if(/^iframe:.*/.test(url)) {
     iframeUrl = url.replace('iframe:', '')
@@ -26,6 +27,7 @@ export function getIFramePath (url) {
  * @param {*} url
  */
 export function getIFrameUrl (url) {
+  debugger
   let iframeUrl = ''
   if(/^iframe:.*/.test(url)) {
     iframeUrl = ApiUrl + url.replace('iframe:', '')

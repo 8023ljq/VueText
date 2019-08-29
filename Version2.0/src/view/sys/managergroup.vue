@@ -29,10 +29,12 @@
        </template>
      </el-table-column>
      <el-table-column prop="Remarks" label="备注" min-width="90" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" min-width="160" align="center">
         <template slot-scope="scope">
-         <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerGroup(scope.row.Id)">编辑</el-button>
-         <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="addSonDialog(scope.row.Id)">添加子级</el-button>
+             <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerGroup(scope.row.Id)">编辑</el-button>
+             <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="addSonDialog(scope.row.Id)">添加子级</el-button>
+             <el-button type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+             <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleRoute('sys/text')">角色</el-button>
         </template>
      </el-table-column>
     </el-table>
@@ -94,6 +96,7 @@
 </style>
 
 <script>
+import { getIFrameUrl, getIFramePath } from '@/utils/iframe'
 export default {
   data(){
     return{
@@ -165,7 +168,7 @@ export default {
       this.selectdisabled=false
       this.Type=2
     },
-    getManagerGroup:function(GroupId){//修改用户组信息
+    getManagerGroup:function(GroupId){//修改用户组信息(获取组信息)
       this.dialogFormVisible=true
       this.dialogTitle="编辑用户组"
       this.addorupdate=false
@@ -188,12 +191,36 @@ export default {
       })
     },
     addManagerGroup:function(Type){//添加用户组操作
-    debugger
        this.dialogform.AddType = Type
        this.$api.manager.addmanagergroup(this.dialogform).then(res => {
-        this.$message({ message: res.ResultMsgs, type: res.ResultType })
-        this.getGroupSelectList()
+       this.$message({ message: res.ResultMsgs, type: res.ResultType })
+       this.dialogFormVisible=false
+       this.GetManagerGroupList()
       })
+    },
+    updateManagerModel:function(Id) {//修改用户组
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(()=>{
+          this.dialogform.Id = Id
+          this.$api.manager.updatemanagergroup(this.dialogform).then(res => {
+          this.$message({ message: res.ResultMsgs, type: res.ResultType })
+          this.dialogFormVisible=false
+          this.GetManagerGroupList()
+        })
+      })
+    },
+    handleRoute (menu) {
+    debugger
+    // 如果是嵌套页面，转换成iframe的path
+      let path = getIFramePath(menu)
+      if(!path) {
+        path = menu
+      }
+      // 通过菜单URL跳转至指定路由
+      this.$router.push("/" + path)
     },
   }
 }
