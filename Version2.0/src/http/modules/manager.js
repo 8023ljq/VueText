@@ -106,3 +106,12 @@ export const updatemanagergroup=(data)=>{
         data
     })
 }
+
+// 删除管理员组信息
+export const deletemanagergroup=(data)=>{
+    return axios({
+        url: 'managergroup/deletemanagergroup?groupid='+ data,
+        method: 'get',
+        data
+    })
+}

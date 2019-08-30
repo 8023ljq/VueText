@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="container"> -->
 <el-container>
-  <el-aside width="200px"><!-- 导航菜单栏 -->
+  <el-aside><!-- 导航菜单栏 -->
       <nav-bar></nav-bar>
   </el-aside>
   <el-container>
@@ -17,7 +17,6 @@
 </el-container>
   <!-- </div> -->
 </template>
-
 <script>
 
 import HeadBar from "./layoutbar/HeadBar"
@@ -43,5 +42,9 @@ export default {
     right: 0px;
     bottom: 0px;
     background: rgba(224, 234, 235, 0.1);
+  }
+ 
+  .el-aside:not(.el-menu--collapse) {
+    width: 50px;
   }
 </style>
