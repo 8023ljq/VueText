@@ -92,6 +92,7 @@ export default {
       activeIndex: '1',
       langVisible: false,
       isfold: true,
+      getclass:""
     }
   },
   methods: {
@@ -116,7 +117,7 @@ export default {
       lang === '' ? 'zh_cn' : lang
       this.$i18n.locale = lang
       this.langVisible = false
-    }
+    },
   },
   mounted() {
     debugger
@@ -191,5 +192,4 @@ export default {
 .el-menu :hover{
   background-color:#243344 !important;
 }
-
 </style>

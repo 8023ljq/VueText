@@ -34,7 +34,12 @@
              <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerGroup(scope.row.Id)">编辑</el-button>
              <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="addSonDialog(scope.row.Id)">添加子级</el-button>
              <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteGroup(scope.row.Id)">删除</el-button>
-             <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleRoute('sys/text/'+scope.row.index)">角色</el-button>
+             <!-- <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleRoute('sys/text/',scope.row.Id)">角色</el-button> -->
+             <router-link :to="'/sys/text/'+scope.row.Id">
+               <el-button type="primary" size="small" icon="el-icon-edit">
+                 角色
+               </el-button>
+             </router-link>
         </template>
      </el-table-column>
     </el-table>
@@ -125,6 +130,16 @@ export default {
   created(){
     this.GetManagerGroupList();//获取用户组列表
     this.getGroupSelectList();//获取用户组下拉列表
+  },
+  computed: {
+    mainTabs: {
+      get () { return this.$store.state.tab.mainTabs },
+      set (val) { this.$store.commit('updateMainTabs', val) }
+    },
+    mainTabsActiveName: {
+      get () { return this.$store.state.tab.mainTabsActiveName },
+      set (val) { this.$store.commit('updateMainTabsActiveName', val) }
+    }
   },
   methods:{
     GetManagerGroupList:function(){//获取用户组列表
@@ -224,15 +239,14 @@ export default {
         })
       })
     },
-    handleRoute (menu) {
-  
+    handleRoute (menu,Id) {
     // 如果是嵌套页面，转换成iframe的path
       let path = getIFramePath(menu)
       if(!path) {
         path = menu
       }
-      // 通过菜单URL跳转至指定路由
-      this.$router.push("/" + path)
+      //通过菜单URL跳转至指定路由
+      this.$router.push("/" + path+Id)
     },
   }
 }

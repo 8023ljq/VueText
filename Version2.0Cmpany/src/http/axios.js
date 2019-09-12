@@ -140,10 +140,7 @@ export default function $axios (options) {
               MessageBox.alert('请先登录', '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
-                    router.replace({
-                        name: 'login',
-                        query: {redirect: router.currentRoute.fullPath} //登录后再跳回此页面时要做的配置
-                    })
+                   
                 }
               })
               break

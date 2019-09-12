@@ -124,5 +124,11 @@ export default {
   line-height: 30px;
   margin: 0px;
 }
+.position-left {
+  left: 200px;
+}
+.position-collapse-left {
+  left: 65px;
+}
 </style>
 

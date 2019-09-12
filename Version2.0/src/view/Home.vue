@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="container"> -->
 <el-container>
-  <el-aside><!-- 导航菜单栏 -->
+  <el-aside width="200px" :class="$store.state.app.collapse?'shrink':'expand'" ><!-- 导航菜单栏 -->
       <nav-bar></nav-bar>
   </el-aside>
   <el-container>
@@ -25,6 +25,18 @@ import MainContent from "./layoutbar/MainContent"
 import Breadcrumb from "./layoutbar/Breadcrumb"
 
 export default {
+  data(){
+    return{
+      widowsStyle:""
+    }
+  },
+  methods:{
+    getclass(msg){
+       debugger
+       this.$message({ message: msg, type: 'error' })
+      this.widowsStyle=msg
+    }
+  },
   components:{
       HeadBar,
       NavBar,
@@ -43,8 +55,10 @@ export default {
     bottom: 0px;
     background: rgba(224, 234, 235, 0.1);
   }
- 
-  .el-aside:not(.el-menu--collapse) {
-    width: 50px;
-  }
+ .expand{
+   width: 200px !important;
+ }
+ .shrink{
+  width: 50px !important;
+}
 </style>

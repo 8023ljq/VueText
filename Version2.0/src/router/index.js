@@ -27,9 +27,11 @@ const router = new Router({
           }
         },
         {
-          path: '/sys/text',
-          name: '角色',
-          component: text
+          path: '/sys/text/:id',
+          component: () => import('@/view/sys/text'),
+          name: 'EditArticle',
+          meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
+         hidden: true
         }
       ]
     },
