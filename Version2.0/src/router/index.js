@@ -30,7 +30,7 @@ const router = new Router({
           path: '/sys/text/:id',
           component: () => import('@/view/sys/text'),
           name: 'EditArticle',
-          meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
+          meta: { title: 'Edit Article', noCache: true, activeMenu: '/sys/text' },
          hidden: true
         }
       ]
@@ -42,6 +42,8 @@ const router = new Router({
     },
   ]
 })
+
+
 
 // beforeEach全局路由守卫 beforeEnter是单个路由守卫
 router.beforeEach((to, from, next) => {

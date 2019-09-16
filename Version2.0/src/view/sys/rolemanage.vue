@@ -44,10 +44,49 @@
       @current-change="handleCurrentChange"
       :page-size="pageModel.pageSize"
       :current-page="pageModel.curPage"
-      :total="pageModel.count">
+      :total="pageModel.count"
+      :page-sizes="[100, 200, 300, 400]">
     </el-pagination>
      <!-- :page-sizes="[100, 200, 300, 400]" -->
   </div>
+  <!-- 弹出框 -->
+      <el-dialog :title="titlename" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false" width="40%">
+        <el-form ref="form" :model="dialogform" label-width="80px">
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item label="角色名称" required>
+                <el-input v-model="dialogform.FullName"></el-input>
+              </el-form-item>
+            </el-col>
+           <el-col :span="12">
+              <el-form-item label="是否启用" required>
+                <el-switch
+                  v-model="dialogform.IsShow"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949">
+                </el-switch>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="备注">
+            <el-input type="textarea" v-model="dialogform.Remarks"></el-input>
+          </el-form-item>
+          <el-form-item label="权限">
+          <el-tree ref="tree"
+            :data="routesData"
+            :props="defaultProps"
+            show-checkbox
+            default-expand-all
+            node-key="Id"
+            class="permission-tree"
+            highlight-current/>
+        </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false" size="medium">确 定</el-button>
+        </div>
+      </el-dialog>
 </div>
 </template>
 
@@ -62,22 +101,40 @@
   margin-top: 10px;
   float:right;
 }
+.el-dialog__title {
+  float: left;
+}
+.el-select{
+  display: block;
+}
+.el-cascader{
+  width: 100% !important;
+}
 </style>
 
 <script>
 export default {
   data(){
     return{
+      routesData:[{}],
       tableData:[{}],//菜单表格数据
       pageModel:{
         pageSize: 10,
         curPage: 1,
         Keyword:'',
       },
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
+      dialogform:[{}],
+      dialogFormVisible:false,
+      titlename:"",
     }
   },
   created(){
-    this.GetManagerList();
+    this.GetManagerList()
+    this.getmanager()
   },
   methods:{
     GetManagerList:function(){
@@ -96,8 +153,45 @@ export default {
     handleCurrentChange(val) {//点击上/下一页触发方法
       this.pageModel.curPage=val,
       this.GetManagerList();
+    },
+    addDialog(){
+      this.dialogFormVisible=true,
+      this.titlename="添加角色"
+    },
+    editdata(){
+      this.dialogFormVisible=true,
+      this.titlename="编辑角色"
+    },
+    getmanager(){//获取所有菜单集合
+      this.$api.common.findNavTree().then(res=>{
+        this.routesData=addSelectMenu(res.ResultData.data);
+      })
     }
   }
+}
+
+/**
+* 级联下拉数据
+* @param {*} menuList 菜单列表
+*/
+function addSelectMenu(menuList){
+  const result = []
+  for(var i=0;i<menuList.length;i++){
+    const id= menuList[i].GuId
+    const label= menuList[i].FullName
+    let children=menuList[i].children
+     
+    if(children){
+      children=addSelectMenu(children)
+    }
+
+    result.push({
+      id,
+      label,
+      children
+    })
+  }
+  return result
 }
 </script>
 

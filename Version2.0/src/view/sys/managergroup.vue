@@ -35,11 +35,11 @@
              <el-button type="primary" size="mini" icon="el-icon-edit-outline" v-if="scope.row.ParentId==='0'" @click="addSonDialog(scope.row.Id)">添加子级</el-button>
              <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteGroup(scope.row.Id)">删除</el-button>
              <!-- <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleRoute('sys/text/',scope.row.Id)">角色</el-button> -->
-             <router-link :to="'/sys/text/'+scope.row.Id">
+             <!-- <router-link :to="'/sys/text/'+scope.row.Id">
                <el-button type="primary" size="small" icon="el-icon-edit">
                  角色
                </el-button>
-             </router-link>
+             </router-link> -->
         </template>
      </el-table-column>
     </el-table>
