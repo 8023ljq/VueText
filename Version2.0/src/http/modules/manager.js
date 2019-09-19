@@ -62,6 +62,25 @@ export const getmanagerrolelist=(data)=>{
     })
 }
 
+// 添加角色
+export const addnewrole=(data)=>{
+    return axios({
+        url: 'managerrole/addnewrole',
+        method:'post',
+        data
+    })
+}
+
+// 编辑角色获取当前角色信息
+export const selectrolemodel=(data)=>{
+    return axios({
+        url: 'managerrole/selectrolemodel?roleId='+data,
+        method:'get',
+        data
+    })
+}
+
+
 // 获取管理员组列表
 export const getmanagergrouplist=(data)=>{
     return axios({
