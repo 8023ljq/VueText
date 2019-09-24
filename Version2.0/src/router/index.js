@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
       next({ path: '/login' })
     } else {
       // 加载动态菜单和路由
-      addDynamicMenuAndRoutes(user.AdminName, to, from)
+      addDynamicMenuAndRoutes(user.UserId, to, from)
       next()
     }
   }
@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
 /**
 * 加载动态菜单和路由
 */
-function addDynamicMenuAndRoutes(userName, to, from) {
+function addDynamicMenuAndRoutes(UserId, to, from) {
   // 处理IFrame嵌套页面
   handleIFrameUrl(to.path)
   var menuRouteLoaded=store.state.app.menuRouteLoaded;
@@ -82,7 +82,7 @@ function addDynamicMenuAndRoutes(userName, to, from) {
     return
   }
   else{
-    api.common.findNavTree({'userName':userName})
+    api.common.findNavTree({'UserId':UserId})
     .then(res => {
       // 添加动态路由
       let dynamicRoutes = addDynamicRoutes(res.ResultData.data)

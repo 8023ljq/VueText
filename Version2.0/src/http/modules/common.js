@@ -3,7 +3,7 @@ import axios from '../axios'
 // 查找导航菜单树
 export const findNavTree = (params) => {
   return axios({
-    url: 'menu/getmenulist',
+    url: 'menu/getmenulist?userId='+ params,
     method: 'get',
     params
   })

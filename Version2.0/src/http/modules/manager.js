@@ -1,6 +1,6 @@
 import axios from '../axios'
 
-// 获取管理员列表
+// 获取角色列表
 export const getmanagerList=data=>{
     return axios({
         url: 'manager/getmanagerlist',
@@ -9,7 +9,7 @@ export const getmanagerList=data=>{
     })
 }
 
-// 获取单个管理员信息
+// 获取单个角色信息
 export const getmanagermodel= (params)=>{
     return axios({
         url: 'manager/getmanagermodel?mangaerId='+ params,
@@ -18,7 +18,7 @@ export const getmanagermodel= (params)=>{
     })
 }
 
-// 修改管理员信息
+// 修改角色信息
 export const updatemanagermodel= (data)=>{
     return axios({
         url: 'manager/updatemanagerinfo',
@@ -52,34 +52,6 @@ export const getroleselectlist = () => {
       method: 'get'
     })
   }
-
-// 获取管理角色列表
-export const getmanagerrolelist=(data)=>{
-    return axios({
-        url: 'managerrole/getmanagerrolelist',
-        method:'post',
-        data
-    })
-}
-
-// 添加角色
-export const addnewrole=(data)=>{
-    return axios({
-        url: 'managerrole/addnewrole',
-        method:'post',
-        data
-    })
-}
-
-// 编辑角色获取当前角色信息
-export const selectrolemodel=(data)=>{
-    return axios({
-        url: 'managerrole/selectrolemodel?roleId='+data,
-        method:'get',
-        data
-    })
-}
-
 
 // 获取管理员组列表
 export const getmanagergrouplist=(data)=>{

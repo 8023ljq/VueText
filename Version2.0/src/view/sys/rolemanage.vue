@@ -7,7 +7,7 @@
     </el-col>
     <el-col :span="4">   
       <el-button size="medium" type="primary" icon="el-icon-search" @click="getManagerList()">搜索</el-button>
-      <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog()">添加</el-button>
+      <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog('dataform')">添加</el-button>
      
     </el-col>
    </el-row>
@@ -29,11 +29,12 @@
        </template>
      </el-table-column>
      <el-table-column prop="Remarks" label="备注" min-width="90" align="center"></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" width="400" align="center">
        <template slot-scope="scope">
-        <el-button type="primary" size="mini" icon="el-icon-edit" @click="editdata(scope.row.Id,0)">编辑</el-button>
-        <el-button type="success" size="mini" v-if="scope.row.IsDelete" icon="el-icon-circle-check" @click="disOrEnaManager(scope.row.Id)">启用</el-button>
-        <el-button type="danger" size="mini" v-else icon="el-icon-circle-close" @click="disOrEnaManager(scope.row.Id)">停用</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-edit" @click="editData(scope.row.Id,0)">编辑</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-edit" @click="editPurview(scope.row.Id)">权限</el-button>
+        <el-button type="success" size="mini" v-if="scope.row.IsLocking" icon="el-icon-circle-check" @click="disOrEnaManager(scope.row.Id,1)">启用</el-button>
+        <el-button type="danger" size="mini" v-else icon="el-icon-circle-close" @click="disOrEnaManager(scope.row.Id,2)">停用</el-button>
         <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRole(scope.row.Id)">删除</el-button>
        </template> 
       </el-table-column>
@@ -50,28 +51,29 @@
       :page-sizes="[100, 200, 300, 400]">
     </el-pagination>
   </div>
-  <!-- 弹出框 -->
+  <!-- 编辑角色弹出框 -->
       <el-dialog :title="titlename" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false" width="40%">
-        <el-form ref="form" :model="dialogform" label-width="80px">
+        <el-form ref="dataform" :model="dialogform" label-width="80px">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="角色名称" required>
+              <el-form-item label="角色名称" prop="RoleName" required>
                 <el-input v-model="dialogform.RoleName"></el-input>
               </el-form-item>
             </el-col>
-           <!-- <el-col :span="12">
-              <el-form-item label="是否启用" required>
-                <el-switch
-                  v-model="dialogform.IsDelete"
-                  active-color="#ff4949"
-                  inactive-color="#13ce66">
-                </el-switch>
-              </el-form-item>
-            </el-col> -->
           </el-row>
-          <el-form-item label="备注">
+          <el-form-item label="备注" prop="Remarks">
             <el-input type="textarea" v-model="dialogform.Remarks"></el-input>
           </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
+          <el-button type="primary" v-if="isAdd" @click="addNewRole()" size="medium">提 交</el-button>
+          <el-button type="primary" v-else @click="updateNowRole(dialogform.Id)" size="medium">确 定</el-button>
+        </div>
+      </el-dialog>
+       <!-- 编辑权限弹出框 -->
+        <el-dialog title="编辑权限" :visible.sync="PurviewdialogVisible" :close-on-click-modal="false" :center="false" width="20%">
+        <el-form ref="form" :model="dialogform" label-width="80px">
           <el-form-item label="权限">
           <el-tree ref="tree"
             :data="routesData"
@@ -85,22 +87,10 @@
         </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
-          <el-button type="primary" @click="addNewRole()" size="medium">确 定</el-button>
+          <el-button @click="PurviewdialogVisible = false" size="medium">取 消</el-button>
+          <el-button type="primary" @click="updateNowPurview(dialogform.Id)" size="medium">确 定</el-button>
         </div>
       </el-dialog>
-         <!-- <el-drawer
-  title="我是标题"
-  direction="rtl"
-  size="20%"
-  :wrapperClosable="false"
-  :append-to-body="true"
-  :close-on-press-escape="false"
-  :visible.sync="drawer"
-  > <span>我来啦!</span>
-</el-drawer> -->
-  <!-- :before-close="handleClose" -->
- 
 </div>
 </template>
 
@@ -146,23 +136,27 @@ export default {
         label: 'label'
       },
       dialogform:{
+        Id:"",
         RoleName:"",
         IsDelete:false,
         Remarks:"",
         SelectedArray:[],
       },
       dialogFormVisible:false,
+      PurviewdialogVisible:false,
       titlename:"",
       drawer:false,
+      hint:"",
+      isAdd:true
     }
   },
   created(){
     this.getManagerList()
-    this.getmanager()
+    this.getManager()
   },
   methods:{
-    getManagerList:function(){
-      this.$api.manager.getmanagerrolelist(this.pageModel).then(res => {
+    getManagerList:function(){//获取角色列表信息
+      this.$api.managerrole.getmanagerrolelist(this.pageModel).then(res => {
         if(res.ResultCode == 200)
         {
            this.tableData = res.ResultData.data;
@@ -178,34 +172,58 @@ export default {
       this.pageModel.curPage=val,
       this.getManagerList();
     },
-    addDialog(){
+    addDialog(formName){//添加角色弹窗
+     this.isAdd=true
+      if (this.$refs[formName]!==undefined) {
+        this.$refs[formName].resetFields();
+      }
       this.dialogFormVisible=true,
       this.titlename="添加角色"
     },
-    editdata(roleId){//编辑角色获取当前角色信息
+    editData(roleId){//编辑角色获取当前角色信息
       this.dialogFormVisible=true,
+      this.isAdd=false,
       this.titlename="编辑角色",
-       this.$api.manager.selectrolemodel(roleId).then(res=>{
+       this.$api.managerrole.selectrolemodel(roleId).then(res=>{
         this.dialogform=res.ResultData.Model
-        this.dialogform.SelectedArray= res.ResultData.RoleArray
-        //this.$message({ message: res.ResultData.RoleArray, type: res.ResultType })
       })
     },
-    getmanager(){//获取所有菜单集合
+    editPurview(roleId){//编辑权限弹窗
+      this.PurviewdialogVisible=true,
+      this.dialogform.Id=roleId
+       this.$api.managerrole.selectrolemodel(roleId).then(res=>{
+         this.$refs.tree.setCheckedKeys(res.ResultData.RoleArray);
+      })
+    },
+    updateNowPurview(roleId){//修改权限信息
+      this.dialogform.Id=roleId
+      this.dialogform.SelectedArray= this.$refs.tree.getCheckedKeys()
+      this.$api.managerrole.updatenowpurview(this.dialogform).then(res=>{
+         this.$message({ message: res.ResultMsgs, type: res.ResultType })
+          if(res.ResultCode == 200){
+            this.PurviewdialogVisible=false
+            this.getManagerList()
+          }
+      })
+    },
+    getManager(){//获取所有菜单集合
       this.$api.common.findNavTree().then(res=>{
         this.routesData=addSelectMenu(res.ResultData.data);
       })
     },
-    deleteRole(roleId) {
+    deleteRole(roleId) {//删除角色信息
       this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
+          this.$api.managerrole.deletenowrole(roleId).then(res=>{
+           this.$message({ message: res.ResultMsgs, type: res.ResultType })
+            if(res.ResultCode == 200){
+             this.dialogFormVisible=false
+             this.getManagerList()
+            }
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -214,14 +232,48 @@ export default {
         });
     },
     addNewRole(){//添加角色信息
-       this.dialogform.SelectedArray= this.$refs.tree.getCheckedKeys()
-       this.$api.manager.addnewrole(this.dialogform).then(res=>{
+       this.$api.managerrole.addnewrole(this.dialogform).then(res=>{
           this.$message({ message: res.ResultMsgs, type: res.ResultType })
           if(res.ResultCode == 200){
             this.dialogFormVisible=false
             this.getManagerList()
           }
       })
+    },
+    updateNowRole(){//修改角色信息
+       this.$api.managerrole.updatenowrole(this.dialogform).then(res=>{
+          this.$message({ message: res.ResultMsgs, type: res.ResultType })
+          if(res.ResultCode == 200){
+            this.dialogFormVisible=false
+            this.getManagerList()
+          }
+      })
+    },
+    disOrEnaManager(roleId,type){//角色停用/启用
+       if(type==1){
+         this.hint="是否启用当前角色?"
+       }
+       else{
+         this.hint="是否停用当前角色?"
+       }
+       this.$confirm(this.hint, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$api.managerrole.enableordisablerole(roleId).then(res=>{
+           this.$message({ message: res.ResultMsgs, type: res.ResultType })
+            if(res.ResultCode == 200){
+             this.dialogFormVisible=false
+             this.getManagerList()
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     }
   }
 }
