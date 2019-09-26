@@ -6,7 +6,7 @@
       <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search" v-model="pageModel.Keyword"></el-input>
     </el-col>
     <el-col :span="4">   
-      <el-button size="medium" type="primary" icon="el-icon-search" @click="getManagerList()">搜索</el-button>
+      <el-button size="medium" type="primary" icon="el-icon-search" @click="getManagerRolList()">搜索</el-button>
       <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog('dataform')">添加</el-button>
      
     </el-col>
@@ -151,11 +151,11 @@ export default {
     }
   },
   created(){
-    this.getManagerList()
+    this.getManagerRolList()
     this.getManager()
   },
   methods:{
-    getManagerList:function(){//获取角色列表信息
+    getManagerRolList:function(){//获取角色列表信息
       this.$api.managerrole.getmanagerrolelist(this.pageModel).then(res => {
         if(res.ResultCode == 200)
         {
@@ -166,11 +166,11 @@ export default {
     },
     handleSizeChange(val) {//改变每页数量触发方法
       this.pageModel.pageSize=val,
-      this.getManagerList();
+      this.getManagerRolList();
     },
     handleCurrentChange(val) {//点击上/下一页触发方法
       this.pageModel.curPage=val,
-      this.getManagerList();
+      this.getManagerRolList();
     },
     addDialog(formName){//添加角色弹窗
      this.isAdd=true
@@ -202,7 +202,7 @@ export default {
          this.$message({ message: res.ResultMsgs, type: res.ResultType })
           if(res.ResultCode == 200){
             this.PurviewdialogVisible=false
-            this.getManagerList()
+            this.getManagerRolList()
           }
       })
     },
@@ -221,7 +221,7 @@ export default {
            this.$message({ message: res.ResultMsgs, type: res.ResultType })
             if(res.ResultCode == 200){
              this.dialogFormVisible=false
-             this.getManagerList()
+             this.getManagerRolList()
             }
           })
         }).catch(() => {
@@ -236,7 +236,7 @@ export default {
           this.$message({ message: res.ResultMsgs, type: res.ResultType })
           if(res.ResultCode == 200){
             this.dialogFormVisible=false
-            this.getManagerList()
+            this.getManagerRolList()
           }
       })
     },
@@ -245,7 +245,7 @@ export default {
           this.$message({ message: res.ResultMsgs, type: res.ResultType })
           if(res.ResultCode == 200){
             this.dialogFormVisible=false
-            this.getManagerList()
+            this.getManagerRolList()
           }
       })
     },
@@ -265,7 +265,7 @@ export default {
            this.$message({ message: res.ResultMsgs, type: res.ResultType })
             if(res.ResultCode == 200){
              this.dialogFormVisible=false
-             this.getManagerList()
+             this.getManagerRolList()
             }
           })
         }).catch(() => {

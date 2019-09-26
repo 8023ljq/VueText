@@ -3,7 +3,7 @@
     <div class="Inquire">
       <el-row :gutter="20">
         <el-col :span="4">
-          <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search"></el-input>
+          <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search" ></el-input>
           </el-col>
         <el-col :span="4">
           <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button>

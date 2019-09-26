@@ -11,7 +11,7 @@
     </el-header>
     <el-main>
        <!-- 主内容区域 -->
-      <main-content></main-content>
+      <main-content ></main-content>
     </el-main>
   </el-container>
 </el-container>
@@ -61,4 +61,8 @@ export default {
  .shrink{
   width: 50px !important;
 }
+//  .content{
+//    min-height: calc(100vh);
+//  }
+
 </style>

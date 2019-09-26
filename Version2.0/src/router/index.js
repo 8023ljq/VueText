@@ -5,6 +5,7 @@ import Login from '@/view/Login'
 import store from '@/store'
 import api from '@/http/api'
 import lord from '@/view/lord/lord'
+import Homepage from '@/view/lord/Homepage'
 import text from '@/view/sys/text'
 import { getIFramePath, getIFrameUrl } from '@/utils/iframe'
 
@@ -20,7 +21,7 @@ const router = new Router({
         { 
           path: '', 
           name: '首页', 
-          component: lord,
+          component: Homepage,
           meta: {
             icon: 'fa fa-home fa-lg',
             index: 0

@@ -3,10 +3,10 @@
   <div class="Inquire">
    <el-row :gutter="20">
     <el-col :span="4">   
-      <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search"></el-input>
+      <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search" v-model="pageModel.Keyword"></el-input>
     </el-col>
     <el-col :span="4">   
-      <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button>
+      <el-button size="medium" type="primary" icon="el-icon-search" @click="getManagerList()">搜索</el-button>
       <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog()">添加</el-button>
     </el-col>
    </el-row>
@@ -14,36 +14,57 @@
   <div>
     <el-table 
     :data="tableData" 
-    style="width: 100%;height: 80%"
-    border>
+    style="width: 1700;height: 80%"
+    :border="true"
+    fit>
+     <!-- <el-table-column type="expand" fixed>
+      <template slot-scope="props">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="登录次数">
+            <span>{{ props.row.LoginTimes }}</span>
+          </el-form-item>
+          <el-form-item label="最后登录时间">
+            <span>{{ props.row.LastLoginTime }}</span>
+          </el-form-item>
+          <el-form-item label="最后一次登录IP">
+            <span>{{ props.row.LastLoginIP }}</span>
+          </el-form-item>
+          <el-form-item label="备注">
+            <span>{{ props.row.Remarks }}</span>
+          </el-form-item>
+        </el-form>
+      </template>
+     </el-table-column> -->
      <el-table-column type="index" fixed prop="" label="序列" width="60" align="center"></el-table-column>
      <el-table-column prop="Name" fixed label="账号名称" align="center"></el-table-column>
      <el-table-column prop="RoleName" label="所属角色" align="center"></el-table-column>
      <el-table-column prop="Nickname" label="用户昵称" align="center"></el-table-column>
      <el-table-column prop="Phone" label="联系电话" align="center"></el-table-column>
      <el-table-column prop="Email" label="邮箱地址" align="center"></el-table-column>
-     <el-table-column prop="LoginTimes" label="登录次数" min-width="40" align="center"></el-table-column>
-     <el-table-column prop="AddTime" label="添加时间" min-width="90" align="center">
+     <!-- <el-table-column prop="LoginTimes" label="登录次数" min-width="50" align="center"></el-table-column> -->
+     <el-table-column prop="AddTime" label="添加时间" min-width="110" align="center">
        <template slot-scope="scope">
          <i class="el-icon-time"></i>
          <span style="margin-left: 10px">{{ scope.row.AddTime }}</span>
        </template>
      </el-table-column>
-     <el-table-column prop="LastLoginTime" label="最后登录时间" min-width="90" align="center">
+     <!-- <el-table-column prop="LastLoginTime" label="最后登录时间" min-width="110" align="center">
        <template slot-scope="scope"> 
-         <i class="el-icon-time"></i>
          <span style="margin-left: 10px">{{ scope.row.LastLoginTime }}</span>
        </template>
      </el-table-column>
-     <el-table-column prop="LastLoginIP" label="最后一次登录IP" min-width="90" align="center"> 
+     <el-table-column prop="LastLoginIP" label="最后一次登录IP" min-width="80" align="center"> 
      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200" align="center">
+     <el-table-column prop="Remarks" label="备注" align="center"></el-table-column> -->
+      <el-table-column fixed="right" label="操作" width="300" align="center">
       <template slot-scope="scope">
         <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerModel(scope.row.Id)">编辑</el-button>
         <el-button type="success" size="mini" v-if="scope.row.IsLocking" icon="el-icon-circle-check" @click="disOrEnaManager(scope.row.Id)">启用</el-button>
         <el-button type="danger" size="mini" v-else icon="el-icon-circle-close" @click="disOrEnaManager(scope.row.Id)">停用</el-button>
+        <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteManager(scope.row.Id)">删除</el-button>
       </template>
      </el-table-column>
+     
     </el-table>
     <el-pagination
       class="page-div"
@@ -68,7 +89,7 @@
           </el-col>
          <el-col :span="11">
             <el-form-item label="所属角色" required>
-              <el-select v-model="dialogform.RoleId" placeholder="请选择">
+              <el-select v-model="dialogform.RelationId" :disabled="disabled" placeholder="请选择">
                 <el-option v-for="item in options"
                 :key="item.value"
                 :label="item.label"
@@ -90,19 +111,6 @@
                <el-input v-model="dialogform.Phone"></el-input>
             </el-form-item>
           </el-col>
-           <!-- <el-col :span="11">
-            <el-form-item label="是否锁定" required>
-              <el-tooltip :content="'锁定状态: ' + dialogform.IsLocking" placement="top">
-               <el-switch
-                 v-model="dialogform.IsLocking"
-                 active-color="#ff4949"
-                 inactive-color="#13ce66"
-                 active-value="true"
-                 inactive-value="false">
-               </el-switch>
-              </el-tooltip>
-            </el-form-item>
-          </el-col> -->
            <!-- <el-col :span="4">
             <el-form-item label="用户头像" required>
              <el-upload
@@ -126,7 +134,7 @@
       </el-row>
       <el-row :gutter="20">
           <el-col :span="22">
-            <el-form-item label="备 注" required>
+            <el-form-item label="备 注" >
                 <el-input type="textarea" :rows="5" v-model="dialogform.Remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -134,8 +142,8 @@
      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
-        <el-button type="primary" v-if="addorupdate" @click="addManagerModel()" size="medium">确 定</el-button>
-        <el-button type="primary" v-else @click="updateManagerModel(dialogform.Id)" size="medium">提 交</el-button>
+        <el-button type="primary" v-if="addorupdate" @click="addManagerModel()" size="medium">提 交</el-button>
+        <el-button type="primary" v-else @click="updateManagerModel(dialogform.Id)" size="medium">确 定</el-button>
       </div>
   </el-dialog>
 </div>
@@ -210,11 +218,12 @@ export default {
       pageModel:{
         pageSize: 10,
         curPage: 1,
+        Keyword:'',
       },
       dialogFormVisible: false,//是否显示
       dialogform: {//表单数据
         Id:"",
-        RoleId:"",
+        RelationId:"",
         Name: "",
         Avatar:"",
         Nickname:"",
@@ -228,15 +237,16 @@ export default {
       UploadFileUrl:UploadFileUrl,
       ImgUrl:ImgUrl,
       dialogTitle:"",
-      addorupdate:true
+      addorupdate:true,
+      disabled:false,
     }
   },
   created(){
-    this.getManagerList();//获取管理员列表
-    this.getRoleSelectList();//获取角色列表
+    this.getManagerList();
+    this.getRoleSelectList();
   },
   methods:{
-    getManagerList:function(){
+    getManagerList:function(){//获取管理员列表
       this.$api.manager.getmanagerList(this.pageModel).then(res => {
         if(res.ResultCode == 200)
         {
@@ -245,7 +255,7 @@ export default {
         }
       })
     },
-    getRoleSelectList:function(){
+    getRoleSelectList:function(){//获取角色列表
        this.$api.manager.getroleselectlist().then(res => {
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
@@ -261,7 +271,14 @@ export default {
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
            this.dialogform = res.ResultData.data;
-           this.value=this.dialogform.RoleId;
+           this.value=this.dialogform.RelationId;
+           debugger
+           if(res.ResultData.data.IsDefault)
+           {
+             this.disabled=true
+           }else{
+             this.disabled=false
+           }
         }
       })
     },
@@ -283,9 +300,9 @@ export default {
       this.dialogTitle="添加管理员"
       this.dialogform={}
       this.addorupdate=true
+      this.disabled=false
     },
     addManagerModel:function(){//添加管理员方法
-    debugger
       this.$api.manager.addmanagermodel(this.dialogform).then(res=>{
         if(res.ResultCode == 200)
         {
@@ -309,6 +326,21 @@ export default {
         else{
           this.$message({ message: res.ResultMsgs, type: 'error' })
         }
+      })
+    },
+    deleteManager:function(mangaerId){//删除管理员
+      this.$confirm('此操作将永久删除该管理员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(()=>{
+        this.$api.manager.deletemanager(mangaerId).then(res=>{
+          this.$message({ message: res.ResultMsgs, type: res.ResultType })
+          if(res.ResultCode==200)
+          {
+            this.getManagerList()
+          }
+        })
       })
     },
     handleSizeChange(val) {//改变每页数量触发方法

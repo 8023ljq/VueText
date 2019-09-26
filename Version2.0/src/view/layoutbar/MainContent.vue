@@ -14,11 +14,16 @@
             <el-dropdown-item @click.native="tabsRefreshCurrentHandle">刷新当前标签</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-tab-pane id="tabs-pane" v-for="(item,index) in mainTabs"
+        <!-- <el-tab-pane id="tabs-pane" v-for="(item,index) in mainTabs"
           :key="item.name" 
           :label="item.title" 
           :name="item.name"
-          :closable="index>0">
+          :closable="index>0"> -->
+          <el-tab-pane id="tabs-pane" v-for="item in mainTabs"
+          :key="item.name" 
+          :label="item.title" 
+          :name="item.name"
+          :closable="item.name=='首页'?false:true">
           <span slot="label"><i :class="item.icon"></i> {{item.title}}</span>
         </el-tab-pane>
       </el-tabs>
@@ -129,6 +134,11 @@ export default {
 }
 .position-collapse-left {
   left: 65px;
+}
+.main-content{
+  //padding: 10px;
+   min-height: calc(100vh - 151px);
+   //background-color: #f0f2f5;
 }
 </style>
 

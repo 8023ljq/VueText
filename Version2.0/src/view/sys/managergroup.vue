@@ -143,7 +143,7 @@ export default {
   },
   methods:{
     GetManagerGroupList:function(){//获取用户组列表
-      this.$api.manager.getmanagergrouplist(this.pageModel).then(res => {
+      this.$api.managergroup.getmanagergrouplist(this.pageModel).then(res => {
         if(res.ResultCode == 200)
         {
            this.tableData = res.ResultData.data;
@@ -152,7 +152,7 @@ export default {
       })
     },
     getGroupSelectList:function(){//获取用户组下拉列表
-      this.$api.manager.getgroupselectlist().then(res => {
+      this.$api.managergroup.getgroupselectlist().then(res => {
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
            this.options = res.ResultData.data;
@@ -188,7 +188,7 @@ export default {
       this.dialogTitle="编辑用户组"
       this.addorupdate=false
       this.selectdisabled=true
-      this.$api.manager.getmanagergroup(GroupId).then(res=>{
+      this.$api.managergroup.getmanagergroup(GroupId).then(res=>{
         debugger
         if(res.ResultCode == 200)
         {
@@ -207,7 +207,7 @@ export default {
     },
     addManagerGroup:function(Type){//添加用户组操作
        this.dialogform.AddType = Type
-       this.$api.manager.addmanagergroup(this.dialogform).then(res => {
+       this.$api.managergroup.addmanagergroup(this.dialogform).then(res => {
        this.$message({ message: res.ResultMsgs, type: res.ResultType })
        this.dialogFormVisible=false
        this.GetManagerGroupList()
@@ -215,7 +215,7 @@ export default {
     },
     updateManagerModel:function(Id) {//修改用户组
       this.dialogform.Id = Id
-        this.$api.manager.updatemanagergroup(this.dialogform).then(res => {
+        this.$api.managergroup.updatemanagergroup(this.dialogform).then(res => {
         this.$message({ message: res.ResultMsgs, type: res.ResultType })
         if(res.ResultCode==200)
         {
@@ -230,7 +230,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(()=>{
-        this.$api.manager.deletemanagergroup(Id).then(res=>{
+        this.$api.managergroup.deletemanagergroup(Id).then(res=>{
           this.$message({ message: res.ResultMsgs, type: res.ResultType })
           if(res.ResultCode==200)
           {
