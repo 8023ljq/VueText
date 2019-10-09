@@ -18,7 +18,7 @@
      <el-table-column prop="AddressUrl" label="用户组等级" style="width: 26%">
           <template slot-scope="scope">
             <el-tag type="primary" v-if="scope.row.ParentId=='0'" disable-transitions>一级分组</el-tag>
-            <el-tag type="primary" v-else disable-transitions>二级分组</el-tag>
+            <el-tag type="success" v-else disable-transitions>二级分组</el-tag>
           </template>
         </el-table-column>
      <el-table-column prop="AddName" label="添加人" align="center"></el-table-column>

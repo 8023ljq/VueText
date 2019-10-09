@@ -72,7 +72,7 @@
         </div>
       </el-dialog>
        <!-- 编辑权限弹出框 -->
-        <el-dialog title="编辑权限" :visible.sync="PurviewdialogVisible" :close-on-click-modal="false" :center="false" width="20%">
+        <el-dialog title="编辑权限" :visible.sync="PurviewdialogVisible" :close-on-click-modal="false" :center="false" width="50%">
         <el-form ref="form" :model="dialogform" label-width="80px">
           <el-form-item label="权限">
           <el-tree ref="tree"
@@ -83,7 +83,20 @@
             default-expand-all
             node-key="id"
             class="permission-tree"
-            highlight-current/>
+            highlight-current
+            @check-change="leftCheckChange">
+            <span class="custom-tree-node" slot-scope="{ node, data }" >
+              <span>{{ data.label }}</span>
+                <span style="margin-left: 50px;">
+                  <el-checkbox 
+                    v-for="DataList in routesData" 
+                    :label="DataList.label" 
+                    :key="DataList.id"
+                    @change="onChange">
+                    {{DataList.label}}</el-checkbox>
+                </span>
+            </span>
+          </el-tree>
         </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -274,7 +287,20 @@ export default {
             message: '已取消删除'
           });          
         });
-    }
+    },
+     leftCheckChange(node, selected, indeterminate) {
+       console.log(node.children);
+       debugger
+       if(node.children!=null){
+          node.children.forEach((x, index) => {
+            //  x.checked = selected;
+            this.$set(x, "checked", selected);
+          });
+       }
+    },
+    onChange() {
+     // this.$message("xxx");
+    },
   }
 }
 
