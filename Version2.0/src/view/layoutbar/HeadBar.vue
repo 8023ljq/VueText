@@ -104,7 +104,6 @@ export default {
     },
     // 折叠导航栏
     onCollapse: function() {
-      debugger
       this.isfold = !this.isfold;
       this.$store.commit('onCollapse')
     },
@@ -120,7 +119,6 @@ export default {
     },
   },
   mounted() {
-    debugger
     var user = JSON.parse(sessionStorage.getItem("user"))
     if (user) {
       this.user.name = user.AdminName

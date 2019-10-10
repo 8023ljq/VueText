@@ -99,7 +99,6 @@ function addDynamicMenuAndRoutes(UserId, to, from) {
     })
     .catch(function(res) {
     })
-   
   }
 }
 
@@ -108,7 +107,6 @@ function addDynamicMenuAndRoutes(UserId, to, from) {
  * 比如'代码生成'是要求直接绑定到'Generator'页面组件
  */
 function handleStaticComponent(router, dynamicRoutes) {
-  debugger
   for(let j=0;j<dynamicRoutes.length; j++) {
     if(dynamicRoutes[j].name == '代码生成') {
       dynamicRoutes[j].component = Generator
@@ -142,7 +140,6 @@ function handleIFrameUrl(path) {
 * @param {*} routes 递归创建的动态(菜单)路由
 */
 function addDynamicRoutes (menuList = [], routes = []) {
-  debugger
   var temp = []
   for (var i = 0; i < menuList.length; i++) {
     if (menuList[i].children && menuList[i].children.length >= 1) {

@@ -7,7 +7,7 @@
           </el-col>
         <el-col :span="4">
           <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button>
-           <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog()">添加</el-button>
+           <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog()">新增</el-button>
           </el-col>
       </el-row>
     </div>
@@ -57,14 +57,23 @@
       <el-dialog :title="titlename" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false" width="40%">
         <el-form ref="form" :model="dialogform" label-width="80px">
           <el-row :gutter="20">
-            <el-col :span="12">
+            <!-- <el-col :span="12">
               <el-form-item label="菜单等级" required>
                <treeselect 
                :options="options" 
                :disabled="Isdisabled"
                v-model="dialogform.ParentId"></treeselect>
-               <!-- :disabled="Isdisabled"
-               v-model="dialogform.ParentId" -->
+              </el-form-item>
+            </el-col> -->
+             <el-col :span="12">
+              <el-form-item label="菜单等级" required>
+                <el-cascader 
+                  ref="menucascader"
+                  value="4ea7ac7e-9c41-4915-bb01-c03dd747e17a"
+                  :options="options" 
+                  :props="{ checkStrictly: true }"
+                  :emitPath="false">
+                </el-cascader>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -92,7 +101,8 @@
                 <el-switch
                   v-model="dialogform.IsShow"
                   active-color="#13ce66"
-                  inactive-color="#ff4949">
+                  inactive-color="#ff4949"
+                  class="selector">
                 </el-switch>
               </el-form-item>
             </el-col>
@@ -102,13 +112,25 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="备注">
+          <el-form-item label="备注信息">
             <el-input type="textarea" v-model="dialogform.Remarks"></el-input>
+          </el-form-item>
+          <el-form-item v-if="dialogform.ParentId!='0'" label="所有权限">
+            <el-row :gutter="20">
+              <el-col :span="6"> 
+                <template>
+                  <el-checkbox-group>
+                   
+                  </el-checkbox-group>
+                </template>
+              </el-col>
+              <el-col :span="6"><el-button class="addpower">其他权限</el-button></el-col>
+            </el-row>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false" size="medium">确 定</el-button>
+          <el-button type="primary" @click="addNewMenu()" size="medium">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -121,19 +143,32 @@
   line-height: 65px;
   /* background-color: red; */
 }
+
 .input {
   width: 10%;
   float: left;
   margin: 0px 10px;
 }
+
 .el-dialog__title {
   float: left;
 }
+
 .el-select{
   display: block;
 }
+
 .el-cascader{
   width: 100% !important;
+}
+
+.selector{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+}
+.addpower{
+  border:1px dashed #DCDFE6 !important;
 }
 </style>
 
@@ -168,23 +203,22 @@ export default {
     this.convert();
   },
   methods: {
-    // 获取菜单树形结构数据
-    convert: function() {
+    convert: function() { // 获取菜单树形结构数据(进入页面默认加载列表)
+      debugger
       this.$api.common.findNavTree().then(res => {
         this.tableData = res.ResultData.data;
-        var arry= addSelectMenu(this.tableData)
-        this.options=arry;
-        const id= "0"
+         const id= "0"
         const label= "父级菜单"
         this.options.push({
           id,
           label
         })
+        var arry= addSelectMenu(this.tableData)
+        this.options=arry;
       })
     console.log(this.options)
     },
-    // 获取单条菜单数据
-    editdata: function(menuId,type) {
+    editdata: function(menuId,type) {// 获取单条菜单数据
       debugger
       console.log(this.options)
       if(type==0){
@@ -214,8 +248,17 @@ export default {
        this.dialogform.ParentId=menuId
       }
       this.dialogFormVisible=true
+    },
+    addDialog:function(){//添加弹窗
+      this.titlename="添加菜单"
+      this.dialogFormVisible=true
+
+    },
+    addNewMenu:function(){//添加菜单操作
+      let data=this.$refs.menucascader.getCheckedNodes()[0].value
+      console.log(data)
+      this.$message({ message: data, type: "success" })
     }
-    // 弹窗修改
   }
 }
 /**
@@ -225,16 +268,14 @@ export default {
 function addSelectMenu(menuList){
   const result = []
   for(var i=0;i<menuList.length;i++){
-    const id= menuList[i].GuId
+    const value= menuList[i].GuId
     const label= menuList[i].FullName
     let children=menuList[i].children
-     
     if(children){
       children=addSelectMenu(children)
     }
-
     result.push({
-      id,
+      value,
       label,
       children
     })

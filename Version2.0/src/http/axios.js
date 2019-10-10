@@ -46,7 +46,7 @@ export default function $axios (options) {
       },
 
       error => {
-        debugger
+       
         // 请求错误时
         console.log('request:', error)
         // 1. 判断请求超时
@@ -106,7 +106,6 @@ export default function $axios (options) {
         return data
       },
       err => {
-        debugger
         if (err && err.response) {
           switch (err.response.status) {
             case 400:
