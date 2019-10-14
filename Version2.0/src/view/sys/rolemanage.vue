@@ -89,10 +89,11 @@
               <span>{{ data.label }}</span>
                 <span style="margin-left: 50px;">
                   <el-checkbox 
-                    v-for="DataList in routesData" 
+                    v-for="DataList in data.buttonArry" 
                     :label="DataList.label" 
                     :key="DataList.id"
-                    @change="onChange">
+                    @change="onChange"
+                    v-model="checkVal">
                     {{DataList.label}}</el-checkbox>
                 </span>
             </span>
@@ -160,7 +161,8 @@ export default {
       titlename:"",
       drawer:false,
       hint:"",
-      isAdd:true
+      isAdd:true,
+      checkVal:[]
     }
   },
   created(){
@@ -205,23 +207,27 @@ export default {
       this.PurviewdialogVisible=true,
       this.dialogform.Id=roleId
        this.$api.managerrole.selectrolemodel(roleId).then(res=>{
-         this.$refs.tree.setCheckedKeys(res.ResultData.RoleArray);
+        this.$refs.tree.setCheckedKeys(res.ResultData.RoleArray);
       })
     },
     updateNowPurview(roleId){//修改权限信息
       this.dialogform.Id=roleId
       this.dialogform.SelectedArray= this.$refs.tree.getCheckedKeys()
-      this.$api.managerrole.updatenowpurview(this.dialogform).then(res=>{
-         this.$message({ message: res.ResultMsgs, type: res.ResultType })
-          if(res.ResultCode == 200){
-            this.PurviewdialogVisible=false
-            this.getManagerRolList()
-          }
-      })
+      this.$message({ message: this.dialogform.SelectedArray, type: "success" })
+       this.$message({ message: this.checkVal, type: "success" })
+      // this.$api.managerrole.updatenowpurview(this.dialogform).then(res=>{
+      //    this.$message({ message: res.ResultMsgs, type: res.ResultType })
+      //     if(res.ResultCode == 200){
+      //       this.PurviewdialogVisible=false
+      //       this.getManagerRolList()
+      //     }
+      // })
     },
     getManager(){//获取所有菜单集合
       this.$api.common.findNavTree().then(res=>{
+        //res.ResultData.data.Buttonchildren=addSelectButton(res.ResultData.data.Buttonchildren)
         this.routesData=addSelectMenu(res.ResultData.data);
+        console.log(this.routesData)
       })
     },
     deleteRole(roleId) {//删除角色信息
@@ -289,8 +295,6 @@ export default {
         });
     },
      leftCheckChange(node, selected, indeterminate) {
-       console.log(node.children);
-       debugger
        if(node.children!=null){
           node.children.forEach((x, index) => {
             //  x.checked = selected;
@@ -309,21 +313,78 @@ export default {
 * @param {*} menuList 菜单列表
 */
 function addSelectMenu(menuList){
+  debugger
   const result = []
   for(var i=0;i<menuList.length;i++){
     const id= menuList[i].GuId
     const label= menuList[i].FullName
     let children=menuList[i].children
-     
+
     if(children){
       children=addSelectMenu(children)
     }
+
+    let buttonArry=[]
+
+    if(menuList[i].Buttonchildren !==null)
+    {
+      buttonArry=addButton(menuList[i].Buttonchildren)
+    }
+
+    result.push({
+      id,
+      label,
+      children,
+      buttonArry
+    })
+  }
+  return result
+}
+
+
+/**
+* 级联下拉数据
+* @param {*} ButtonList 菜单按钮列表
+*/
+function addButton(ButtonList){
+  const result = []
+  for(var j=0;j<ButtonList.length;j++)
+  {
+    const id= ButtonList[j].GuId
+    const label= ButtonList[j].FullName
+    const children=ButtonList[j].children
 
     result.push({
       id,
       label,
       children
     })
+  }
+  return result
+}
+
+
+/**
+* 级联下拉数据
+* @param {*} menuList 菜单列表
+*/
+function addSelectButton(menuList){
+  const result = []
+  if(typeof(menuList)!='undefined'){
+     for(var i=0;i<menuList.length;i++){
+      const id= menuList[i].GuId
+      const label= menuList[i].FullName
+      let children=menuList[i].children
+      if(children){
+        children=addSelectButton(children)
+      }
+
+      result.push({
+        id,
+        label,
+        children,
+      })
+    }
   }
   return result
 }

@@ -8,7 +8,7 @@
         <el-input type="text" prefix-icon="icon-user" v-model="loginForm.UserName" auto-complete="off" placeholder="6到16位数字或字母" minlength="6" maxlength="16"></el-input>
       </el-form-item>
       <el-form-item prop="PassWord">
-        <el-input type="password" prefix-icon="icon-mima" v-model="loginForm.PassWord" auto-complete="off" placeholder="8到16位数字,字母组合" minlength="8" maxlength="16"></el-input>
+        <el-input type="password" prefix-icon="icon-mima" v-model="loginForm.PassWord" auto-complete="off" placeholder="8到16位数字,字母组合" minlength="6" maxlength="16"></el-input>
       </el-form-item>
       <el-form-item style="width:100%;">
         <!-- <el-button type="primary" style="width:48%;" @click.native.prevent="reset">重 置</el-button> -->
@@ -38,7 +38,7 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 8, max: 16, message: '长度在 8 到 16 个,数字字母组合', trigger: 'blur' }
+          { min: 6, max: 16, message: '长度在 6 到 16 个,数字字母组合', trigger: 'blur' }
         ]
       }
     }
@@ -61,6 +61,7 @@ export default {
             sessionStorage.setItem('user', JSON.stringify(res.ResultData.Data)) // 保存用户到本地会话
             this.$router.push('/')// 登录成功，跳转到主页
           }
+          this.loading = false
         })
       }
     }

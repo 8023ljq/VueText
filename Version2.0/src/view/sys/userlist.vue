@@ -84,7 +84,7 @@
         <el-row :gutter="20">
          <el-col :span="11">
             <el-form-item label="账号名称" required>
-                 <el-input v-model="dialogform.Name"></el-input>
+              <el-input v-model="dialogform.Name"></el-input>
             </el-form-item>
           </el-col>
          <el-col :span="11">
@@ -243,7 +243,7 @@ export default {
   },
   created(){
     this.getManagerList();
-    this.getRoleSelectList();
+    
   },
   methods:{
     getManagerList:function(){//获取管理员列表
@@ -301,6 +301,7 @@ export default {
       this.dialogform={}
       this.addorupdate=true
       this.disabled=false
+      this.getRoleSelectList();
     },
     addManagerModel:function(){//添加管理员方法
       this.$api.manager.addmanagermodel(this.dialogform).then(res=>{
