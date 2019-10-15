@@ -243,7 +243,7 @@ export default {
   },
   created(){
     this.getManagerList();
-    
+    this.getRoleSelectList();
   },
   methods:{
     getManagerList:function(){//获取管理员列表
@@ -301,7 +301,6 @@ export default {
       this.dialogform={}
       this.addorupdate=true
       this.disabled=false
-      this.getRoleSelectList();
     },
     addManagerModel:function(){//添加管理员方法
       this.$api.manager.addmanagermodel(this.dialogform).then(res=>{

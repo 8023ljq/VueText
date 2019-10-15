@@ -27,7 +27,7 @@ export const updateMenu = data =>{
   })
 }
 
-// 查找导航菜单树
+// 查找导航菜单树(主路由控制)
 export const findNavTree = (params) => {
   return axios({
     url: 'menu/getmenulist?userId='+ params,
@@ -60,5 +60,14 @@ export const deletePower =data =>{
     url: 'menu/deletemenupower?guid='+ data,
     method: 'get',
     data
+  })
+}
+
+// 所有路由
+export const findAllMenu = (params) => {
+  return axios({
+    url: 'menu/getallmenulist?userId='+ params,
+    method: 'get',
+    params
   })
 }

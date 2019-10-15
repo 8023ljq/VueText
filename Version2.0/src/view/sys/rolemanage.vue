@@ -84,16 +84,17 @@
             node-key="id"
             class="permission-tree"
             highlight-current
+            :expand-on-click-node="false"
             @check-change="leftCheckChange">
             <span class="custom-tree-node" slot-scope="{ node, data }" >
               <span>{{ data.label }}</span>
                 <span style="margin-left: 50px;">
-                  <el-checkbox 
+                     <el-checkbox 
                     v-for="DataList in data.buttonArry" 
-                    :label="DataList.label" 
                     :key="DataList.id"
-                    @change="onChange"
-                    v-model="checkVal">
+                    :label="DataList.id" 
+                    v-model="checkVal"
+                    @change="onChange">
                     {{DataList.label}}</el-checkbox>
                 </span>
             </span>
@@ -155,6 +156,7 @@ export default {
         IsDelete:false,
         Remarks:"",
         SelectedArray:[],
+        MenuPowerArry:[]
       },
       dialogFormVisible:false,
       PurviewdialogVisible:false,
@@ -208,23 +210,25 @@ export default {
       this.dialogform.Id=roleId
        this.$api.managerrole.selectrolemodel(roleId).then(res=>{
         this.$refs.tree.setCheckedKeys(res.ResultData.RoleArray);
+        this.checkVal=res.ResultData.PowerArray
       })
     },
     updateNowPurview(roleId){//修改权限信息
       this.dialogform.Id=roleId
       this.dialogform.SelectedArray= this.$refs.tree.getCheckedKeys()
-      this.$message({ message: this.dialogform.SelectedArray, type: "success" })
-       this.$message({ message: this.checkVal, type: "success" })
-      // this.$api.managerrole.updatenowpurview(this.dialogform).then(res=>{
-      //    this.$message({ message: res.ResultMsgs, type: res.ResultType })
-      //     if(res.ResultCode == 200){
-      //       this.PurviewdialogVisible=false
-      //       this.getManagerRolList()
-      //     }
-      // })
+      this.dialogform.MenuPowerArry= this.checkVal
+      //this.$message({ message: this.dialogform.SelectedArray, type: "success" })
+      //this.$message({ message: this.checkVal, type: "success" })
+      this.$api.managerrole.updatenowpurview(this.dialogform).then(res=>{
+         this.$message({ message: res.ResultMsgs, type: res.ResultType })
+          if(res.ResultCode == 200){
+            this.PurviewdialogVisible=false
+            this.getManagerRolList()
+          }
+      })
     },
     getManager(){//获取所有菜单集合
-      this.$api.common.findNavTree().then(res=>{
+      this.$api.common.findAllMenu().then(res=>{
         //res.ResultData.data.Buttonchildren=addSelectButton(res.ResultData.data.Buttonchildren)
         this.routesData=addSelectMenu(res.ResultData.data);
         console.log(this.routesData)
