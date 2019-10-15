@@ -12,6 +12,7 @@
     <!-- <i :class="menu.IconUrl"></i> -->
     <i v-if="menu.ParentId==='0'" :class="menu.IconUrl"></i>
     <i v-else class="el-icon-s-operation"></i>
+     <!-- <i class="el-icon-s-operation"></i> -->
     <span slot="title" class="title">{{menu.FullName}}</span>
   </el-menu-item>
 </template>

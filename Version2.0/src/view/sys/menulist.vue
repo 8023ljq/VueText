@@ -40,6 +40,8 @@
             <i v-else class="el-icon-s-operation"></i>
           </template>
         </el-table-column>
+        <el-table-column prop="Sort" label="排序字段" style="width: 5%" align="center"> 
+        </el-table-column>
         <el-table-column prop="IsShow" label="是否显示" style="width: 5%" align="center">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.IsShow" disabled></el-switch>
