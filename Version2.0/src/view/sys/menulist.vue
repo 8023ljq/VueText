@@ -136,8 +136,9 @@
                 </el-table-column>
                 <el-table-column prop="Purview" label="按钮标识">
                 </el-table-column>
-                <el-table-column label="操作" min-width="50" align="center">
+                <el-table-column label="操作" min-width="100" align="center">
                   <template slot-scope="scope">
+                   <el-button type="primary" size="mini" icon="el-icon-edit" @click="updatepower(scope.row.GuId)">修改</el-button>
                    <el-button type="danger" size="mini" icon="el-icon-delete" @click="deletepower(scope.row.GuId)">删除</el-button>
                   </template> 
                 </el-table-column>
@@ -147,7 +148,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false" size="medium">取 消</el-button>
-          <el-button v-if="purviewVisible" @click="addmenupower()" size="medium">添加按钮</el-button>
+          <el-button v-if="purviewVisible" @click="addmenupower('databuttonform')" size="medium">添加按钮</el-button>
           <el-button type="primary" v-if="addButtonVisible"  @click="addNewMenu()" size="medium">确 定</el-button>
           <el-button type="primary" v-else @click="UpdateNewMenu()" size="medium">提 交</el-button>
         </div>
@@ -155,16 +156,17 @@
        <!-- 添加按钮弹出框 -->
       <el-dialog title="添加按钮"  :visible.sync="dialogButtonVisible" :close-on-click-modal="false" :center="false" width="20%">
         <el-form ref="databuttonform" :model="databuttonform" :rules="fieldRules" label-width="80px">
-           <el-form-item label="按钮名称" prop="PowerName" required>
-            <el-input type="text" v-model="databuttonform.PowerName"></el-input>
+           <el-form-item label="按钮名称" prop="FullName" required>
+            <el-input type="text" v-model="databuttonform.FullName"></el-input>
           </el-form-item>
-            <el-form-item label="按钮标识" prop="PowerMark" required>
-            <el-input type="text" v-model="databuttonform.PowerMark"></el-input>
+            <el-form-item label="按钮标识" prop="Purview" required>
+            <el-input type="text" v-model="databuttonform.Purview"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogButtonVisible = false" size="medium">取 消</el-button>
-          <el-button type="primary" @click="addmenupoweract()" size="medium">确 定</el-button>
+          <el-button type="primary" v-if="addpowerVisible" @click="addmenupoweract()" size="medium">确 定</el-button>
+          <el-button type="primary" v-else @click="updatemenupoweract()" size="medium">提 交</el-button>
         </div>
       </el-dialog>
       <!-- 选择标签弹出框 -->
@@ -238,9 +240,10 @@ export default {
         Remarks:"",
       },
       databuttonform:{
-        MenuId:"",
-        PowerName:"",
-        PowerMark:""
+        GuId:"",
+        ParentId:"",
+        FullName:"",
+        Purview:""
       },
       options:[{}],//树形数据
       titlename:"",//弹窗标题
@@ -253,6 +256,7 @@ export default {
       addButtonVisible:true,
       tagData:['el-icon-s-operation'],//标签显示数据
       dialogTagVisible:false,//选择标签弹窗是否显示
+      addpowerVisible:true,//添加按钮弹窗的提交/确定控制
       fieldRules:{//表单数据验证
         GuId:[
           { required: true, message: '请选择菜单等级', trigger: 'blur' },
@@ -382,8 +386,12 @@ export default {
         this.dialogform.AddressUrl=""
       }
     },
-    addmenupower(){// 添加其他按钮权限弹窗
+    addmenupower(formName){// 添加其他按钮权限弹窗
       this.dialogButtonVisible=true
+      this.addpowerVisible=true
+       if (this.$refs[formName]!==undefined) {
+        this.$refs.databuttonform.resetFields();
+      }
     },
     addmenupoweract(){// 添加其他按钮权限操作
       this.databuttonform.MenuId=this.dialogform.GuId
@@ -411,11 +419,28 @@ export default {
         })
       })
     },
-    handleClose(tag) {// 标签删除方法
-      this.tagData=""
+    updatepower(menuId){// 修改按钮弹窗
+      this.dialogButtonVisible=true
+      this.addpowerVisible=false
+      this.$api.common.getmenuPower(menuId).then(res=>{
+        if(res.ResultCode==200)
+        {
+          this.databuttonform=res.ResultData.data
+        }
+        else{
+           this.$message({ message: res.ResultMsgs, type: res.ResultType })
+        }
+      })
     },
-    choosetag(){// 选择标签弹窗
-      this.dialogTagVisible=true
+    updatemenupoweract(){
+       this.$api.common.updatemenuPower(this.databuttonform).then(res=>{
+         this.$message({ message: res.ResultMsgs, type: res.ResultType })
+         if(res.ResultType==200)
+         {
+           this.dialogButtonVisible=false
+           this.editdata(this.dialogform.GuId)
+         }
+       })
     }
   }
 }

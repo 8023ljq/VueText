@@ -153,7 +153,7 @@ function addDynamicRoutes (menuList = [], routes = []) {
          name: menuList[i].FullName,
          meta: {
            icon: menuList[i].IconUrl,
-           index: menuList[i].Sort
+           index: menuList[i].Id
          }
        }
        let path = getIFramePath(menuList[i].AddressUrl)

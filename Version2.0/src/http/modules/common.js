@@ -71,3 +71,30 @@ export const findAllMenu = (params) => {
     params
   })
 }
+
+// 获取单个按钮信息
+export const updatePower = data =>{
+  return axios({
+    url: 'menu/getmenupower?guid='+ data,
+    method: 'get',
+    data
+  })
+}
+
+// 获取单个按钮信息
+export const getmenuPower = data =>{
+  return axios({
+    url: 'menu/getmenupower?guid='+ data,
+    method: 'get',
+    data
+  })
+}
+
+// 修改当前按钮信息
+export const updatemenuPower = data =>{
+  return axios({
+    url: 'menu/updatemenupower',
+    method: 'post',
+    data
+  })
+}
