@@ -90,6 +90,8 @@ export default {
           else{
             this.$message({ message: res.ResultMsgs, type: 'success' })
             sessionStorage.removeItem("user")
+             // 清除菜单加载状态
+            this.$store.commit('menuRouteLoaded', false)
             this.deleteCookie("token")
             this.$router.push("/login")
           }
