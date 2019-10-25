@@ -12,6 +12,7 @@ export const ApiUrl = 'http://localhost:51543/api'
 export const ImgUrl = 'http://localhost:8090'
 //图片上传接口地址
 export const UploadFileUrl = 'http://localhost:51543/api/uploadfile/newuploadfile'
+// export const UploadFileUrl = 'http://localhost:51543/api/uploadfile/newuploadfile'
 //export const UploadFileUrl = 'http://47.75.241.154:8012/api/uploadfile/newuploadfile'
 
 export default {

@@ -156,6 +156,7 @@ export default {
         IsDelete:false,
         Remarks:"",
         SelectedArray:[],
+        FatherArray:[],
         MenuPowerArry:[]
       },
       dialogFormVisible:false,
@@ -215,9 +216,12 @@ export default {
     },
     updateNowPurview(roleId){//修改权限信息
       this.dialogform.Id=roleId
-      this.dialogform.SelectedArray= this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys())//.concat(this.$refs.tree.getHalfCheckedKeys())包含选中数据的第一级数据key
+      this.dialogform.SelectedArray= this.$refs.tree.getCheckedKeys()//.concat(this.$refs.tree.getHalfCheckedKeys())包含选中数据的第一级数据key
       this.dialogform.MenuPowerArry= this.checkVal
-      //this.$message({ message: this.checkVal, type: "success" })
+      this.dialogform.FatherArray=this.$refs.tree.getHalfCheckedKeys()
+      // this.$message({ message: this.dialogform.SelectedArray, type: "success" })
+      // this.$message({ message: this.dialogform.FatherArray, type: "success" })
+      // this.$message({ message: this.dialogform.SelectedArray, type: "success" })
       this.$api.managerrole.updatenowpurview(this.dialogform).then(res=>{
          this.$message({ message: res.ResultMsgs, type: res.ResultType })
           if(res.ResultCode == 200){

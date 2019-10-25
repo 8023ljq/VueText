@@ -111,7 +111,7 @@
                <el-input v-model="dialogform.Phone"></el-input>
             </el-form-item>
           </el-col>
-           <!-- <el-col :span="4">
+           <el-col :span="4">
             <el-form-item label="用户头像" required>
              <el-upload
                class="avatar-uploader"
@@ -123,7 +123,7 @@
                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
              </el-upload>
             </el-form-item>
-          </el-col> -->
+          </el-col>
       </el-row>
        <el-row :gutter="20">
           <el-col :span="11">
