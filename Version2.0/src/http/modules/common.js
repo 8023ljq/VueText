@@ -66,7 +66,7 @@ export const deletePower =data =>{
 // 所有路由
 export const findAllMenu = (params) => {
   return axios({
-    url: 'menu/getallmenulist?userId='+ params,
+    url: 'menu/getallmenulist?userId='+ params+'&asdd='+asdd,
     method: 'get',
     params
   })
