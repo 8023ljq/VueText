@@ -8,6 +8,7 @@ export default {
   // 请求头信息
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
+     //'content-type' : 'application/x-www-form-urlencoded',
     'token': Cookies.get('token')
   },
   // 参数

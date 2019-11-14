@@ -270,7 +270,7 @@ export default {
   },
   methods: {
     convert: function() { // 获取菜单树形结构数据(进入页面默认加载列表)
-      this.$api.common.findAllMenu().then(res => {
+      this.$api.common.findAllMenu({a:"sdadas",b:"sadad"}).then(res => {
         this.tableData = res.ResultData.data;
       })
     },

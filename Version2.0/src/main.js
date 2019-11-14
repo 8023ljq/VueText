@@ -11,9 +11,11 @@ import '../src/assets/icon/iconfont.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import axios from 'axios'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$axios=axios;
 Vue.use(api)
 Vue.use(ElementUI)
 

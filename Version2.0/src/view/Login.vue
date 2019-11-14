@@ -46,12 +46,12 @@ export default {
   methods: {
     login() {
       this.loading = true
-      let userInfo = { UserName: this.loginForm.UserName, PassWord: this.loginForm.PassWord }
-      if (userInfo.UserName === '' || userInfo.PassWord === '') {
+      this.$message({ message:this.loginForm, type: 'success' })
+      if (this.loginForm.UserName === '' ||this.loginForm.PassWord=== '') {
         this.$message.error({ message: '请将账号密码输入完整', type: 'error' })
       }
       else {
-        this.$api.login.login(userInfo).then((res) => {
+        this.$api.login.login(this.loginForm).then((res) => {
           if (res.ResultCode !== 200) {
             this.$message({ message: res.ResultMsgs, type: 'error' })
           }

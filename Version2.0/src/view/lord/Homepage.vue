@@ -62,7 +62,7 @@
      <el-col :span="16" :xs="12" :sm="12" :lg="17">
          <div class="grid-content">
             <el-card shadow="always" class="datapanel">
-             
+             <el-button type="primary" @click="testExport()">主要按钮</el-button>
              </el-card>  
          </div>
      </el-col>
@@ -98,10 +98,37 @@ export default {
   },
   data () {
     return {
-        value:50
+        value:50,
+        PageModel:{
+          pageSize:10,
+          curPage:1
+        }
     }
    },
    methods: {
+     testExport:function(){
+        this.$axios({
+        method:'post',
+        url:'/exportData/api/text/exportdata',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        responseType:'blob',
+        data:this.PageModel
+      },).then(res=>{
+         const link = document.createElement('a');
+         let fileName='xxx';
+        let blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=utf-8'});
+        link.style.display = 'none';
+        link.href = URL.createObjectURL(blob);
+        link.download =fileName //下载的文件名
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }).catch(err=>{
+        console.log(err);
+      })
+     }
   }
 }
 </script>

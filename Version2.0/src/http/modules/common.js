@@ -98,3 +98,13 @@ export const updatemenuPower = data =>{
     data
   })
 }
+
+// 修改当前按钮信息
+export const testExport = data =>{
+  return axios({
+    url: 'text/exportdata',
+    method: 'post',
+    //responseType:'blob',
+    data
+  })
+}
