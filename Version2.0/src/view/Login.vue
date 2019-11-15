@@ -46,7 +46,7 @@ export default {
   methods: {
     login() {
       this.loading = true
-      this.$message({ message:this.loginForm, type: 'success' })
+      // this.$message({ message:this.loginForm, type: 'success' })
       if (this.loginForm.UserName === '' ||this.loginForm.PassWord=== '') {
         this.$message.error({ message: '请将账号密码输入完整', type: 'error' })
       }
