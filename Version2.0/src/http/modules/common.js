@@ -108,3 +108,33 @@ export const testExport = data =>{
     data
   })
 }
+
+// 测试接口A
+export const testA = params =>{
+  return axios({
+    url: 'common/apia',
+    method: 'get',
+    //responseType:'blob',
+    params
+  })
+}
+
+// 测试接口B
+export const testB = params =>{
+  return axios({
+    url: 'common/apib',
+    method: 'get',
+    //responseType:'blob',
+    params
+  })
+}
+
+// 测试接口C
+export const testC = params =>{
+  return axios({
+    url: 'common/apic',
+    method: 'get',
+    //responseType:'blob',
+    params
+  })
+}

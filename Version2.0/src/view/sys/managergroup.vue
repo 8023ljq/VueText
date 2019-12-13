@@ -130,6 +130,9 @@ export default {
   created(){
     this.GetManagerGroupList();//获取用户组列表
     this.getGroupSelectList();//获取用户组下拉列表
+    this.testA();
+    this.testB();
+    this.testC();
   },
   computed: {
     mainTabs: {
@@ -247,6 +250,21 @@ export default {
       }
       //通过菜单URL跳转至指定路由
       this.$router.push("/" + path+Id)
+    },
+     testA(){//测试接口A
+     this.$api.common.testA().then(res => {
+       console.log(res.ResultData.data);
+      })
+    },
+    testB(){//测试接口B
+      this.$api.common.testB().then(res => {
+       console.log(res.ResultData.data);
+      })
+    },
+    testC(){//测试接口C
+     this.$api.common.testC().then(res => {
+       console.log(res.ResultData.data);
+      })
     },
   }
 }
