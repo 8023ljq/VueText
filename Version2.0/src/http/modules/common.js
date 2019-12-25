@@ -138,3 +138,11 @@ export const testC = params =>{
     params
   })
 }
+  // 测试接口C
+export const getarr = data =>{
+  return axios({
+    url: 'test/getarr',
+    method: 'post',
+    data
+  })
+}
