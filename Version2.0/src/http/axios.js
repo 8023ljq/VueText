@@ -8,6 +8,8 @@ import { MessageBox } from 'element-ui'
 // 使用vuex做全局loading时使用
 // import store from '@/store'
 
+let bool=true;//防止拦截窗多次弹出
+
 export default function $axios (options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
@@ -82,15 +84,18 @@ export default function $axios (options) {
         // 根据返回的code值来做不同的处理
         switch (data.ResultCode) {
           case 700:
-            MessageBox.alert('当前账号已掉线或在另一端登录', '登录超时', {
-              type: 'warning',
-              confirmButtonText: '跳转至登录页面',
-              callback: action => {
-                sessionStorage.removeItem("user")
-                store.state.app.menuRouteLoaded=false
-                router.push({path: '/login'})
-              }
-            })
+            if(bool){
+              bool=false;
+              MessageBox.alert('当前账号已掉线或在另一端登录', '登录超时', {
+                type: 'warning',
+                confirmButtonText: '跳转至登录页面',
+                callback: action => {
+                  sessionStorage.removeItem("user")
+                  store.state.menuRouteLoaded=false
+                  router.push({path: '/login'})
+                }
+              })
+            }
             break
           case 0:
             store.commit('changeState')

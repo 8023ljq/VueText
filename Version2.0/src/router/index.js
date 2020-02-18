@@ -8,6 +8,7 @@ import lord from '@/view/lord/lord'
 import Homepage from '@/view/lord/Homepage'
 import text from '@/view/sys/text'
 import { getIFramePath, getIFrameUrl } from '@/utils/iframe'
+import Cookies from 'js-cookie'
 
 Vue.use(Router)
 
@@ -50,24 +51,43 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // 登录成功之后,把用户信息保存在会话
   // 存在时间为会话生命周期,页面关闭即失效
-  let user = sessionStorage.getItem('user')
+  // let user = sessionStorage.getItem('user')
+  // if (to.path === '/login') {
+  //   // 用户访问登录页时,检查用户会话信息是否存在,存在即进主页,不存在就回到登录页
+  //   if (user) {
+  //     next({ path: '/' })
+  //   } else {
+  //     next()
+  //   }
+  // } else {
+  //   // 如果用户进的不是登录页,检查用户会话是否存在
+  //   if (!user) {
+  //     next({ path: '/login' })
+  //   } else {
+  //     // 加载动态菜单和路由
+  //     addDynamicMenuAndRoutes(user.UserId, to, from)
+  //     next()
+  //   }
+  // }
+
+  let token =  Cookies.get('token')
   if (to.path === '/login') {
-    // 用户访问登录页时,检查用户会话信息是否存在,存在即进主页,不存在就回到登录页
-    if (user) {
-      next({ path: '/' })
+      // 用户访问登录页时,检查用户会话信息是否存在,存在即进主页,不存在就回到登录页
+      if (token) {
+        next({ path: '/' })
+      } else {
+        next()
+      }
     } else {
-      next()
-    }
-  } else {
-    // 如果用户进的不是登录页,检查用户会话是否存在
-    if (!user) {
-      next({ path: '/login' })
-    } else {
-      // 加载动态菜单和路由
-      addDynamicMenuAndRoutes(user.UserId, to, from)
-      next()
-    }
-  }
+      // 如果用户进的不是登录页,检查用户会话是否存在
+      if (!token) {
+        next({ path: '/login' })
+      } else {
+        // 加载动态菜单和路由
+        addDynamicMenuAndRoutes('', to, from)
+        next()
+      }
+    }  
 })
 
 /**
