@@ -62,7 +62,10 @@
         </el-menu-item> -->
         <!-- 用户信息 -->
         <el-menu-item index="5" v-popover:popover-personal>
-          <span class="user-info"><img :src="user.avatar" />{{user.name}}</span>
+          <span class="user-info">
+            <!-- <img :src="user.avatar" />{{user.name}} -->
+            <img src="@/assets/jpg/backdrop.jpg" />{{user.name}}
+          </span>
           <el-popover ref="popover-personal" placement="bottom-end" trigger="click" :visible-arrow="false">
             <personal-panel :user="user"></personal-panel>
           </el-popover>
@@ -85,7 +88,7 @@ export default {
     return {
       user: {
         name: "Login.....",
-        avatar: "@/assets/logo.png",
+        avatar: "@/assets/png/logo.png",
         role: "超级管理员",
         registeTime: "2018-12-25"
       },

@@ -235,7 +235,7 @@ export default {
     },
     getManager(){//获取所有菜单集合
       this.$api.common.findAllMenu().then(res=>{
-        //res.ResultData.data.Buttonchildren=addSelectButton(res.ResultData.data.Buttonchildren)
+        console.log(res.ResultData.data)
         this.routesData=addSelectMenu(res.ResultData.data);
         console.log(this.routesData)
       })

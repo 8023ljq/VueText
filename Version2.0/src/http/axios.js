@@ -91,6 +91,7 @@ export default function $axios (options) {
                 confirmButtonText: '跳转至登录页面',
                 callback: action => {
                   sessionStorage.removeItem("user")
+                  Cookies.remove("token");
                   store.state.menuRouteLoaded=false
                   router.push({path: '/login'})
                 }

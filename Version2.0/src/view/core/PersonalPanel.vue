@@ -2,7 +2,8 @@
   <div class="personal-panel">
     <div class="personal-desc" :style="{'background':this.$store.state.app.themeColor}">
         <div class="avatar-container">
-           <img class="avatar" :src="user.avatar" />
+           <!-- <img class="avatar" :src="user.avatar" /> -->
+           <img class="avatar" src="@/assets/jpg/backdrop.jpg" />
         </div>  
         <div class="name-role">
           <span class="sender">{{ user.name }} - {{ user.role }}</span>  
@@ -64,7 +65,7 @@ export default {
       type: Object,
       user: {
         name: "admin",
-        avatar: "@/assets/user.png",
+        avatar: "@/assets/png/user.png",
         role: "超级管理员",
         registeTime: "2018-12-25"
       }

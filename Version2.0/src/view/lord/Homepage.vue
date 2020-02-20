@@ -4,7 +4,7 @@
        <el-col :xs="12" :sm="12" :lg="6">
         <el-card shadow="always" class="datapanel">
           <div class="imgpanel">
-            <img src="@/assets/urgent.png" class="imgsty">
+            <img src="@/assets/png/urgent.png" class="imgsty">
           </div>
           <div class="countpanel">
                 <div class="textpanel">
@@ -18,7 +18,7 @@
         <el-col :xs="12" :sm="12" :lg="6">
             <el-card shadow="always" class="datapanel">
              <div class="imgpanel">
-               <img src="@/assets/userlist.png" class="imgsty">
+               <img src="@/assets/png/userlist.png" class="imgsty">
              </div>
              <div class="countpanel">
                 <div class="textpanel">
@@ -32,7 +32,7 @@
         <el-col :xs="12" :sm="12" :lg="6">
            <el-card shadow="always" class="datapanel">
              <div class="imgpanel">
-               <img src="@/assets/text.png" class="imgsty">
+               <img src="@/assets/png/text.png" class="imgsty">
              </div>
              <div class="countpanel">
                 <div class="textpanel">
@@ -46,7 +46,7 @@
         <el-col :xs="12" :sm="12" :lg="6">
            <el-card shadow="always" class="datapanel">
              <div class="imgpanel">
-               <img src="@/assets/info.png" class="imgsty">
+               <img src="@/assets/png/info.png" class="imgsty">
              </div>
              <div class="countpanel">
                 <div class="textpanel">
@@ -82,7 +82,7 @@
         <div class="grid-content">
             <el-card shadow="always" >
                 <div slot="header">
-                  <img src="http://localhost:8090/upload/jpg/20190819/2019081917293839847544.jpg" style="width:100%;margin:ouat;height: 270px;">
+                  <img src="@/assets/jpg/backdrop.jpg" style="width:100%;margin:ouat;height: 270px;">
                 </div>
                 <div style="margin: 10px 20px">
                     <div class="progress-item">

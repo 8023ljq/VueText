@@ -4,19 +4,6 @@
    <el-row>
     <el-col :span="1">   
       <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog()">添加</el-button>
-      <el-upload
-    class="upload-demo"
-    action=""
-    :on-change="handleChange"
-    :on-exceed="handleExceed"
-    :on-remove="handleRemove"
-    :limit=1
-    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
-    :auto-upload="false">
-    <el-button size="small" type="primary">点击上传</el-button>
-    <div slot="tip" class="el-upload__tip">只 能 上 传 xlsx / xls 文 件</div>
-</el-upload>
- <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="testC()">上传</el-button>
     </el-col>
    </el-row>
   </div>
@@ -145,8 +132,6 @@ export default {
   created(){
     this.GetManagerGroupList();//获取用户组列表
     this.getGroupSelectList();//获取用户组下拉列表
-    this.testA();
-    this.testB();
   },
   computed: {
     mainTabs: {
@@ -264,22 +249,6 @@ export default {
       }
       //通过菜单URL跳转至指定路由
       this.$router.push("/" + path+Id)
-    },
-    testA(){//测试接口A
-     this.$api.common.testA().then(res => {
-       console.log(res.ResultData.data);
-      })
-    },
-    testB(){//测试接口B
-      this.$api.common.testB().then(res => {
-       console.log(res.ResultData.data);
-      })
-    },
-    testC(){//测试接口C
-     console.log(this.arr)
-     this.$api.common.getarr(this.arr).then(res => {
-        console.log(res.ResultData.data);
-      })
     },
     handleExceed(){
       this.$message({
