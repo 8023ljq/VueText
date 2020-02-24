@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/view/Home'
 import Login from '@/view/Login'
+import NewLogin from '@/view/NewLogin'
 import store from '@/store'
 import api from '@/http/api'
 import lord from '@/view/lord/lord'
@@ -40,7 +41,7 @@ const router = new Router({
     {
       path: '/login',
       name: '登录',
-      component: Login
+      component: NewLogin
     },
   ]
 })
