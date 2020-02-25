@@ -3,7 +3,9 @@
     <!-- logo -->
     <div class="logo" :style="{'background-color':themeColor}" :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
       @click="$router.push('/')">
-        <img v-if="collapse" src="@/assets/png/logo.png"/> <div>{{collapse?'':appName}}</div>
+        <img v-if="collapse" src="@/assets/png/logo.png"/>
+        <img src="@/assets/png/logo.png" style="width: 30px; height: 30px;">
+        <div style="font-size: 22px;">{{collapse?'':appName}}</div>
     </div>
     <!-- 导航菜单 -->
   
@@ -105,7 +107,7 @@ export default {
         width: 40px;
         height: 40px;
         border-radius: 0px;
-        margin: 10px 10px 10px 10px;
+        margin: 18px 10px 10px 10px;
         float: left;
     }
     div {

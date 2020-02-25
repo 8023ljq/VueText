@@ -13,9 +13,9 @@
       <div class="WindowRight">
         <el-form :model="loginForm" :rules="fieldRules" ref="loginForm" class="Right_container">
           <header style="display: flex;justify-content: space-between;align-items: flex-end;">
-            <h2 class="Right_title">登录</h2>
-            <span class="Right_regis" style="font-size: 14px;padding-bottom: 20px;">没有账号? 
-              <router-link to="/register" tag='a' style="text-decoration: none;color:#409EFF">点此注册 </router-link>
+            <h2 class="Right_title">注册</h2>
+             <span class="Right_regis" style="font-size: 14px;padding-bottom: 20px;">已有账号? 
+              <router-link to="/login" tag='a' style="text-decoration: none;color:#409EFF">点此登录</router-link>
             </span>
           </header>
           <el-form-item prop="UserName">
@@ -24,11 +24,11 @@
           <el-form-item prop="PassWord">
             <el-input type="password" prefix-icon="icon-mima" v-model="loginForm.PassWord" auto-complete="off" placeholder="8到16位数字,字母组合" minlength="6" maxlength="16"></el-input>
           </el-form-item>
-          <el-form-item style="width:100%;">
-            <el-button  style="width:100%;background-color: #FE7300;color:#fff" @click.native.prevent="login('loginForm')" :loading="loading">登 录</el-button>
+           <el-form-item prop="PassWord">
+            <el-input type="password" prefix-icon="icon-mima" v-model="loginForm.PassWord" auto-complete="off" placeholder="" minlength="6" maxlength="16"></el-input>
           </el-form-item>
-           <el-form-item style="width:100%;">.
-            <router-link to="/register" tag='a' style="text-decoration: none;color:#409EFF">已有账号,忘记密码?</router-link>
+          <el-form-item style="width:100%;">
+            <el-button style="width:100%;background-color: #FE7300;color:#fff"  @click.native.prevent="login('loginForm')" :loading="loading">立即注册</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -91,7 +91,7 @@ export default {
           this.loading = false
         })
       }
-    },
+    }
   }
 }
 </script>
@@ -105,8 +105,6 @@ export default {
   background-color: #fff;
   overflow: hidden;
   display:table;
-  //background-image:url("../assets/jpg/bjthree.jpg") ;
-  //background-repeat: no-repeat;
 }
 #LginTop{
   width: 100%;
@@ -114,7 +112,7 @@ export default {
 }
 #LoginWindow{
   width: 50%;
-  height: 50%;
+  height: 70%;
   margin: auto;
   box-shadow: 0px 20px 80px 0px rgba(0,0,0,0.3);
   .WindowLeft{
@@ -122,15 +120,14 @@ export default {
    height: 100%;
    float: left;
    background:#607089;
-   .Left_container{
-      height: 60%;
-      padding: 50px;
-     
-    }
    //opacity:0.60;
    //background-image:url("../assets/jpg/timg.jpg") ;
    //background-repeat: no-repeat;
    //background-size: 100% auto;
+    .Left_container{
+      height: 60%;
+      padding: 50px;
+    }
   }
   .WindowRight{
     width:50%;
@@ -144,12 +141,12 @@ export default {
 }
 #LginBottom{
   width: 100%;
-  height: 38%;
+  height: 18%;
   //background-color: #607089;
   .BottomInfo{
     width: 70%;
     margin: auto;
-    padding-top: 15%;
+    padding-top: 5%;
     .router_link{
       margin-left:10px; 
       font-size: 14px;
