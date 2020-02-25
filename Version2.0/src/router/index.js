@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/view/Home'
 import Login from '@/view/Login'
 import NewLogin from '@/view/NewLogin'
+import Register from '@/view/Register'
 import store from '@/store'
 import api from '@/http/api'
 import lord from '@/view/lord/lord'
@@ -43,6 +44,11 @@ const router = new Router({
       name: '登录',
       component: NewLogin
     },
+    {
+      path: '/register',
+      name: '注册',
+      component: Register
+    },
   ]
 })
 
@@ -70,9 +76,8 @@ router.beforeEach((to, from, next) => {
   //     next()
   //   }
   // }
-
   let token =  Cookies.get('token')
-  if (to.path === '/login') {
+  if (to.path === '/login'||to.path === '/register') {
       // 用户访问登录页时,检查用户会话信息是否存在,存在即进主页,不存在就回到登录页
       if (token) {
         next({ path: '/' })
