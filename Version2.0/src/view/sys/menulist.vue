@@ -394,13 +394,13 @@ export default {
       }
     },
     addmenupoweract(){// 添加其他按钮权限操作
-      this.databuttonform.MenuId=this.dialogform.GuId
+      this.databuttonform.ParentId=this.dialogform.GuId
       debugger
       this.$api.common.addMenuPowerAct(this.databuttonform).then(res => {
         this.$message({ message: res.ResultMsgs, type: res.ResultType })
         if(res.ResultCode==200){
           this.dialogButtonVisible=false
-          this.editdata(this.databuttonform.MenuId)
+          this.editdata(this.databuttonform.ParentId)
         }
       })
     },
