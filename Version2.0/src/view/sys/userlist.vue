@@ -244,9 +244,6 @@ export default {
   created(){
     this.getManagerList();
     this.getRoleSelectList();
-    this.testA();
-    this.testB();
-    this.testC();
   },
   methods:{
     getManagerList:function(){//获取管理员列表
@@ -376,21 +373,6 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isJPG && isLt2M;
-    },
-    testA(){//测试接口A
-     this.$api.common.testA().then(res => {
-       console.log(res.ResultData.data);
-      })
-    },
-    testB(){//测试接口B
-      this.$api.common.testB().then(res => {
-       console.log(res.ResultData.data);
-      })
-    },
-    testC(){//测试接口C
-     this.$api.common.testC().then(res => {
-       console.log(res.ResultData.data);
-      })
     },
   }
 }

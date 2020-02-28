@@ -109,40 +109,11 @@ export const testExport = data =>{
   })
 }
 
-// 测试接口A
-export const testA = params =>{
+// 清除所有菜单缓存
+export const cleanCache = (params) => {
   return axios({
-    url: 'common/apia',
+    url: 'menu/cleancache',
     method: 'get',
-    //responseType:'blob',
     params
-  })
-}
-
-// 测试接口B
-export const testB = params =>{
-  return axios({
-    url: 'common/apib',
-    method: 'get',
-    //responseType:'blob',
-    params
-  })
-}
-
-// 测试接口C
-export const testC = params =>{
-  return axios({
-    url: 'common/apic',
-    method: 'get',
-    //responseType:'blob',
-    params
-  })
-}
-  // 测试接口C
-export const getarr = data =>{
-  return axios({
-    url: 'test/getarr',
-    method: 'post',
-    data
   })
 }

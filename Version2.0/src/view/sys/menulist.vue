@@ -5,9 +5,10 @@
         <!-- <el-col :span="4">
           <el-input size="medium" placeholder="请输入内容" prefix-icon="el-icon-search" ></el-input>
           </el-col> -->
-        <el-col :span="1">
+        <el-col :span="1" style="width:100%;padding-bottom:10px">
           <!-- <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button> -->
-           <el-button size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog('dataform')">新增</el-button>
+           <el-button style="float:left;margin-top:10px" size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog('dataform')">新增</el-button>
+           <el-button style="float:left;margin-top:10px" size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="cleanCache">清理缓存</el-button>
         </el-col>
       </el-row>
     </div>
@@ -56,7 +57,7 @@
       </el-table>
     </div>
     <!-- 添加/编辑菜单数据弹出框 -->
-      <el-dialog :title="titlename" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false" width="40%">
+      <el-dialog :title="titlename" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :center="false"  width="40%">
         <el-form ref="dataform" :model="dialogform" :rules="fieldRules" label-width="80px">
           <el-row :gutter="20">
              <el-col :span="12">
@@ -121,7 +122,7 @@
           <el-form-item label="备注信息" prop="Remarks">
             <el-input type="textarea" v-model="dialogform.Remarks"></el-input>
           </el-form-item>
-          <el-form-item v-if="purviewVisible" label="按钮权限">
+          <el-form-item v-if="purviewVisible" label="按钮权限" style="height: 300px;overflow-y: auto;">
             <template>
               <el-table
                 :data="PowerListData"
@@ -229,7 +230,6 @@ export default {
       PowerListData: [{}],
       tableData: [{}],//菜单表格数据
       dialogform: {//表单数据
-        Id:"",
         GuId:"",
         ParentId:"",
         FullName: "",
@@ -349,6 +349,8 @@ export default {
         });
     },
     UpdateNewMenu(){// 修改菜单信息
+    debugger
+     this.dialogform.ParentId=this.$refs.menucascader.getCheckedNodes()[0].value
       this.$api.common.updateMenu(this.dialogform).then(res=>{
         this.$message({ message: res.ResultMsgs, type: res.ResultType })
          if(res.ResultCode==200)
@@ -380,11 +382,12 @@ export default {
         this.purviewVisible=false
         this.dialogform.AddressUrl="一级菜单"
       }
-      else{
-        this.addressUrldisabled=false
-        this.purviewVisible=true
-        this.dialogform.AddressUrl=""
-      }
+      // else{
+      //   this.addressUrldisabled=false
+      //   this.purviewVisible=true
+      //   this.dialogform.AddressUrl=""
+      // }
+      console.log(this.dialogform);
     },
     addmenupower(formName){// 添加其他按钮权限弹窗
       this.dialogButtonVisible=true
@@ -441,6 +444,11 @@ export default {
            this.editdata(this.dialogform.GuId)
          }
        })
+    },
+    cleanCache(){//清除所有菜单缓存
+      this.$api.common.cleanCache().then(res=>{
+        this.$message({ message: res.ResultMsgs, type: res.ResultType })
+      })
     }
   }
 }
@@ -449,7 +457,6 @@ export default {
 * @param {*} menuList 菜单列表
 */
 function addSelectMenu(menuList){
-  debugger
   const result = []
   for(var i=0;i<menuList.length;i++){
     const value= menuList[i].GuId

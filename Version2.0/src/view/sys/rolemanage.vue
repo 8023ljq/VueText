@@ -171,9 +171,6 @@ export default {
   created(){
     this.getManagerRolList();
     this.getManager();
-    this.testA();
-    this.testB();
-    this.testC();
   },
   methods:{
     getManagerRolList:function(){//获取角色列表信息
@@ -314,21 +311,6 @@ export default {
     },
     onChange() {
      // this.$message("xxx");
-    },
-     testA(){//测试接口A
-     this.$api.common.testA().then(res => {
-       console.log(res.ResultData.data);
-      })
-    },
-    testB(){//测试接口B
-      this.$api.common.testB().then(res => {
-       console.log(res.ResultData.data);
-      })
-    },
-    testC(){//测试接口C
-     this.$api.common.testC().then(res => {
-       console.log(res.ResultData.data);
-      })
     },
   }
 }
