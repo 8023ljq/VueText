@@ -12,7 +12,7 @@ export const getmanagerList=data=>{
 // 获取单个管理员信息
 export const getmanagermodel= (params)=>{
     return axios({
-        url: 'manager/getmanagermodel?mangaerId='+ params,
+        url: 'manager/getmanagermodel',
         method: 'get',
         params
     })

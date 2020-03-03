@@ -320,7 +320,6 @@ export default {
 * @param {*} menuList 菜单列表
 */
 function addSelectMenu(menuList){
-  debugger
   const result = []
   for(var i=0;i<menuList.length;i++){
     const id= menuList[i].GuId

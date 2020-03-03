@@ -101,7 +101,6 @@ router.beforeEach((to, from, next) => {
 */
 function addDynamicMenuAndRoutes(UserId, to, from) {
   // 处理IFrame嵌套页面
-  debugger
   handleIFrameUrl(to.path)
   var menuRouteLoaded=store.state.app.menuRouteLoaded;
   if(menuRouteLoaded) {

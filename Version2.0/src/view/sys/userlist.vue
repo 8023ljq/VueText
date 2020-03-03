@@ -58,7 +58,7 @@
      <el-table-column prop="Remarks" label="备注" align="center"></el-table-column> -->
       <el-table-column fixed="right" label="操作" width="300" align="center">
       <template slot-scope="scope">
-        <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerModel(scope.row.Id)">编辑</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-edit" @click="getManagerModel(scope.row)">编辑</el-button>
         <el-button type="success" size="mini" v-if="scope.row.IsLocking" icon="el-icon-circle-check" @click="disOrEnaManager(scope.row.Id)">启用</el-button>
         <el-button type="danger" size="mini" v-else icon="el-icon-circle-close" @click="disOrEnaManager(scope.row.Id)">停用</el-button>
         <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteManager(scope.row.Id)">删除</el-button>
@@ -243,7 +243,7 @@ export default {
   },
   created(){
     this.getManagerList();
-    this.getRoleSelectList();
+  
   },
   methods:{
     getManagerList:function(){//获取管理员列表
@@ -260,19 +260,20 @@ export default {
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
            this.options = res.ResultData.data;
+           console.log(this.options);
         }
       })
     },
-    getManagerModel:function(mangaerId){//获取当前管理员信息
+    getManagerModel:function(mangaer){//获取当前管理员信息
       this.dialogTitle="编辑管理员"
       this.dialogFormVisible=true
       this.addorupdate=false
-      this.$api.manager.getmanagermodel(mangaerId).then(res=>{
+      this.$api.manager.getmanagermodel({mangaerId:mangaer.Id}).then(res=>{
         if(res.ResultCode == 200&&res.ResultData.data!=null)
         {
-           this.dialogform = res.ResultData.data;
+           this.options = res.ResultData.data.RoleSelectViewList;
+           this.dialogform = res.ResultData.data.ManagerModel;
            this.value=this.dialogform.RelationId;
-           debugger
            if(res.ResultData.data.IsDefault)
            {
              this.disabled=true
