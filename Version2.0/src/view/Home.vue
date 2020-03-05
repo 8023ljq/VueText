@@ -23,12 +23,22 @@ import HeadBar from "./layoutbar/HeadBar"
 import NavBar from "./layoutbar/NavBar"
 import MainContent from "./layoutbar/MainContent"
 import Breadcrumb from "./layoutbar/Breadcrumb"
+import * as signalR from '@aspnet/signalr'
 
 export default {
   data(){
     return{
       widowsStyle:""
     }
+  },
+  mounted(){ 
+    debugger
+  const signal = new signalR.HubConnectionBuilder()//服务器地址
+    .withUrl('http://localhost:51543', {})
+    .build()
+     signal.start().then(() => {
+        console.log('连接');
+    })
   },
   methods:{
     getclass(msg){
@@ -42,7 +52,7 @@ export default {
       NavBar,
       MainContent,
       Breadcrumb
-  }
+  },
 }
 </script>
 

@@ -13,7 +13,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import axios from 'axios'
 import XLSX from 'xlsx'
-
+import 'signalr'
 
 Vue.config.productionTip = false
 
