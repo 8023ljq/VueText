@@ -43,6 +43,20 @@ export default {
       }
     }
   },
+  mounted(){ 
+    debugger
+    var connection = $.hubConnection('localhost:60700');
+    //如果前后端为同一个端口，可不填参数。如果前后端分离，这里参数为服务器端的URL
+    var demoChatHubProxy = connection.createHubProxy('messageHub');
+    // demoChatHub为后端定义，使用驼峰式命名，后端首字母必须大写
+    // addMessageToList 为后端demoChatHub方法
+    demoChatHubProxy.on('sendMessage', function(userName, message) {
+        console.log(userName + ' ' + message);
+    });  
+    connection.start()
+        .done(function(){ console.log('Now connected, connection ID=' + connection.id); })
+        .fail(function(){ console.log('Could not connect'); });
+  },
   methods: {
     login() {
       this.loading = true
@@ -56,10 +70,11 @@ export default {
             this.$message({ message: res.ResultMsgs, type: 'error' })
           }
           else {
+            console.log(res)
             this.$message({ message: res.ResultMsgs, type: 'success' })
-            Cookies.set('token', res.ResultData.Token) // 放置token到Cookie
-            sessionStorage.setItem('user', JSON.stringify(res.ResultData.Data)) // 保存用户到本地会话
-            this.$router.push('/')// 登录成功，跳转到主页
+            // Cookies.set('token', res.ResultData.Token) // 放置token到Cookie
+            // sessionStorage.setItem('user', JSON.stringify(res.ResultData.Data)) // 保存用户到本地会话
+            // this.$router.push('/')// 登录成功，跳转到主页
           }
           this.loading = false
         })
