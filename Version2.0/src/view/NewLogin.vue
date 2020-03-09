@@ -69,6 +69,12 @@ export default {
         ]
       }
     }
+  }, 
+ 
+  mounted(){ 
+    debugger
+    var chat = $.connection.groupHub;
+    console.log(chat);
   },
   methods: {
     login() {

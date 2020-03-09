@@ -13,7 +13,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import axios from 'axios'
 import XLSX from 'xlsx'
-import 'signalr'
+import signalr from './utils/signalR'
 
 Vue.config.productionTip = false
 
@@ -21,6 +21,7 @@ Vue.prototype.$axios=axios;
 Vue.use(api)
 Vue.use(ElementUI)
 Vue.use(XLSX)
+Vue.use(signalr)
 
 /* eslint-disable no-new */
 new Vue({
