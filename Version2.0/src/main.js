@@ -15,6 +15,7 @@ import axios from 'axios'
 import XLSX from 'xlsx'
 import signalr from './utils/signalR'
 
+
 Vue.config.productionTip = false
 
 Vue.prototype.$axios=axios;

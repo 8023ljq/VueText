@@ -17,6 +17,14 @@ module.exports = {
         pathRewrite:{
           '^/exportData':''
         }
+      },
+      '/api':{
+        target:'http://localhost:51543',
+        ws: true,
+        changeOrigin:true,
+        pathRewrite:{
+          '^/api':''
+        }
       }
     },
 
