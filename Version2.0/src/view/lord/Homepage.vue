@@ -1,6 +1,6 @@
 <template>
   <div class="homepagesty">
-    <el-row :gutter="20" class="mainpanel">
+   <el-row :gutter="20" class="mainpanel">
        <el-col :xs="12" :sm="12" :lg="6">
         <el-card shadow="always" class="datapanel">
           <div class="imgpanel">
@@ -59,26 +59,42 @@
        </el-col>
    </el-row>
    <el-row :gutter="20" class="midpanel">
-     <el-col :span="16" :xs="12" :sm="12" :lg="17">
-         <div class="grid-content">
-            <el-card shadow="always" class="datapanel">
-              <el-button type="primary" @click="testExport()">主要按钮</el-button>
-             <el-upload
-    class="upload-demo"
-    action=""
-    :on-change="handleChange"
-    :on-exceed="handleExceed"
-    :on-remove="handleRemove"
-    :limit=1
-    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
-    :auto-upload="false">
-    <el-button size="small" type="primary">点击上传</el-button>
-    <div slot="tip" class="el-upload__tip">只 能 上 传 xlsx / xls 文 件</div>
-</el-upload>
-             </el-card>  
+     <el-col :span="10" >
+         <div class="grid-content" id="container" ref='container' style="max-height:375px">
+          <el-card shadow="always" >
+            <div id="NestedPies" ref="myEchart"></div>
+          </el-card>  
          </div>
      </el-col>
-     <el-col :span="8" :xs="12" :sm="12" :lg="7">
+       <el-col :span="10" >
+         <div class="grid-content" id="container" ref='container' style="max-height:375px">
+            <el-card shadow="always" >
+              <el-button type="primary" @click="testExport()">主要按钮</el-button>
+              <el-upload
+                  class="upload-demo"
+                  action=""
+                  :on-change="handleChange"
+                  :on-exceed="handleExceed"
+                  :on-remove="handleRemove"
+                  :limit=1
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                  :auto-upload="false">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <div slot="tip" class="el-upload__tip">只 能 上 传 xlsx / xls 文 件</div>
+              </el-upload>
+            </el-card>  
+         </div>
+     </el-col>
+      <el-col :span="4" >
+        <div class="grid-content">
+             <el-card shadow="always" >
+            
+            </el-card> 
+        </div>
+     </el-col>
+   </el-row>
+   <el-row :gutter="20" class="midpanel">
+      <el-col :span="4" >
         <div class="grid-content">
             <el-card shadow="always" >
                 <div slot="header">
@@ -97,6 +113,36 @@
              </el-card>  
         </div>
      </el-col>
+     <el-col :span="16" :xs="12" :sm="12" :lg="17">
+         <div class="grid-content" id="container" ref='container' style="max-height:375px">
+            <el-card shadow="always" >
+             
+            </el-card>  
+         </div>
+     </el-col>
+     <el-col :span="8" :xs="12" :sm="12" :lg="7">
+        <div class="grid-content" id="container" ref='container' style="max-height:275px">
+            <el-card shadow="always" >
+                 <baidu-map :style="{width:map.width,height:map.height}" class="map" ak="bwdwfM9pFbVUoKv03xojn9lEuG3BZPGL" :zoom="map.zoom" 
+                    :center="{lng: map.center.lng, lat: map.center.lat}"
+                    @ready="handler" :scroll-wheel-zoom="true">
+                     <bm-marker :position="{lng: map.center.lng, lat: map.center.lat}" :dragging="false" animation="BMAP_ANIMATION_BOUNCE">
+                        <bm-label content="我爱北京天安门" :labelStyle="{color: 'red', fontSize : '24px'}" :offset="{width: -35, height: 30}"/>
+                     </bm-marker>
+                    <!--比例尺控件-->
+                    <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT" ></bm-scale>
+                    <!--缩放控件-->
+                    <bm-navigation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" ></bm-navigation>
+                    <!-- 地图类型 -->
+                    <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']" anchor="BMAP_ANCHOR_TOP_LEFT"></bm-map-type>
+                    <!--聚合动态添加的点坐标-->
+                    <bm-marker-clusterer :averageCenter="true">
+                        <bm-marker v-for="marker of markers" :key="marker.code" :position="{lng: marker.lng, lat: marker.lat}" @click="lookDetail(marker)"></bm-marker>
+                    </bm-marker-clusterer>
+                </baidu-map>
+             </el-card>  
+        </div>
+     </el-col>
    </el-row>
   </div>
 </template>
@@ -104,10 +150,18 @@
 <script>
 import CountTo from 'vue-count-to'
 import XLSX from 'xlsx'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import BmMarker from 'vue-baidu-map/components/overlays/Marker'
+import BmScale from 'vue-baidu-map/components/controls/Scale'
+import BmMapType from 'vue-baidu-map/components/controls/MapType'
 
 export default {
   components: {
-    CountTo
+    CountTo,
+    BaiduMap,
+    BmMarker,
+    BmScale,
+    BmMapType
   },
   data () {
     return {
@@ -118,9 +172,27 @@ export default {
         },
         fileTemp:[],
         fileList:{},
+        map:{
+            center: {lng: 118.802422,lat:32.065631},//'南京市',
+            zoom: 10,
+            width:'',
+            height:'275px'
+        },
+        markers:[],
     }
    },
    methods: {
+    initChart(){
+      this.chart = echarts.init(this.$refs.myEchart);
+      
+    },
+    //地图初始化
+    handler ({BMap, map}) {
+      console.log(BMap, map)
+      this.map.width= this.$refs.container.clientWidth+'px';
+      this.map.height=275+'px';
+      this.getProPositionMap();
+    },
     testExport:function(){
         this.$axios({
         method:'post',
@@ -245,6 +317,9 @@ export default {
 </script>
 
 <style lang="scss">
+#container{
+  height: 30%;
+}
 
 .mainpanel{
     margin-top: 10px;

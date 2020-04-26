@@ -26,7 +26,6 @@
           </el-form-item>
           <el-form-item style="width:100%;">
             <el-button  style="width:100%;background-color: #FE7300;color:#fff" @click.native.prevent="login('loginForm')" :loading="loading">登 录</el-button>
-             <!-- <el-button  style="width:100%;background-color: #FE7300;color:#fff" @click.native.prevent="submitCard()" :loading="loading">登 录</el-button> -->
           </el-form-item>
            <el-form-item style="width:100%;">.
             <router-link to="/register" tag='a' style="text-decoration: none;color:#409EFF">已有账号,忘记密码?</router-link>
@@ -49,7 +48,7 @@
 <script>
 import Cookies from 'js-cookie'
 import { debug } from 'util';
-import * as signalR from "@aspnet/signalr"
+
 
 export default {
   name: 'Login',
@@ -78,17 +77,7 @@ export default {
   }, 
  
   mounted(){ 
-    debugger
-     this.signalr.start().then(() => {
-        console.log('连接');
-         this.signalr.invoke('GetLatestCount', 1).catch(function (err) {
-           //return console.error(err);
-         });
-    })
-    this.signalr.on("ReceiveMessage", function (PassWord,UserName) {        
-       console.log(UserName);
-       console.log(PassWord);
-    });
+   
   },
   methods: {
     login() {
