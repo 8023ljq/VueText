@@ -132,12 +132,12 @@ function addDynamicMenuAndRoutes(UserId, to, from) {
  * 比如'代码生成'是要求直接绑定到'Generator'页面组件
  */
 function handleStaticComponent(router, dynamicRoutes) {
-  for(let j=0;j<dynamicRoutes.length; j++) {
-    if(dynamicRoutes[j].name == '代码生成') {
-      dynamicRoutes[j].component = Generator
-      break
-    }
-  }
+  // for(let j=0;j<dynamicRoutes.length; j++) {
+  //   if(dynamicRoutes[j].name == '代码生成') {
+  //     dynamicRoutes[j].component = Generator
+  //     break
+  //   }
+  // }
   router.options.routes[0].children = router.options.routes[0].children.concat(dynamicRoutes)
   //console.log(router)
 }

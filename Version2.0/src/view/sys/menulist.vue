@@ -8,7 +8,7 @@
         <el-col :span="1" style="width:100%;padding-bottom:10px">
           <!-- <el-button size="medium" type="primary" icon="el-icon-search">搜索</el-button> -->
            <el-button style="float:left;margin-top:10px" size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="addDialog('dataform')">新增</el-button>
-           <el-button style="float:left;margin-top:10px" size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="cleanCache">清理缓存</el-button>
+           <!-- <el-button style="float:left;margin-top:10px" size="medium" type="primary" icon="el-icon-circle-plus-outline" @click="cleanCache">清理缓存</el-button> -->
         </el-col>
       </el-row>
     </div>
@@ -61,7 +61,7 @@
         <el-form ref="dataform" :model="dialogform" :rules="fieldRules" label-width="80px">
           <el-row :gutter="20">
              <el-col :span="12">
-              <el-form-item label="菜单等级" prop="ParentId" required>
+              <el-form-item label="菜单等级" prop="ParentId">
                 <el-cascader 
                   ref="menucascader"
                   v-model="dialogform.ParentId"
@@ -74,26 +74,26 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-               <el-form-item label="菜单名称" prop="FullName" required>
+               <el-form-item label="菜单名称" prop="FullName">
                  <el-input v-model="dialogform.FullName"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="菜单路由" prop="AddressUrl" required>
+              <el-form-item label="菜单路由" prop="AddressUrl">
                 <el-input v-model="dialogform.AddressUrl" :disabled="addressUrldisabled"></el-input>
               </el-form-item>
             </el-col>
              <el-col :span="12">
-               <el-form-item label="排列顺序" prop="Sort" required>
+               <el-form-item label="排列顺序" prop="Sort">
                 <el-input v-model="dialogform.Sort"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="是否显示" prop="IsShow" required>
+              <el-form-item label="是否显示" prop="IsShow">
                 <el-switch
                   v-model="dialogform.IsShow"
                   active-color="#13ce66"
@@ -103,7 +103,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-               <el-form-item label="显示图标" prop="IconUrl" required>
+               <el-form-item label="显示图标" prop="IconUrl">
                  <el-input v-model="dialogform.IconUrl"></el-input>
                 <!-- <div style="float: left;">
                   <el-tag
@@ -156,7 +156,7 @@
       </el-dialog>
        <!-- 添加按钮弹出框 -->
       <el-dialog title="添加按钮"  :visible.sync="dialogButtonVisible" :close-on-click-modal="false" :center="false" width="20%">
-        <el-form ref="databuttonform" :model="databuttonform" :rules="fieldRules" label-width="80px">
+        <el-form ref="databuttonform" :model="databuttonform" :rules="ButtenRules" label-width="80px">
            <el-form-item label="按钮名称" prop="FullName" required>
             <el-input type="text" v-model="databuttonform.FullName"></el-input>
           </el-form-item>
@@ -251,17 +251,28 @@ export default {
       addressUrldisabled:false,//路由地址是否禁用
       menuGradedisabled:false,//菜单等级是否禁用
       dialogFormVisible: false,//是否显示
-      dialogButtonVisible:false,//按钮权限弹窗时候显示
+      dialogButtonVisible:false,//按钮权限弹窗是否显示
       purviewVisible:false,//权限模快是否显示
       addButtonVisible:true,
       tagData:['el-icon-s-operation'],//标签显示数据
       dialogTagVisible:false,//选择标签弹窗是否显示
       addpowerVisible:true,//添加按钮弹窗的提交/确定控制
       fieldRules:{//表单数据验证
-        GuId:[
+        ParentId:[
           { required: true, message: '请选择菜单等级', trigger: 'blur' },
         ],
-        FullName:[]
+        FullName:[
+          { required: true, message: '请填写菜单名称', trigger: 'blur' },
+        ],
+        AddressUrl:[
+          { required: true, message: '请填写菜单路由', trigger: 'blur' },
+        ],
+        IconUrl:[
+          { required: true, message: '请填写显示图标', trigger: 'blur' },
+        ],
+        Sort:[
+          { required: true, message: '请填写排列顺序', trigger: 'blur' },
+        ],
       },
     };
   },
@@ -332,8 +343,11 @@ export default {
         value,
         label,
       })
+      this.dialogform.ParentId="0"
+      this.addressUrldisabled=true
       this.titlename="添加菜单"
       this.dialogFormVisible=true
+      this.dialogform.AddressUrl="一级菜单"
     },
     addNewMenu(){// 添加菜单操作
      this.$refs.dataform.validate((valid) => {
@@ -342,6 +356,11 @@ export default {
             this.dialogform.ParentId=ParentId
             this.$api.common.addNewMenu(this.dialogform).then(res=>{
               this.$message({ message: res.ResultMsgs, type: res.ResultType })
+              if(res.ResultCode==200)
+              {
+                this.dialogFormVisible=false
+                this.cleanCache()
+              }
             })
           } else {
              return false;
@@ -349,16 +368,23 @@ export default {
         });
     },
     UpdateNewMenu(){// 修改菜单信息
-    debugger
-     this.dialogform.ParentId=this.$refs.menucascader.getCheckedNodes()[0].value
-      this.$api.common.updateMenu(this.dialogform).then(res=>{
-        this.$message({ message: res.ResultMsgs, type: res.ResultType })
-         if(res.ResultCode==200)
+     this.$refs.dataform.validate((valid) => {//表单检查
+       if(valid)
+       {
+          this.dialogform.ParentId=this.$refs.menucascader.getCheckedNodes()[0].value
+          this.$api.common.updateMenu(this.dialogform).then(res=>{
+          this.$message({ message: res.ResultMsgs, type: res.ResultType })
+          if(res.ResultCode==200)
           {
-             this.dialogFormVisible=false
-             this.convert()
+            this.dialogFormVisible=false
+            this.cleanCache()
           }
       })
+      } else{
+        return false;
+      }
+     })
+ 
     },
     deletemenu(menuId){// 删除菜单
        this.$confirm('此操作将永久删除该菜单, 是否继续?', '提示', {
@@ -370,7 +396,7 @@ export default {
           this.$message({ message: res.ResultMsgs, type: res.ResultType })
           if(res.ResultCode==200)
           {
-            this.convert()
+            this.cleanCache()
           }
         })
       })
@@ -382,11 +408,12 @@ export default {
         this.purviewVisible=false
         this.dialogform.AddressUrl="一级菜单"
       }
-      // else{
-      //   this.addressUrldisabled=false
-      //   this.purviewVisible=true
-      //   this.dialogform.AddressUrl=""
-      // }
+      else{
+        this.addressUrldisabled=false
+        this.purviewVisible=true
+        this.dialogform.AddressUrl=""
+        this.PowerListData=[]
+      }
       console.log(this.dialogform);
     },
     addmenupower(formName){// 添加其他按钮权限弹窗
@@ -447,7 +474,13 @@ export default {
     },
     cleanCache(){//清除所有菜单缓存
       this.$api.common.cleanCache().then(res=>{
-        this.$message({ message: res.ResultMsgs, type: res.ResultType })
+        if(res.ResultCode==200)
+        {
+          this.convert();
+        }
+        else{
+          this.$message({ message: res.ResultMsgs, type: res.ResultType })
+        }
       })
     }
   }
