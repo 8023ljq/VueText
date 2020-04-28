@@ -145,7 +145,6 @@ export default {
    methods: {
     initChart(){
       this.chart = echarts.init(this.$refs.myEchart);
-
     },
     //地图初始化
     handler ({BMap, map}) {
