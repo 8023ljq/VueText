@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import Utils from '@/utils/utils.js'
 export default {
     data(){
         return {
@@ -84,7 +85,9 @@ export default {
             },
         }
     },
-    created(){},
+    created(){
+      this.getDateList();
+    },
     methods:{
         linkDB(){
            this.$refs.ruleForm.validate((valid) => {
@@ -102,14 +105,24 @@ export default {
            }) 
         },
         getDateList(){
-           this.$api.builder.getDateList(this.ruleForm).then(res=>{
+          debugger
+           this.ruleForm.Pwd=Utils.encrypt(this.ruleForm.Pwd);
+           var b=Utils.decrypt(this.ruleForm.Pwd);
+           console.log(this.ruleForm.Pwd);
+           console.log(b);
+          //  this.$api.builder.getDateList(this.ruleForm).then(res=>{
+          //     if(res.ResultCode != 200){
+          //       this.$message({ message: res.ResultMsgs, type: res.ResultType })
+          //     }
+          //     else{
+          //       this.dataTreeList=res.ResultData.data;
+          //     }
+          //   }) 
+           this.$api.builder.Text(this.ruleForm).then(res=>{
               if(res.ResultCode != 200){
                 this.$message({ message: res.ResultMsgs, type: res.ResultType })
               }
               else{
-                debugger
-                console.log(res.ResultData)
-                console.log(res.ResultData.data);
                 this.dataTreeList=res.ResultData.data;
               }
             }) 

@@ -17,3 +17,12 @@ export const getDateList = params => {
       params
     })
   }
+
+  // 测试
+export const Text = data => {
+  return axios({
+    url: 'builder/text',
+    method: 'post',
+    data
+  })
+}
