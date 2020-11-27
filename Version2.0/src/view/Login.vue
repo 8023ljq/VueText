@@ -21,6 +21,7 @@
 <script>
 import Cookies from 'js-cookie'
 import { debug } from 'util';
+import store from '@/store'
 
 export default {
   name: 'Login',
@@ -59,6 +60,7 @@ export default {
   },
   methods: {
     login() {
+      this.$Loading.start("登录中....");
       this.loading = true
       // this.$message({ message:this.loginForm, type: 'success' })
       if (this.loginForm.UserName === '' ||this.loginForm.PassWord=== '') {
@@ -66,6 +68,7 @@ export default {
       }
       else {
         this.$api.login.login(this.loginForm).then((res) => {
+          this.$Loading.end();
           if (res.ResultCode !== 200) {
             this.$message({ message: res.ResultMsgs, type: 'error' })
           }

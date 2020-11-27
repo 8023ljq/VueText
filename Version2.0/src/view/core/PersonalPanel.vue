@@ -82,7 +82,6 @@ export default {
         type: "warning"
       })
       .then(() => {
-        debugger
         this.$api.login.logout().then((res) => {
           if(res.ResultCode==500)
           {

@@ -86,7 +86,7 @@
             highlight-current
             :expand-on-click-node="false"
             @check-change="leftCheckChange">
-            <span class="custom-tree-node" slot-scope="{ node, data }" >
+            <span class="custom-tree-node">
               <span>{{ data.label }}</span>
                 <span style="margin-left: 50px;">
                      <el-checkbox 

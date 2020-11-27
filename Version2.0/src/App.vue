@@ -13,6 +13,7 @@ export default {
 
 <style>
 #app {
+  height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -24,5 +25,6 @@ export default {
   bottom: 0px;
   left: 0px;
   right: 0px;
+  overflow-x: hidden;
 }
 </style>

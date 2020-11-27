@@ -1,21 +1,21 @@
 <template>
-  <!-- <div class="container"> -->
-<el-container>
-  <el-aside width="200px" :class="$store.state.app.collapse?'shrink':'expand'" ><!-- 导航菜单栏 -->
+  <el-container class="container">
+    <el-aside width="200px"
+              :class="$store.state.app.collapse?'shrink':'expand'">
+      <!-- 导航菜单栏 -->
       <nav-bar></nav-bar>
-  </el-aside>
-  <el-container>
-    <el-header>
-       <!-- 头部区域 -->
-      <head-bar></head-bar>
-    </el-header>
-    <el-main>
-       <!-- 主内容区域 -->
-      <main-content ></main-content>
-    </el-main>
+    </el-aside>
+    <el-container>
+      <el-header>
+        <!-- 头部区域 -->
+        <head-bar></head-bar>
+      </el-header>
+      <!-- 主内容区域 -->
+      <main-content></main-content>
+      <!-- <el-main>
+      </el-main> -->
+    </el-container>
   </el-container>
-</el-container>
-  <!-- </div> -->
 </template>
 <script>
 
@@ -25,46 +25,44 @@ import MainContent from "./layoutbar/MainContent"
 import Breadcrumb from "./layoutbar/Breadcrumb"
 
 export default {
-  data(){
-    return{
-      widowsStyle:""
+  data () {
+    return {
+      widowsStyle: ""
     }
   },
-  mounted(){ 
+  mounted () {
   },
-  methods:{
-    getclass(msg){
-       debugger
-       this.$message({ message: msg, type: 'error' })
-      this.widowsStyle=msg
+  methods: {
+    getclass (msg) {
+      debugger
+      this.$message({ message: msg, type: 'error' })
+      this.widowsStyle = msg
     }
   },
-  components:{
-      HeadBar,
-      NavBar,
-      MainContent,
-      Breadcrumb
+  components: {
+    HeadBar,
+    NavBar,
+    MainContent,
+    Breadcrumb
   },
 }
 </script>
 
 <style scoped lang="scss">
-  .container {
-    position:absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    background: rgba(224, 234, 235, 0.1);
-  }
- .expand{
-   width: 200px !important;
- }
- .shrink{
-  width: 50px !important;
+.container {
+  height: 100%;
+  overflow-x: hidden;
+  background-color: burlywood;
+}
+.expand {
+  width: 200px !important;
+  overflow-x: hidden;
+}
+.shrink {
+  width: 65px !important;
+  overflow-x: hidden;
 }
 //  .content{
 //    min-height: calc(100vh);
 //  }
-
 </style>
